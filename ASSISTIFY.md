@@ -66,15 +66,22 @@ _What's missing:_
 * A **lot** of refactoring and code quality (e. g. fully reactive data sources, proper naming, coherent use of either extending existing collections or joined metadata, ...)
 
 #### APIs used, APIs missed
-Used:
 * `RocketChat.roomTypes`
+  * This seemed to be quite straight-forward copy-pasting.
+  * The client side however is lacking some APIs in order to exposing the roomTypes to the user (particularly creation of custom room types listing them in the combinedFlex).
+  * Some in-built views do not respect room types added via API (`membersList.coffee, adminRooms.coffee, room.coffee, createCombinedFlex.html/.coffee`)
 * `RocketChat.Settings`
+  * In general really mighty, but not too well documented. Particularly its properties. A schema would be appreciated.
+  * Missed an ability to set settings from external configuration (e. g. a file provided in an env-variable)
+  * Missed automatic cleanup (after startup, all settings which are not "added" anymore could be removed)
+  * Missed API to display a setting in another group (maybe also in addition to the origin group)
 * `RocketChat.callbacks`
+  * Both add and run are very intuitive
+  * Ability to remove callback (for API.ai-integration). All callbacks are in fact optional and should provide an ID in order to be able to remove them.
 * `RocketChat.models.permissions` (still erroneous, though)
-
-Missed:
-* Ability to remove callback for API.ai-integration
-* In-Built views do not respect room types added via API (`membersList.coffee, adminRooms.coffee, room.coffee, createCombinedFlex.html/.coffee`)
+  * API could use some documentation (particularly the scope of the permission)
+  * There are some places, where implicit assumptions about permission naming are made (e. g. `RocketChat.authz.hasAtLeastOnePermission("delete-#{roomType}")`)
+  * Currently, a streamer exception is raised on the server once a custom permission for a room type is added
 
 Other hacks
 * I18N: This really gives a headache. Once i18n-files are being added to packages other than `rocketchat-i18n`, they are loadable but not available at runtime.
