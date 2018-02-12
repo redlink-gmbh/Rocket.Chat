@@ -75,7 +75,7 @@ Package.onUse(function(api) {
 	api.addFiles('client/views/sideNav/expertise.js', 'client');
 	api.addFiles('client/views/sideNav/listRequestsFlex.html', 'client');
 	api.addFiles('client/views/sideNav/listRequestsFlex.js', 'client');
-
+	api.addFiles('client/views/AssistifyMessageAction.js', 'client');
 	//Libraries
 	api.addFiles('client/lib/collections.js', 'client');
 
