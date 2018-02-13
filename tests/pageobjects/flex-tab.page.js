@@ -2,7 +2,7 @@ import Page from './Page';
 import Global from './global';
 
 class FlexTab extends Page {
-	get moreActions() { return browser.element('.rc-room-actions__button.js-more') ; }
+	get moreActions() { return browser.element('.rc-room-actions__button.js-more'); }
 	// Channel Info Tab
 	get channelTab() { return browser.element('.tab-button:not(.hidden) .tab-button-icon--info-circled'); }
 	get channelSettings() { return browser.element('.channel-settings'); }
@@ -100,11 +100,6 @@ class FlexTab extends Page {
 	get usersView() { return browser.element('.rc-user-info-action'); }
 	get usersActivate() { return browser.element('.rc-popover__item[data-id=activate]'); }
 	get usersDeactivate() { return browser.element('.rc-popover__item[data-id=deactivate]'); }
-
-	// Settings based permissions elements
-	get layoutLink() {
-		return browser.element('#rocket-chat > aside > div.flex-nav > aside > div > ul:nth-child(4) > li > a > div');
-	}
 
 	getUserEl(username) { return browser.element(`.flex-tab button[title="${ username }"] > p`); }
 

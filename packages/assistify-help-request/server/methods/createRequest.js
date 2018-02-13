@@ -125,7 +125,6 @@ class CreateRequestFromExpertise extends CreateRequestBase {
 		} else if (this._expertise && this._requestTitle) {
 			this.name = `${ this._requestTitle }`;
 		}
-
 		if (this._expertise) {
 			this._members = CreateRequestFromExpertise.getExperts(this._expertise);
 		}
