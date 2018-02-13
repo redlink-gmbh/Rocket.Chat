@@ -29,7 +29,7 @@ Meteor.startup(function() {
 					if (question === false) {
 						return;
 					}
-					Meteor.call('createRequestFromRoomId', requestTitle, question.rid, question.msg, function(error, success) {
+					Meteor.call('createRequestFromRoomId', requestTitle, question.rid, question.msg, function(error, result) {
 						if (error) {
 							console.log(error);
 							switch (error.error) {
@@ -37,6 +37,10 @@ Meteor.startup(function() {
 									return handleError(error);
 							}
 						}
+						console.log('Room Created');
+						// toastr.success(TAPi18n.__('New_request_created'));
+						const roomCreated = RocketChat.models.Rooms.findOne({_id: result.rid});
+						FlowRouter.go('request', {name: roomCreated.name}, FlowRouter.current().queryParams);
 					});
 				});
 		},

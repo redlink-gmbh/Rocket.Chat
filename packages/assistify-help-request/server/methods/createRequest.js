@@ -1,21 +1,10 @@
 import {RocketChat} from 'meteor/rocketchat:lib';
 
-class CreateRequestBase {
-	constructor(requestTitle, roomId, openingQuestion, expertise, members, environment) {
-		this.requestTitle = requestTitle;
-		this.roomId = roomId;
-		this.expertise = expertise;
-		this.openingQuestion = openingQuestion;
-		this.members = members;
-		this.environment = environment;
-	}
 
-	static getExpertiseRoom(roomId, expertise) {
-		if (roomId) {
-			return RocketChat.models.Rooms.findOne(roomId);
-		} else {
-			return RocketChat.models.Rooms.findOneByName(expertise);
-		}
+class CreateRequestBase {
+	constructor(requestTitle, openingQuestion) {
+		this._requestTitle = requestTitle;
+		this._openingQuestion = openingQuestion;
 	}
 
 	static getNextId() {
@@ -32,15 +21,6 @@ class CreateRequestBase {
 		};
 		const findAndModifyResult = findAndModify(query, null, update);
 		return findAndModifyResult.value.value;
-	}
-
-	static getExperts(expertise) {
-		const expertiseRoom = RocketChat.models.Rooms.findOneByName(expertise);
-		if (expertiseRoom) {
-			return expertiseRoom.usernames;
-		} else {
-			return []; // even if there are no experts in the room, this is valid. A bot could notify later on about this flaw
-		}
 	}
 
 	createNotifications(requestId, usernames) {
@@ -71,16 +51,20 @@ class CreateRequestBase {
 		});
 	}
 
+	static getExpertiseRoom(roomId) {
+		return RocketChat.models.Rooms.findOne(roomId);
+	}
+
 	create() {
-		const expertiseRoom = CreateRequestBase.getExpertiseRoom(this.roomId);
-		if (expertiseRoom.name && !this.requestTitle) {
+		const expertiseRoom = CreateRequestBase.getExpertiseRoom(this._roomId);
+		if (expertiseRoom.name && !this._requestTitle) {
 			this.name = `${ expertiseRoom.name }-${ CreateRequestBase.getNextId() }`;
-		} else if (this.roomId && this.requestTitle) {
-			this.name = `${ this.requestTitle }`;
+		} else if (this._roomId && this._requestTitle) {
+			this.name = `${ this._requestTitle }`;
 		}
 
-		const roomCreateResult = RocketChat.createRoom('r', this.name, Meteor.user() && Meteor.user().username, expertiseRoom.usernames, false, {parentRoomId: this.roomId});
-		if (this.requestTitle) {
+		const roomCreateResult = RocketChat.createRoom('r', this.name, Meteor.user() && Meteor.user().username, expertiseRoom.usernames, false, {parentRoomId: this._roomId});
+		if (this._requestTitle) {
 			RocketChat.saveRoomTopic(roomCreateResult.rid, expertiseRoom.name, Meteor.user());
 		}
 		if (expertiseRoom.t === 'e') {
@@ -92,8 +76,8 @@ class CreateRequestBase {
 		// Instance of newly created room.
 		const room = RocketChat.models.Rooms.findOneById(roomCreateResult.rid);
 
-		if (this.openingQuestion) {
-			const msg = this.openingQuestion;
+		if (this._openingQuestion) {
+			const msg = this._openingQuestion;
 			const msgObject = {_id: Random.id(), rid: roomCreateResult.rid, msg};
 			RocketChat.sendMessage(Meteor.user(), msgObject, room);
 		}
@@ -109,7 +93,8 @@ class CreateRequestBase {
 
 class CreateRequestFromRoomId extends CreateRequestBase {
 	constructor(requestTitle, roomId, openingQuestion) {
-		super(requestTitle, roomId, openingQuestion);
+		super(requestTitle, openingQuestion);
+		this._roomId = roomId;
 	}
 
 	create() {
@@ -119,32 +104,44 @@ class CreateRequestFromRoomId extends CreateRequestBase {
 
 class CreateRequestFromExpertise extends CreateRequestBase {
 	constructor(requestTitle, expertise, openingQuestion, members, environment) {
-		super(requestTitle, '', openingQuestion, expertise, members, environment);
+		super(requestTitle, openingQuestion);
+		this._expertise = expertise;
+		this._members = members;
+		this._environment = environment;
+	}
+
+	static getExperts(expertise) {
+		const expertiseRoom = RocketChat.models.Rooms.findOneByName(expertise);
+		if (expertiseRoom) {
+			return expertiseRoom.usernames;
+		} else {
+			return []; // even if there are no experts in the room, this is valid. A bot could notify later on about this flaw
+		}
 	}
 
 	create() {
-		if (this.expertise && !this.requestTitle) {
-			this.name = `${ this.expertise }-${ CreateRequestBase.getNextId(this.expertise) }`;
-		} else if (this.expertise && this.requestTitle) {
-			this.name = `${ this.requestTitle }`;
+		if (this._expertise && !this._requestTitle) {
+			this.name = `${ this._expertise }-${ CreateRequestBase.getNextId(this._expertise) }`;
+		} else if (this._expertise && this._requestTitle) {
+			this.name = `${ this._requestTitle }`;
 		}
 
-		if (this.expertise) {
-			this.members = CreateRequestBase.getExperts(this.expertise);
+		if (this._expertise) {
+			this._members = CreateRequestFromExpertise.getExperts(this._expertise);
 		}
-		const roomCreateResult = RocketChat.createRoom('r', this.name, Meteor.user() && Meteor.user().username, this.members, false, {expertise: this.expertise});
-		if (this.requestTitle) {
-			RocketChat.saveRoomTopic(roomCreateResult.rid, this.expertise, Meteor.user());
+		const roomCreateResult = RocketChat.createRoom('r', this.name, Meteor.user() && Meteor.user().username, this._members, false, {expertise: this._expertise});
+		if (this._requestTitle) {
+			RocketChat.saveRoomTopic(roomCreateResult.rid, this._expertise, Meteor.user());
 		}
-		this.createNotifications(roomCreateResult.rid, this.members.concat([Meteor.user().username]));
+		this.createNotifications(roomCreateResult.rid, this._members.concat([Meteor.user().username]));
 		const room = RocketChat.models.Rooms.findOneById(roomCreateResult.rid);
-		if (this.openingQuestion) {
-			const msg = this.openingQuestion;
+		if (this._openingQuestion) {
+			const msg = this._openingQuestion;
 			const msgObject = {_id: Random.id(), rid: roomCreateResult.rid, msg};
 			RocketChat.sendMessage(Meteor.user(), msgObject, room);
 		}
 
-		const helpRequestId = RocketChat.models.HelpRequests.createForSupportArea(this.expertise, roomCreateResult.rid, '', this.environment);
+		const helpRequestId = RocketChat.models.HelpRequests.createForSupportArea(this._expertise, roomCreateResult.rid, '', this._environment);
 		//propagate help-id to room in order to identify it as a "helped" room
 		RocketChat.models.Rooms.addHelpRequestInfo(room, helpRequestId);
 
@@ -152,32 +149,53 @@ class CreateRequestFromExpertise extends CreateRequestBase {
 	}
 }
 
+class CreateRequestFactory {
+	static getInstance(type, requestTitle, expertise, roomId, openingQuestion, members, environment) {
+		if (type === 'E') {
+			return new CreateRequestFromExpertise(
+				requestTitle,
+				expertise,
+				openingQuestion,
+				members,
+				environment
+			);
+		} else {
+			return new CreateRequestFromRoomId(
+				requestTitle,
+				roomId,
+				openingQuestion
+			);
+		}
+	}
+}
+
 Meteor.methods({
-	createRequestFromRoomId(name, roomId, openingQuestion) {
-		const createRequestRoom = new CreateRequestFromRoomId(
-			name,
+	createRequestFromRoomId(requestTitle, roomId, openingQuestion) {
+		const result = CreateRequestFactory.getInstance(
+			'R',
+			requestTitle,
+			'',
 			roomId,
 			openingQuestion
-		);
-
+		).create();
 		if (!Meteor.userId()) {
 			throw new Meteor.Error('error-invalid-user', 'Invalid user', {method: 'createRequestFromRoomId'});
 		}
-		const result = createRequestRoom.create();
 		return result;
 	},
-	createRequest(name, expertise, openingQuestion, members, environment) {
-		const createRequestRoom = new CreateRequestFromExpertise(
-			name,
+	createRequest(requestTitle, expertise, openingQuestion, members, environment) {
+		const result = CreateRequestFactory.getInstance(
+			'E',
+			requestTitle,
 			expertise,
+			'',
 			openingQuestion,
 			members,
 			environment
-		);
+		).create();
 		if (!Meteor.userId()) {
-			throw new Meteor.Error('error-invalid-user', 'Invalid user', {method: 'createRequest'});
+			throw new Meteor.Error('error-invalid-user', 'Invalid user', {method: 'createRequestFromRoomId'});
 		}
-		const result = createRequestRoom.create();
 		return result;
 	}
 });
