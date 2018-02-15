@@ -193,7 +193,7 @@ Meteor.methods({
 			environment
 		).create();
 		if (!Meteor.userId()) {
-			throw new Meteor.Error('error-invalid-user', 'Invalid user', {method: 'createRequestFromRoomId'});
+			throw new Meteor.Error('error-invalid-user', 'Invalid user', {method: 'createRequest'});
 		}
 		return result;
 	}
