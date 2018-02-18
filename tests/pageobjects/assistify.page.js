@@ -40,14 +40,22 @@ class Assistify extends Page {
 		return browser.element('.external-search-content .smarti-widget .search-results');
 	}
 
-	get knowledgebasePostBtn() {
-		return browser.element('.external-search-content .smarti-widget .search-results .result-actions');
+	get knowledgebasePickAnswer() {
+		return browser.element('#widgetBody > div.widgetContent > div > div > div > div > div.postAction');
+	}
+
+	get knowledgebaseContent() {
+		return browser.element('[data-link="class{merge: messagesCnt toggle=\'parent\'}"]');
 	}
 
 	// new Topic
 
 	get topicName() {
 		return browser.element('.create-channel__content input[name="expertise"]');
+	}
+
+	get requestTitle() {
+		return browser.element('.create-channel__content input[name="request_title"]');
 	}
 
 	get topicExperts() {
@@ -78,7 +86,11 @@ class Assistify extends Page {
 
 	// Knowledgebase
 	get closeTopicBtn() {
-		return browser.element('.flex-tab-container.border-component-color.opened .delete');
+		return browser.element('.rc-button.rc-button--outline.rc-button--cancel.js-delete');
+	}
+
+	get editInfoBtn() {
+		return browser.element('.rc-button.rc-button--icon.rc-button--outline.js-edit');
 	}
 
 	get infoRoomIcon() {
@@ -115,7 +127,7 @@ class Assistify extends Page {
 		browser.pause(500);
 	}
 
-	createHelpRequest(topicName, message) {
+	createHelpRequest(topicName, message, requestTitle) {
 		this.newChannelBtn.waitForVisible(10000);
 		this.newChannelBtn.click();
 		this.tabs.waitForVisible(5000);
@@ -126,6 +138,11 @@ class Assistify extends Page {
 
 		this.topicName.waitForVisible(5000);
 		this.topicName.setValue(topicName);
+
+		if (requestTitle) {
+			this.requestTitle.waitForVisible(5000);
+			this.requestTitle.setValue(requestTitle);
+		}
 
 		browser.pause(100);
 		browser.keys(Keys.TAB);
@@ -176,6 +193,8 @@ class Assistify extends Page {
 		sideNav.openChannel(topicName);
 		flexTab.channelTab.waitForVisible(5000);
 		flexTab.channelTab.click();
+		this.editInfoBtn.waitForVisible(5000);
+		this.editInfoBtn.click();
 		this.closeTopicBtn.waitForVisible(5000);
 		this.closeTopicBtn.click();
 		global.confirmPopup();
