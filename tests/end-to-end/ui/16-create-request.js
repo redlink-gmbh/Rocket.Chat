@@ -9,9 +9,9 @@ import {adminUsername, adminEmail, adminPassword, username, email, password} fro
 import { checkIfUserIsValid, checkIfUserIsAdmin } from '../../data/checks';
 import globalObject from '../../pageobjects/global';
 const topicName = 'unit-testing';
+const message = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
 describe('[Help Reqeust]', function() {
-	const helpRequest = 'unit-testing-guide';
-	const message = 'How to execute the test scripts??';
+	const helpRequest = 'write-test-cases';
 	const comment = 'Request tested successfully';
 	before(function() {
 		try {
@@ -48,7 +48,6 @@ describe('[Help Reqeust]', function() {
 				console.log('Clean for the Topic and Expertise Started...', topicName);
 				try {
 					assistify.closeTopic(helpRequest);
-					assistify.closeTopic(topicName);
 				} catch (e) {
 					console.log(e);
 				}
@@ -58,19 +57,17 @@ describe('[Help Reqeust]', function() {
 	});
 
 });
-
 describe('[In-Chat Help]', function() {
-	const helpRequest = 'unit-testing';
-	const inChatHelp = 'in-chat-help-guid';
-	const message = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
-	before(function() {
+	const helpRequest = 'execute-test-cases';
+	const inChatHelp = 'what-is-test-case';
+	/* 	before(function() {
 		try {
 			checkIfUserIsAdmin(adminUsername, adminEmail, adminPassword);
 			sideNav.spotlightSearch.waitForVisible(10000);
 		} catch (e) {
 			console.log(e);
 		}
-	});
+	}); */
 
 	it('Create a Expertise', function() {
 		try {
@@ -136,22 +133,20 @@ describe('[In-Chat Help]', function() {
 				console.log('message not propagated to child help request');
 			}
 		});
+	});
+	after(function() {
+		describe('[Clean Up]', function() {
+			it('close the topics and request', () => {
+				console.log('Clean for the Topic and Expertise Started...', topicName);
+				try {
+					assistify.closeTopic(inChatHelp);
+					assistify.closeTopic(helpRequest);
+					assistify.closeTopic(topicName);
+				} catch (e) {
+					console.log(e);
+				}
 
-		after(function() {
-			describe('[Clean Up]', function() {
-				it('close new Topic', () => {
-					console.log('Clean for the Topic and Expertise Started...', topicName);
-					try {
-						assistify.closeTopic(inChatHelp);
-						assistify.closeTopic(helpRequest);
-						assistify.closeTopic(topicName);
-					} catch (e) {
-						console.log(e);
-					}
-
-				});
 			});
 		});
-
 	});
 });
