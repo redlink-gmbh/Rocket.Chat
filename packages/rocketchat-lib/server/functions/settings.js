@@ -1,3 +1,6 @@
+/*eslint complexity: ["error", 40]*/
+import _ from 'underscore';
+
 const blockedSettings = {};
 
 if (process.env.SETTINGS_BLOCKED) {

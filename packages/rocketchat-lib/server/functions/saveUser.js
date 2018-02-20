@@ -1,4 +1,8 @@
 /* globals Gravatar */
+/*eslint complexity: ["error", 50]*/
+import _ from 'underscore';
+import s from 'underscore.string';
+
 RocketChat.saveUser = function(userId, userData) {
 	const user = RocketChat.models.Users.findOneById(userId);
 	const existingRoles = _.pluck(RocketChat.authz.getRoles(), '_id');
@@ -164,9 +168,7 @@ RocketChat.saveUser = function(userId, userData) {
 			updateUser.$set.requirePasswordChange = userData.requirePasswordChange;
 		}
 
-		if (userData.verified) {
-			updateUser.$set['emails.0.verified'] = userData.verified;
-		}
+		updateUser.$set['emails.0.verified'] = !!userData.verified;
 
 		Meteor.users.update({ _id: userData._id }, updateUser);
 
