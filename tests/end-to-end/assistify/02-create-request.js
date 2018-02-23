@@ -9,17 +9,13 @@ import {adminUsername, adminEmail, adminPassword, username, email, password} fro
 import { checkIfUserIsValid, checkIfUserIsAdmin } from '../../data/checks';
 import globalObject from '../../pageobjects/global';
 const topicName = 'unit-testing';
-const message = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
+const message = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';
 describe('[Help Reqeust]', function() {
 	const helpRequest = 'write-test-cases';
 	const comment = 'Request tested successfully';
 	before(function() {
-		try {
-			checkIfUserIsAdmin(adminUsername, adminEmail, adminPassword);
-			sideNav.spotlightSearch.waitForVisible(10000);
-		} catch (e) {
-			console.log(e);
-		}
+		checkIfUserIsAdmin(adminUsername, adminEmail, adminPassword);
+		sideNav.spotlightSearch.waitForVisible(10000);
 	});
 
 	it('Create a Expertise', function() {
@@ -42,17 +38,10 @@ describe('[Help Reqeust]', function() {
 		}
 	});
 
-	after(function() {
-		describe('[Clean Up]', function() {
-			it('close new Topic', () => {
-				console.log('Clean for the Topic and Expertise Started...', topicName);
-				try {
-					assistify.closeTopic(helpRequest);
-				} catch (e) {
-					console.log(e);
-				}
-
-			});
+	describe('[Clean Up]', function() {
+		it('close new Topic', () => {
+			console.log('Clean for the Topic and Expertise Started...', topicName);
+			assistify.closeTopic(helpRequest);
 		});
 	});
 
@@ -60,14 +49,16 @@ describe('[Help Reqeust]', function() {
 describe('[In-Chat Help]', function() {
 	const helpRequest = 'execute-test-cases';
 	const inChatHelp = 'what-is-test-case';
-	/* 	before(function() {
+
+	before(()=> {
 		try {
-			checkIfUserIsAdmin(adminUsername, adminEmail, adminPassword);
-			sideNav.spotlightSearch.waitForVisible(10000);
+			sideNav.searchChannel(inChatHelp);
+			assistify.closeTopic(inChatHelp);
+			console.log('Cleanup request from last run');
 		} catch (e) {
-			console.log(e);
+			console.log('In-Chat-Help preparation done');
 		}
-	}); */
+	});
 
 	it('Create a Expertise', function() {
 		try {
@@ -83,6 +74,7 @@ describe('[In-Chat Help]', function() {
 		try {
 			sideNav.searchChannel(helpRequest);
 			console.log('HelpRequest already Exists');
+			assistify.sendTopicMessage(message);
 		} catch (e) {
 			assistify.createHelpRequest(topicName, message, helpRequest);
 			console.log('New Help Request Created');
@@ -100,30 +92,18 @@ describe('[In-Chat Help]', function() {
 		});
 
 		it('it should fill values in popup', function() {
-			try {
-				globalObject.supplyInput(inChatHelp);
-			} catch (e) {
-				console.log(e);
-			}
-			browser.pause(5000);
+			globalObject.supplyInput(inChatHelp);
+			browser.pause(1000);
 		});
 
 		it('It should create a new Help Request from chat Room', function() {
-			try {
-				globalObject.confirmPopup();
-				sideNav.spotlightSearch.waitForVisible(5000);
-			} catch (e) {
-				console.log(e);
-			}
+			globalObject.confirmPopup();
+			sideNav.spotlightSearch.waitForVisible(5000);
 		});
 
 		it('It should show the new in-chat-help request room', function() {
-			try {
-				sideNav.searchChannel(helpRequest);
-				sideNav.spotlightSearch.waitForVisible(10000);
-			} catch (e) {
-				console.log('Error in creating help Request' + e);
-			}
+			sideNav.searchChannel(helpRequest);
+			sideNav.spotlightSearch.waitForVisible(10000);
 		});
 
 		it('it should compare the last message', function() {
@@ -138,14 +118,9 @@ describe('[In-Chat Help]', function() {
 		describe('[Clean Up]', function() {
 			it('close the topics and request', () => {
 				console.log('Clean for the Topic and Expertise Started...', topicName);
-				try {
-					assistify.closeTopic(inChatHelp);
-					assistify.closeTopic(helpRequest);
-					assistify.closeTopic(topicName);
-				} catch (e) {
-					console.log(e);
-				}
-
+				assistify.closeTopic(inChatHelp);
+				assistify.closeTopic(helpRequest);
+				assistify.closeTopic(topicName);
 			});
 		});
 	});
