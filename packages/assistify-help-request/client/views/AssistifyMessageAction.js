@@ -9,16 +9,16 @@ Meteor.startup(function() {
 	RocketChat.MessageAction.addButton({
 		id: 'help',
 		icon: 'help',
-		label: 'Help',
+		label: t('ask_help'),
 		context: ['message', 'message-mobile'],
 		action() {
 			const question = this._arguments[1];
 			const modalConfig = {
-				title: t('New_Request'),
+				title: t('Create request'),
 				type: 'input',
 				inputPlaceholder: t('New_request_for_expertise'),
 				showCancelButton: true,
-				confirmButtonText: t('Yes'),
+				confirmButtonText: t('Create'),
 				cancelButtonText: t('Cancel'),
 				closeOnConfirm: true,
 				html: true
