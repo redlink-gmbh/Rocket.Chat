@@ -74,7 +74,7 @@ script:
 # - npm test
 
 before_deploy:
-- mv /tmp/build/Rocket.Chat.tar.gz /tmp/build/Rocket.Chat-${TRAVIS_COMMIT}.tar.gz
+- mv /tmp/build/Rocket.Chat.tar.gz /tmp/build/Rocket.Chat-${TRAVIS_BRANCH}-${TRAVIS_COMMIT}.tar.gz
 
 #before_deploy:
 #- source ".travis/setartname.sh"
@@ -105,7 +105,7 @@ deploy:
 - provider: s3
   access_key_id: $AWS_ACCESS_KEY
   secret_access_key: $AWS_SECRET_KEY
-  local_dir: /tmp/build/Rocket.Chat.tar.gz
+  local_dir: /tmp/build/
   skip_cleanup: true
   on: &1
     repo: assistify/Rocket.Chat
@@ -115,7 +115,7 @@ deploy:
 - provider: s3
   access_key_id: $AWS_ACCESS_KEY
   secret_access_key: $AWS_SECRET_KEY
-  local_dir: /tmp/build/Rocket.Chat.tar.gz
+  local_dir: /tmp/build/
   skip_cleanup: true
   on: &2
     repo: assistify/Rocket.Chat
@@ -126,7 +126,7 @@ deploy:
   access_key_id: $AWS_ACCESS_KEY
   secret_access_key: $AWS_SECRET_KEY
   bucket: $AWS_BUCKET
-  key: Rocket.Chat-${TRAVIS_COMMIT}.tar.gz
+  key: Rocket.Chat-${TRAVIS_BRANCH}-${TRAVIS_COMMIT}.tar.gz
   bundle_type: tar.gz
   application: $APPLICATION_NAME
   deployment_group: $DEPLOYMENT_GROUP
@@ -136,7 +136,7 @@ deploy:
   access_key_id: $AWS_ACCESS_KEY
   secret_access_key: $AWS_SECRET_KEY
   bucket: $AWS_BUCKET
-  key: Rocket.Chat-${TRAVIS_COMMIT}.tar.gz
+  key: Rocket.Chat-${TRAVIS_BRANCH}-${TRAVIS_COMMIT}.tar.gz
   bundle_type: tar.gz
   application: $APPLICATION_NAME
   deployment_group: $DEPLOYMENT_GROUP
@@ -149,12 +149,12 @@ deploy:
 #- ".travis/snap.sh"
 env:
   global:
+    - TRAVIS_SECURE_ENV_VARS: "true"
     - secure: $SECRET_ASSETS_URL
     - secure: $SECRET_AWS_ACCESS_KEY
     - secure: $SECRET_AWS_SECRET_KEY
     - secure: $SECRET_AWS_BUCKET
     - secure: $SECRET_AWS_REGION
-    - secure  
     - DISPLAY=:99.0
     - CXX=g++-4.8
     - MONGO_OPLOG_URL: "mongodb://localhost:27017/local"
