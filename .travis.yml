@@ -100,12 +100,10 @@ deploy:
   region: $AWS_REGION
 
 after_deploy:
-- source ./scripts/check-deploy.sh
-- aws s3api put-object-tagging --bucket $AWS_PATH --key rocketchat/${BUILD_FILE --tagging "{ \"TagSet\": [ { \"Key\": \"environment\", \"Value\": \"${TARGET_ENVIRONMENT}\" }, { \"Key\": \"nodejs_version\", \"Value\": \"${NODEJS_VERSION}\" }, { \"Key\": \"nodejs_checksum\", \"Value\": \"${NODEJS_CHECKSUM}\", { \"Key\": \"assets\", \"Value\": \"${ASSETS_URL}\" } ] }"
+- ./scripts/check-deploy.sh
 
 env:
   global:
-    - TRAVIS_SECURE_ENV_VARS: "true"
     - secure: $SECRET_ASSETS_URL
     - secure: $SECRET_AWS_ACCESS_KEY
     - secure: $SECRET_AWS_SECRET_KEY
@@ -116,3 +114,4 @@ env:
     - MONGO_OPLOG_URL: "mongodb://localhost:27017/local"
     - MONGO_URL: "mongodb://localhost:27017/meteor"
     - TEST_MODE: "true"
+    - TRAVIS_SECURE_ENV_VARS: "true"
