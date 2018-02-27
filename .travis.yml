@@ -74,32 +74,8 @@ script:
 # - npm test
 
 before_deploy:
-- mv /tmp/build/Rocket.Chat.tar.gz /tmp/build/Rocket.Chat-${TRAVIS_BRANCH}-${TRAVIS_COMMIT}.tar.gz
-
-#before_deploy:
-#- source ".travis/setartname.sh"
-#- source ".travis/setdeploydir.sh"
-#- ".travis/setupsig.sh"
-#- ".travis/namefiles.sh"
-#- echo ".travis/sandstorm.sh"
-#deploy:
-#  - provider: s3
-#    access_key_id: AKIAIKIA7H7D47KUHYCA
-#    secret_access_key: "$ACCESSKEY"
-#    bucket: download.rocket.chat
-#    skip_cleanup: true
-#    upload_dir: build
-#    local_dir: "$ROCKET_DEPLOY_DIR"
-#    on:
-#      condition: "$TRAVIS_PULL_REQUEST=false"
-#      all_branches: true
-#   - provider: releases
-#     api-key: "$GITHUB_TOKEN"
-#     file_glob: true
-#     file: build/*
-#     skip_cleanup: true
-#     on:
-#       tags: true
+- export BUILD_FILE=Assistify_Chat_${TRAVIS_BRANCH/\//_}_${TRAVIS_COMMIT:1}.tar.gz
+- mv /tmp/build/Rocket.Chat.tar.gz /tmp/build/${BUILD_FILE}
 
 deploy:
 - provider: s3
@@ -122,31 +98,11 @@ deploy:
     branch: master
   bucket: $AWS_BUCKET
   region: $AWS_REGION
-- provider: codedeploy
-  access_key_id: $AWS_ACCESS_KEY
-  secret_access_key: $AWS_SECRET_KEY
-  bucket: $AWS_BUCKET
-  key: Rocket.Chat-${TRAVIS_BRANCH}-${TRAVIS_COMMIT}.tar.gz
-  bundle_type: tar.gz
-  application: $APPLICATION_NAME
-  deployment_group: $DEPLOYMENT_GROUP
-  region: $AWS_REGION
-  on: *1
-- provider: codedeploy
-  access_key_id: $AWS_ACCESS_KEY
-  secret_access_key: $AWS_SECRET_KEY
-  bucket: $AWS_BUCKET
-  key: Rocket.Chat-${TRAVIS_BRANCH}-${TRAVIS_COMMIT}.tar.gz
-  bundle_type: tar.gz
-  application: $APPLICATION_NAME
-  deployment_group: $DEPLOYMENT_GROUP
-  region: $AWS_REGION
-  on: *2
-#
-#after_deploy:
-#- ".travis/docker.sh
-#- ".travis/update-releases.sh"
-#- ".travis/snap.sh"
+
+after_deploy:
+- source ./scripts/check-deploy.sh
+- aws s3api put-object-tagging --bucket $AWS_PATH --key rocketchat/${BUILD_FILE --tagging "{ \"TagSet\": [ { \"Key\": \"environment\", \"Value\": \"${TARGET_ENVIRONMENT}\" }, { \"Key\": \"nodejs_version\", \"Value\": \"${NODEJS_VERSION}\" }, { \"Key\": \"nodejs_checksum\", \"Value\": \"${NODEJS_CHECKSUM}\", { \"Key\": \"assets\", \"Value\": \"${ASSETS_URL}\" } ] }"
+
 env:
   global:
     - TRAVIS_SECURE_ENV_VARS: "true"
