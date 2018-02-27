@@ -72,6 +72,10 @@ script:
 # - mongo meteor --eval 'db.dropDatabase()'
 # - unset MONGO_OPLOG_URL
 # - npm test
+
+before_deploy:
+- mv /tmp/build/Rocket.Chat.tar.gz /tmp/build/Rocket.Chat-${TRAVIS_COMMIT}.tar.gz
+
 #before_deploy:
 #- source ".travis/setartname.sh"
 #- source ".travis/setdeploydir.sh"
@@ -103,7 +107,7 @@ deploy:
   secret_access_key: $AWS_SECRET_KEY
   local_dir: /tmp/build/Rocket.Chat.tar.gz
   skip_cleanup: true
-  on:
+  on: &1
     repo: assistify/Rocket.Chat
     branch: develop
   bucket: $AWS_BUCKET
@@ -113,11 +117,31 @@ deploy:
   secret_access_key: $AWS_SECRET_KEY
   local_dir: /tmp/build/Rocket.Chat.tar.gz
   skip_cleanup: true
-  on:
+  on: &2
     repo: assistify/Rocket.Chat
     branch: master
   bucket: $AWS_BUCKET
   region: $AWS_REGION
+- provider: codedeploy
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
+  bucket: $AWS_BUCKET
+  key: Rocket.Chat-${TRAVIS_COMMIT}.tar.gz
+  bundle_type: tar.gz
+  application: $APPLICATION_NAME
+  deployment_group: $DEPLOYMENT_GROUP
+  region: $AWS_REGION
+  on: *1
+- provider: codedeploy
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
+  bucket: $AWS_BUCKET
+  key: Rocket.Chat-${TRAVIS_COMMIT}.tar.gz
+  bundle_type: tar.gz
+  application: $APPLICATION_NAME
+  deployment_group: $DEPLOYMENT_GROUP
+  region: $AWS_REGION
+  on: *2
 #
 #after_deploy:
 #- ".travis/docker.sh
