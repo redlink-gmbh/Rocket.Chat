@@ -72,40 +72,47 @@ script:
 # - mongo meteor --eval 'db.dropDatabase()'
 # - unset MONGO_OPLOG_URL
 # - npm test
-#before_deploy:
-#- source ".travis/setartname.sh"
-#- source ".travis/setdeploydir.sh"
-#- ".travis/setupsig.sh"
-#- ".travis/namefiles.sh"
-#- echo ".travis/sandstorm.sh"
-#deploy:
-#  - provider: s3
-#    access_key_id: AKIAIKIA7H7D47KUHYCA
-#    secret_access_key: "$ACCESSKEY"
-#    bucket: download.rocket.chat
-#    skip_cleanup: true
-#    upload_dir: build
-#    local_dir: "$ROCKET_DEPLOY_DIR"
-#    on:
-#      condition: "$TRAVIS_PULL_REQUEST=false"
-#      all_branches: true
-#   - provider: releases
-#     api-key: "$GITHUB_TOKEN"
-#     file_glob: true
-#     file: build/*
-#     skip_cleanup: true
-#     on:
-#       tags: true
-#
-#after_deploy:
-#- ".travis/docker.sh
-#- ".travis/update-releases.sh"
-#- ".travis/snap.sh"
+
+before_deploy:
+- mkdir -p /tmp/build/rocketchat
+- export BUILD_FILE=Assistify_Chat_${TRAVIS_BRANCH/\//_}_${TRAVIS_COMMIT:1}.tar.gz
+- mv /tmp/build/Rocket.Chat.tar.gz /tmp/build/rocketchat/${BUILD_FILE}
+
+deploy:
+- provider: s3
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
+  local_dir: /tmp/build/
+  skip_cleanup: true
+  on: &1
+    repo: assistify/Rocket.Chat
+    branch: develop
+  bucket: $AWS_BUCKET
+  region: $AWS_REGION
+- provider: s3
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
+  local_dir: /tmp/build/
+  skip_cleanup: true
+  on: &2
+    repo: assistify/Rocket.Chat
+    branch: master
+  bucket: $AWS_BUCKET
+  region: $AWS_REGION
+
+after_deploy:
+- ./scripts/check-deploy.sh
+
 env:
   global:
-  - DISPLAY=:99.0
-  - CXX=g++-4.8
-  - secure: HrPOM5sBibYkMcf9aeQThYPCDiXeLkg0Xgv0HvH88/ku/gphDpNEjHNReHZM3cyfm9y3RhHpVdD+Zzy38S2goKyewRzpXJsuyerOYkjND0v3tivhs9CAX8PAUxj1U5zllTyH4bgW2ZwRtNnwnmtIM/JJlnySMpKVDqIZBpbhn3ph9bJ2J+BW3D3Jw8meQ1vCX8szIibyJK/5QX6HG2RBFXJGYoQ8DmR8jQv0aJQvT1Az5DO4yImk8tX4NP95qOc19Jywr1DsbaSBZeJ8lFJAmBpIGx7KAmUVCcxSxfbXGRhs2K4iEYb3rJ/dU6KiyPsKGUG4aYNGgbvcX0ZxX/BZ6ZU9ff0E4IIf43IxoN3ElrOqOFk5msJAXbrJEreINSzDqKOy8NFYtCQ49E2gwzfage4ZXkhFyx3wMPa5bzpr3ncsTceMjMVz03uL781X6NLuCkUmXv+n8K2MNhJU9Xinpdx1GRJm+0lXJspNNJ1ruHeJtls4epj4bmCwKmmZbFKPXqa5e8xVcMIkwt1LMiHduhE+WgKNHdOMhXrCcTxF62ybLlsHXmyLLJeNjTeKS8QG2XSoonClDAz/1R41I1DsMPblcgz9uvYCf7UtyftbhJ83bnJeEmOYQiwijLG0+QMq+B2+mmZan3Z7Hl7O53dnwuLxz7EO7EhQhY+CqHVgc6s=
-  - MONGO_OPLOG_URL: "mongodb://localhost:27017/local"
-  - MONGO_URL: "mongodb://localhost:27017/meteor"
-  - TEST_MODE: "true"
+    - secure: $SECRET_ASSETS_URL
+    - secure: $SECRET_AWS_ACCESS_KEY
+    - secure: $SECRET_AWS_SECRET_KEY
+    - secure: $SECRET_AWS_BUCKET
+    - secure: $SECRET_AWS_REGION
+    - DISPLAY=:99.0
+    - CXX=g++-4.8
+    - MONGO_OPLOG_URL: "mongodb://localhost:27017/local"
+    - MONGO_URL: "mongodb://localhost:27017/meteor"
+    - TEST_MODE: "true"
+    - TRAVIS_SECURE_ENV_VARS: "true"
