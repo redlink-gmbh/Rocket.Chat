@@ -74,8 +74,9 @@ script:
 # - npm test
 
 before_deploy:
+- mkdir -p /tmp/build/rocketchat
 - export BUILD_FILE=Assistify_Chat_${TRAVIS_BRANCH/\//_}_${TRAVIS_COMMIT:1}.tar.gz
-- mv /tmp/build/Rocket.Chat.tar.gz /tmp/build/${BUILD_FILE}
+- mv /tmp/build/Rocket.Chat.tar.gz /tmp/build/rocketchat/${BUILD_FILE}
 
 deploy:
 - provider: s3
