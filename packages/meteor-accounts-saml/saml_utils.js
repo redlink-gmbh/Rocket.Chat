@@ -1,5 +1,4 @@
 /* globals SAML:true */
-/*eslint complexity: ["error", 40]*/
 
 import zlib from 'zlib';
 import xml2js from 'xml2js';

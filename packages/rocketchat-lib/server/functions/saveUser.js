@@ -73,7 +73,8 @@ RocketChat.saveUser = function(userId, userData) {
 		const updateUser = {
 			$set: {
 				name: userData.name,
-				roles: userData.roles || ['user']
+				roles: userData.roles || ['user'],
+				settings: userData.settings
 			}
 		};
 
@@ -162,6 +163,10 @@ RocketChat.saveUser = function(userId, userData) {
 
 		if (userData.roles) {
 			updateUser.$set.roles = userData.roles;
+		}
+
+		if (userData.settings) {
+			updateUser.$set.settings = { preferences: userData.settings.preferences };
 		}
 
 		if (typeof userData.requirePasswordChange !== 'undefined') {
