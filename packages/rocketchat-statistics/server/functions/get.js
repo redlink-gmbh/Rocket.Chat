@@ -1,6 +1,8 @@
 /* global InstanceStatus, MongoInternals */
 import _ from 'underscore';
 import os from 'os';
+import {getUsages} from './getUsages';
+
 
 RocketChat.statistics.get = function _getStatistics() {
 	const statistics = {};
@@ -72,6 +74,8 @@ RocketChat.statistics.get = function _getStatistics() {
 	if (MongoInternals.defaultRemoteCollectionDriver().mongo._oplogHandle && MongoInternals.defaultRemoteCollectionDriver().mongo._oplogHandle.onOplogEntry && RocketChat.settings.get('Force_Disable_OpLog_For_Cache') !== true) {
 		statistics.oplogEnabled = true;
 	}
+
+	statistics.users = getUsages();
 
 	return statistics;
 };

@@ -16,6 +16,7 @@ Package.onUse(function(api) {
 	api.addFiles('lib/rocketchat.js', [ 'client', 'server' ]);
 	api.addFiles([
 		'server/models/Statistics.js',
+		'server/functions/getUsages.js',
 		'server/functions/get.js',
 		'server/functions/save.js',
 		'server/methods/getStatistics.js'
