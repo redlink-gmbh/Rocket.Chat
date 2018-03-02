@@ -224,10 +224,6 @@
 		text-transform: lowercase;
 	}
 
-	&__me {
-		text-transform: lowercase;
-	}
-
 	&__last-message {
 		overflow: hidden;
 		flex: 1;

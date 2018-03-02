@@ -5,13 +5,13 @@ class ModelUsers extends RocketChat.models._Base {
 	constructor() {
 		super(...arguments);
 
-		this.tryEnsureIndex({'roles': 1}, {sparse: 1});
-		this.tryEnsureIndex({'name': 1});
-		this.tryEnsureIndex({'lastLogin': 1});
-		this.tryEnsureIndex({'status': 1});
-		this.tryEnsureIndex({'active': 1}, {sparse: 1});
-		this.tryEnsureIndex({'statusConnection': 1}, {sparse: 1});
-		this.tryEnsureIndex({'type': 1});
+		this.tryEnsureIndex({ 'roles': 1 }, { sparse: 1 });
+		this.tryEnsureIndex({ 'name': 1 });
+		this.tryEnsureIndex({ 'lastLogin': 1 });
+		this.tryEnsureIndex({ 'status': 1 });
+		this.tryEnsureIndex({ 'active': 1 }, { sparse: 1 });
+		this.tryEnsureIndex({ 'statusConnection': 1 }, { sparse: 1 });
+		this.tryEnsureIndex({ 'type': 1 });
 
 		this.cache.ensureIndex('username', 'unique');
 	}
