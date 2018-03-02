@@ -42,10 +42,12 @@ export function checkIfUserIsValid(username, email, password) {
 	} else if (browser.execute(() => Meteor.user().username).value !== username) {
 		//if the logged user is not the right one
 		console.log('	Wrong logged user. Changing user...');
-		sideNav.sidebarUserMenu.waitForVisible(5000);
-		sideNav.sidebarUserMenu.click();
-		sideNav.logout.waitForVisible(5000);
-		sideNav.logout.click();
+
+		try {
+			sideNav.sidebarUserMenu.waitForVisible(5000);
+            sideNav.sidebarUserMenu.click();
+            sideNav.logout.waitForVisible(5000);
+            sideNav.logout.click();
 
 			loginPage.open();
 			mainContent.mainContent.waitForExist(5000);

@@ -63,7 +63,7 @@ class Assistify extends Page {
 	}
 
 	get newChannelBtn() {
-		return browser.element('.toolbar .toolbar__search-create-channel');
+		return browser.element('.sidebar__toolbar-button-icon--edit-rounded');
 	}
 
 

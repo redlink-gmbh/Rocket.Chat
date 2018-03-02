@@ -22,7 +22,7 @@ class SideNav extends Page {
 	getPopOverContent() { return browser.element('.rc-popover__content'); }
 	get accountBoxUserName() { return browser.element('.sidebar__account-username'); }
 	get accountBoxUserAvatar() { return browser.element('.sidebar__account .avatar-image'); }
-	get accountMenu() { return browser.element('.sidebar__account'); }
+	get accountMenu() { return browser.element('.avatar-image'); }
 	get sidebarHeader() { return browser.element('.sidebar__header'); }
 	get sidebarUserMenu() { return browser.element('.sidebar__header .avatar'); }
 	get sidebarMenu() { return browser.element('.sidebar__toolbar-button-icon--menu'); }

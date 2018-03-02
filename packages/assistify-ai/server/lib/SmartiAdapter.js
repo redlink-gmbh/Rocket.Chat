@@ -103,7 +103,7 @@ export class SmartiAdapter {
 					'channel_id': [message.rid]
 				},
 				'user': {
-					'id': room.u._id
+					'id': room.u ? room.u._id : room.v._id //different properties capture the owner in livechat- and other rooms
 				},
 				'messages': [requestBodyMessage],
 				'context': {
