@@ -307,6 +307,7 @@ describe('[Message]', () => {
 	describe('[Direct Message]', () => {
 		before(()=>{
 			if (!directMessageCreated) {
+				sideNav.spotlightSearchIcon.click();
 				sideNav.searchChannel(targetUser);
 				setDirectMessageCreated(true);
 				console.log('	Direct message not found, creating one...');

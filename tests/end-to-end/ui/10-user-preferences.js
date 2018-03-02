@@ -90,10 +90,10 @@ describe('[User Preferences]', ()=> {
 			it('it should close the preferences menu', () => {
 				sideNav.preferencesClose.waitForVisible(5000);
 				sideNav.preferencesClose.click();
-				sideNav.getChannelFromList('general').waitForVisible(5000);
 			});
 
 			it('it should send a message to be tested', () => {
+				sideNav.openChannel('general');
 				mainContent.sendMessage('HI');
 				mainContent.waitForLastMessageEqualsText('HI');
 			});
