@@ -46,8 +46,8 @@ class SideNav extends Page {
 
 	get discovery() {return browser.element('.sidebar__toolbar-button-icon--globe'); }
 
-	get burgerBtn() { return browser.element('.burger'); }
-
+	get burgerBtn() { return browser.element('.burger'); }	get tabs() { return browser.element('nav.rc-tabs');	}
+	get createChannelTab() { return browser.element('nav.rc-tabs .rc-tabs__tab-link.createChannel'); }
 	// Opens a channel via rooms list
 	openChannel(channelName) {
 		browser.waitForVisible(`.sidebar-item__name=${ channelName }`, 5000);
