@@ -5,6 +5,7 @@ import flexTab from '../../pageobjects/flex-tab.page';
 import mainContent from '../../pageobjects/main-content.page';
 import sideNav from '../../pageobjects/side-nav.page';
 import Global from '../../pageobjects/global';
+import {discovery} from '../../pageobjects/discovery';
 
 import {username, email, password} from '../../data/user.js';
 import {checkIfUserIsValid, publicChannelCreated, setPublicChannelCreated} from '../../data/checks';
@@ -70,6 +71,10 @@ describe('[Channel]', ()=> {
 			});
 			describe('rocket.cat:', () => {
 				it('it should show the rocket cat in the direct messages list', () => {
+					sideNav.discovery.click();
+					discovery.findUser('rocket.cat');
+					discovery.directoryResult.waitForVisible(3000);
+					discovery.directoryResult.click();
 					sideNav.getChannelFromList('rocket.cat').isVisible().should.be.true;
 				});
 
