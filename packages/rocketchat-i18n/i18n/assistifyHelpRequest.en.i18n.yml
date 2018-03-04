@@ -49,3 +49,5 @@ view-r-room: View all requests
 view-e-room: View all topics
 Your_question: Question
 ask_help: Ask Help
+About-help-channel: To serve you better, we will post this question in a separate room with the expertises. You can continue to chat in this room with out any interrruption.
+Link-requests: Here is the link to the request __roomName__

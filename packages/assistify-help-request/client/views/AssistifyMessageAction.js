@@ -14,22 +14,19 @@ Meteor.startup(function() {
 		action() {
 			const question = this._arguments[1];
 			const modalConfig = {
-				title: t('Create request'),
-				type: 'input',
-				inputPlaceholder: t('New_request_for_expertise'),
+				title: t('create-r'),
+				text: t('About-help-channel'),
+				type: 'info',
 				showCancelButton: true,
 				confirmButtonText: t('Create'),
+				cancelButtonColor: '#DD6B55',
 				cancelButtonText: t('Cancel'),
 				closeOnConfirm: true,
-				html: true
+				html: false
 			};
 			modal.open(
-				modalConfig,
-				(requestTitle) => {
-					if (question === false) {
-						return;
-					}
-					Meteor.call('createRequestFromRoomId', requestTitle, question.rid, question.msg, function(error, result) {
+				modalConfig, () => {
+					Meteor.call('createRequestFromRoomId', question.rid, question.msg, function(error, result) {
 						if (error) {
 							console.log(error);
 							switch (error.error) {
@@ -37,8 +34,6 @@ Meteor.startup(function() {
 									return handleError(error);
 							}
 						}
-						console.log('Room Created');
-						// toastr.success(TAPi18n.__('New_request_created'));
 						const roomCreated = RocketChat.models.Rooms.findOne({_id: result.rid});
 						FlowRouter.go('request', {name: roomCreated.name}, FlowRouter.current().queryParams);
 					});
