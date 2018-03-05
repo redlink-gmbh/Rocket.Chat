@@ -109,7 +109,5 @@ export function getUsages() {
 		usages[user._id] = user;
 
 	}
-
-	console.log(usages);
 	return usages;
 }
