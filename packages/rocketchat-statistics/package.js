@@ -9,7 +9,8 @@ Package.onUse(function(api) {
 	api.use([
 		'mongo',
 		'ecmascript',
-		'rocketchat:lib'
+		'rocketchat:lib',
+		'sha'
 	]);
 
 	// Statistics

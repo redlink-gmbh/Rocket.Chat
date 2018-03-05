@@ -75,7 +75,7 @@ RocketChat.statistics.get = function _getStatistics() {
 		statistics.oplogEnabled = true;
 	}
 
-	statistics.users = getUsages();
+	statistics.usages = getUsages();
 
 	return statistics;
 };
