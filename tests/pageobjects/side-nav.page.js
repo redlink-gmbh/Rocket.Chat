@@ -44,7 +44,7 @@ class SideNav extends Page {
 	get avatar() { return browser.element('[href="/changeavatar"]'); }
 	get preferencesClose() { return browser.element('.sidebar-flex__close-button[data-action="close"]'); }
 
-	get discovery() {return browser.element('.sidebar__toolbar-button-icon--globe'); }
+	get discovery() { return browser.element('.sidebar__toolbar-button-icon--globe'); }
 
 	get burgerBtn() { return browser.element('.burger'); }	get tabs() { return browser.element('nav.rc-tabs');	}
 	get createChannelTab() { return browser.element('nav.rc-tabs .rc-tabs__tab-link.createChannel'); }

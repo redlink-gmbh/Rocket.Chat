@@ -1,6 +1,6 @@
 /* eslint-env mocha */
 import supertest from 'supertest';
-import {adminUsername, adminEmail, adminPassword, username, email, password} from '../../data/user.js';
+import {adminUsername, adminPassword, username, email, password} from '../../data/user.js';
 import loginPage from '../../pageobjects/login.page';
 import mainContent from '../../pageobjects/main-content.page';
 import {checkIfUserIsValid} from '../../data/checks';

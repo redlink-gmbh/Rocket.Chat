@@ -5,7 +5,7 @@ class Discovery extends Page {
 	get searchInput() { return browser.element('.rc-directory-search .js-search'); }
 	get directoryResult() { return browser.element('.rc-directory-channel-name'); }
 
-	findUser(username){
+	findUser(username) {
 		this.typeSelection.waitForVisible(5000);
 		this.typeSelection.selectByValue('users');
 

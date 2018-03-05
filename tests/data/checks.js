@@ -45,9 +45,9 @@ export function checkIfUserIsValid(username, email, password) {
 
 		try {
 			sideNav.sidebarUserMenu.waitForVisible(5000);
-            sideNav.sidebarUserMenu.click();
-            sideNav.logout.waitForVisible(5000);
-            sideNav.logout.click();
+			sideNav.sidebarUserMenu.click();
+			sideNav.logout.waitForVisible(5000);
+			sideNav.logout.click();
 
 			loginPage.open();
 			mainContent.mainContent.waitForExist(5000);
