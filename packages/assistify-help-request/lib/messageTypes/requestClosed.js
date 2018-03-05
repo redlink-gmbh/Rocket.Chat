@@ -31,13 +31,17 @@ Meteor.startup(function() {
 			const room = RocketChat.models.Rooms.findOne({_id: message.channels[0]._id});
 			let eventFound = null;
 			for (const e of Template.room.__eventMaps) {
-				eventFound = Object.keys(e).find(eventName => eventName === 'click .mention-navigate');
+				eventFound = Object.keys(e).find(eventName => eventName === 'click .mention-request' || eventName === 'click .mention-expertise');
 			}
 			if (!eventFound) {
 				const attachEvents = {
-					'click .mention-navigate'(event) {
+					'click .mention-request'(event) {
 						//get the request name for router navigation
 						FlowRouter.go('request', {name: $(event.currentTarget).data('request')}, FlowRouter.current().queryParams);
+					},
+					'click .mention-expertise'(event) {
+						//get the request name for router navigation
+						FlowRouter.go('expertise', {name: $(event.currentTarget).data('expertise')}, FlowRouter.current().queryParams);
 					}
 				};
 				//attach room events
@@ -46,7 +50,11 @@ Meteor.startup(function() {
 
 			if (room.t === 'r') {
 				return {
-					roomName: ` <a class="mention-navigate" data-request="${ room.name }">${ message.msg } </a>`
+					roomName: ` <a class="mention-request" data-request="${ room.name }">${ message.msg } </a>`
+				};
+			} else if (room.t === 'e') {
+				return {
+					roomName: ` <a class="mention-expertise" data-expertise="${ room.name }">${ message.msg } </a>`
 				};
 			}
 			return {
