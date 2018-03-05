@@ -4,6 +4,7 @@ import {FlowRouter} from 'meteor/kadira:flow-router';
 import {ReactiveVar} from 'meteor/reactive-var';
 import _ from 'underscore';
 
+
 const acEvents = {
 	'click .rc-popup-list__item'(e, t) {
 		t.ac.onItemClick(this, e);
