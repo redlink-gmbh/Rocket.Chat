@@ -539,6 +539,7 @@ describe('[Administration]', () => {
 				});
 
 				it('it should show cdn prefix field', () => {
+					admin.generalCdnPrefix.moveToObject();
 					admin.generalCdnPrefix.isVisible().should.be.true;
 				});
 
