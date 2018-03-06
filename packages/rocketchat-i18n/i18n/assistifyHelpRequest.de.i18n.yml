@@ -48,4 +48,8 @@ transaction: Transaktion
 view-e-room: Alle Themen einsehen
 view-r-room: Alle Anfragen einsehen
 Your_question: Frage
+ask_help: Frage stellen
+About-help-channel: Um die Übersicht zu behalten wird deine Frage in einer neuen Anfrage gestellt. Experten werden automatisch hinzugefügt. Hier kannst du ungestört weiterreden.
+Link-requests: Hier geht es weiter zum Raum __roomName__
+
 
