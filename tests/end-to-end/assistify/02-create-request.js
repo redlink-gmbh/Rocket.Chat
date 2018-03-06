@@ -91,7 +91,7 @@ describe('[In-Chat Help]', function() {
 			mainContent.selectAction('help');
 		});
 
-		it('it should fill values in popup', function() {
+		it.skip('it should fill values in popup', function() {
 			globalObject.supplyInput(inChatHelp);
 			browser.pause(1000);
 		});
@@ -101,7 +101,7 @@ describe('[In-Chat Help]', function() {
 			sideNav.spotlightSearch.waitForVisible(5000);
 		});
 
-		it('It should show the new in-chat-help request room', function() {
+		it.skip('It should show the new in-chat-help request room', function() {
 			sideNav.searchChannel(helpRequest);
 			sideNav.spotlightSearch.waitForVisible(10000);
 		});
@@ -118,7 +118,7 @@ describe('[In-Chat Help]', function() {
 		describe('[Clean Up]', function() {
 			it('close the topics and request', () => {
 				console.log('Clean for the Topic and Expertise Started...', topicName);
-				assistify.closeTopic(inChatHelp);
+				// assistify.closeTopic(inChatHelp);
 				assistify.closeTopic(helpRequest);
 				assistify.closeTopic(topicName);
 			});
