@@ -5,8 +5,8 @@ quotes, prefer-template, no-undef, no-unused-vars*/
 import mainContent from '../../pageobjects/main-content.page';
 import sideNav from '../../pageobjects/side-nav.page';
 import assistify from '../../pageobjects/assistify.page';
-import {adminUsername, adminEmail, adminPassword, username, email, password} from '../../data/user.js';
-import { checkIfUserIsValid, checkIfUserIsAdmin } from '../../data/checks';
+import { adminUsername, adminEmail, adminPassword } from '../../data/user.js';
+import { checkIfUserIsAdmin } from '../../data/checks';
 import globalObject from '../../pageobjects/global';
 const topicName = 'unit-testing';
 const message = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';
