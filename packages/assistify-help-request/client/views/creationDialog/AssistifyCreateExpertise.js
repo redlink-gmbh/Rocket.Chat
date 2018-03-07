@@ -1,8 +1,8 @@
 /* globals AutoComplete, Deps */
+/* globals _ */
 import {RocketChat} from 'meteor/rocketchat:lib';
 import {FlowRouter} from 'meteor/kadira:flow-router';
 import {ReactiveVar} from 'meteor/reactive-var';
-import _ from 'underscore';
 
 const acEvents = {
 	'click .rc-popup-list__item'(e, t) {
