@@ -5,7 +5,7 @@ quotes, prefer-template, no-undef, no-unused-vars*/
 import mainContent from '../../pageobjects/main-content.page';
 import sideNav from '../../pageobjects/side-nav.page';
 import assistify from '../../pageobjects/assistify.page';
-import { adminUsername, adminEmail, adminPassword } from '../../data/user.js';
+import {username, email, password, adminUsername, adminEmail, adminPassword} from '../../data/user.js';
 import { checkIfUserIsAdmin } from '../../data/checks';
 import globalObject from '../../pageobjects/global';
 const topicName = 'unit-testing';
