@@ -37,7 +37,7 @@ export function getUsages() {
 						$addToSet:
 								{
 									type: '$_id.subType',
-									reads: '$subs'
+									subscriptions: '$subs'
 								}
 					}
 				}
