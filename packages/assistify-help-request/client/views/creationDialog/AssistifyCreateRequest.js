@@ -130,7 +130,6 @@ Template.AssistifyCreateRequest.events({
 							return handleError(err);
 					}
 				}
-				console.log('Room Created');
 				// toastr.success(TAPi18n.__('New_request_created'));
 				const roomCreated = RocketChat.models.Rooms.findOne({_id: result.rid});
 				FlowRouter.go('request', {name: roomCreated.name}, FlowRouter.current().queryParams);

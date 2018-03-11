@@ -7,15 +7,15 @@ Meteor.startup(function() {
 	const instance = this;
 	instance.room = new ReactiveVar('');
 	RocketChat.MessageAction.addButton({
-		id: 'help',
+		id: 'start-thread',
 		icon: 'help',
-		label: t('ask_help'),
+		label: t('Start-Thread'),
 		context: ['message', 'message-mobile'],
 		action() {
 			const question = this._arguments[1];
 			const modalConfig = {
 				title: t('create-r'),
-				text: t('About-help-channel'),
+				text: t('About-Threading'),
 				type: 'info',
 				showCancelButton: true,
 				confirmButtonText: t('Create'),
@@ -26,16 +26,11 @@ Meteor.startup(function() {
 			};
 			modal.open(
 				modalConfig, () => {
-					Meteor.call('createRequestFromRoomId', question.rid, question.msg, function(error, result) {
-						if (error) {
-							console.log(error);
-							switch (error.error) {
-								default:
-									return handleError(error);
-							}
+					Meteor.call('createRequestFromRoomId', question.rid, question, function(error, result) {
+						if (result) {
+							const roomCreated = RocketChat.models.Rooms.findOne({_id: result.rid});
+							FlowRouter.go('request', {name: roomCreated.name}, FlowRouter.current().queryParams);
 						}
-						const roomCreated = RocketChat.models.Rooms.findOne({_id: result.rid});
-						FlowRouter.go('request', {name: roomCreated.name}, FlowRouter.current().queryParams);
 					});
 				});
 		},

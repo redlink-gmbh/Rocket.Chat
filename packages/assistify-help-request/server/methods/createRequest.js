@@ -1,8 +1,10 @@
 import {RocketChat} from 'meteor/rocketchat:lib';
+
 class CreateRequestBase {
 	constructor(openingQuestion) {
 		this._openingQuestion = openingQuestion;
 	}
+
 	static getNextId() {
 		const settingsRaw = RocketChat.models.Settings.model.rawCollection();
 		const findAndModify = Meteor.wrapAsync(settingsRaw.findAndModify, settingsRaw);
@@ -18,9 +20,11 @@ class CreateRequestBase {
 		const findAndModifyResult = findAndModify(query, null, update);
 		return findAndModifyResult.value.value;
 	}
+
 	static getExpertiseRoom(roomId) {
 		return RocketChat.models.Rooms.findOne(roomId);
 	}
+
 	_createNotifications(requestId, usernames) {
 		const request = RocketChat.models.Rooms.findOneById(requestId);
 		const expertise = RocketChat.models.Rooms.findByNameContainingAndTypes(request.expertise, 'e').fetch()[0];
@@ -48,13 +52,17 @@ class CreateRequestBase {
 			}
 		});
 	}
-	_sendMessage(room) {
-		const msg = this._openingQuestion;
+
+	// abstract method must be implemented.
+	_postMessage(room, user) {
+		const msg = this._openingQuestion.msg;
 		const msgObject = {_id: Random.id(), rid: room.rid, msg};
-		RocketChat.sendMessage(Meteor.user(), msgObject, room);
+		return RocketChat.sendMessage(user, msgObject, room);
 	}
+
 	//abstract method should implemented.
-	create() {}
+	create() {
+	}
 
 }
 
@@ -63,15 +71,66 @@ class CreateRequestFromRoomId extends CreateRequestBase {
 		super(openingQuestion);
 		this._parentRoomId = parentRoomId;
 	}
-	_linkRequests(roomCreated, parentRoom) {
+
+	_linkMessages(roomCreated, parentRoom) {
 		const rocketCatUser = RocketChat.models.Users.findOneByUsername('rocket.cat');
-		if (rocketCatUser) {
-			//Create link to child room
-			RocketChat.models.Messages.createWithTypeRoomIdMessageAndUser('link-requests', parentRoom._id, `#${ roomCreated.name } `, rocketCatUser, {channels:[{_id: roomCreated._id, name: roomCreated.fname}]});
-			// Create link to parent room
-			RocketChat.models.Messages.createWithTypeRoomIdMessageAndUser('link-requests', roomCreated._id, `#${ parentRoom.name } `, rocketCatUser, {channels:[{_id: parentRoom._id, name: parentRoom.fname || parentRoom.name }]});
+		if (rocketCatUser && Meteor.userId()) {
+			/**
+			 * When a message is eligible to be answered as a independent question then it can be threaded into a new channel.
+			 * When threading, the question is re-posted into a new room. To leave origin traces between the messages we update
+			 * the original message with system message to allow user to navigate to the message created in the new Room and vice verse.
+			 */
+			/* Parent Room */
+			const message = RocketChat.models.Messages.createWithTypeRoomIdMessageAndUser('thread-started-message', parentRoom._id, '', rocketCatUser,
+				{
+					mentions: [
+						{
+							_id: Meteor.user()._id, // Thread Initiator
+							name: Meteor.user().username
+						}]
+				});
+
+			// synchronous call: Get the message url of the system message
+			const messageURL = Meteor.call('assistify:getMessageURL', message._id);
+			/* Child Room*/
+			RocketChat.models.Messages.createWithTypeRoomIdMessageAndUser('thread-welcome-message', roomCreated._id, messageURL, rocketCatUser,
+				{
+					mentions: [{
+						_id: Meteor.user()._id, // Thread Initiator
+						name: Meteor.user().username
+					}],
+					channels: [{
+						_id: parentRoom._id, // Parent Room ID
+						name: parentRoom.fname || parentRoom.name
+					}]
+				});
+			// Re-post message
+			const msgAuthor = RocketChat.models.Users.findOneByUsername(this._openingQuestion.u.username);
+			const msgRePosted = this._postMessage(roomCreated, msgAuthor);
+			if (msgRePosted) {
+				Meteor.call('assistify:getMessageURL', msgRePosted._id, (error, result) => {
+					if (result) {
+						/* Parent Room update the links by attaching the child room */
+						RocketChat.models.Messages.setMessageAttachments(message._id, [{
+							text: this._openingQuestion.msg,
+							author_name: this._openingQuestion.u.name,
+							author_icon: `/avatar/${ this._openingQuestion.u.name }?_dc=0 `,
+							message_link: result,
+							ts: this._openingQuestion.ts,
+							fields: [{
+								short: true,
+								value: `[Post your answer](${ result })`
+							}]
+						}]);
+					}
+
+				});
+				// Delete the original message.
+				Meteor.call('deleteMessage', {_id: this._openingQuestion._id});
+			}
 		}
 	}
+
 	create() {
 		const expertiseRoom = CreateRequestBase.getExpertiseRoom(this._parentRoomId);
 		if (expertiseRoom.name && !this._requestTitle) {
@@ -91,15 +150,11 @@ class CreateRequestFromRoomId extends CreateRequestBase {
 		// Instance of newly created room.
 		const room = RocketChat.models.Rooms.findOneById(roomCreateResult.rid);
 		const parentRoom = RocketChat.models.Rooms.findOneById(this._parentRoomId);
-		if (this._openingQuestion) {
-			this._sendMessage(room);
-		}
-		//create parent and child room association.
-		if (parentRoom && room) {
-			this._linkRequests(room, parentRoom);
+		if (room && parentRoom) {
+			this._linkMessages(room, parentRoom);
 		}
 		const helpRequestId = RocketChat.models.HelpRequests.createForSupportArea(expertiseRoom.name, roomCreateResult.rid, '');
-		//propagate help-id to room in order to identify it as a "helped" room
+		//propagate help-id to room in order to identify it  as a "helped" room
 		RocketChat.models.Rooms.addHelpRequestInfo(room, helpRequestId);
 		return roomCreateResult;
 	}
@@ -139,7 +194,7 @@ class CreateRequestFromExpertise extends CreateRequestBase {
 		this._createNotifications(roomCreateResult.rid, this._members.concat([Meteor.user().username]));
 		const room = RocketChat.models.Rooms.findOneById(roomCreateResult.rid);
 		if (this._openingQuestion) {
-			this._sendMessage(room);
+			this._postMessage(room, Meteor.user());
 		}
 		const helpRequestId = RocketChat.models.HelpRequests.createForSupportArea(this._expertise, roomCreateResult.rid, '', this._environment);
 		//propagate help-id to room in order to identify it as a "helped" room

@@ -1,5 +1,6 @@
 /* globals RocketChat */
 import {RocketChat} from 'meteor/rocketchat:lib';
+import {FlowRouter} from 'meteor/kadira:flow-router';
 
 Meteor.startup(function() {
 	RocketChat.MessageTypes.registerType({
@@ -24,41 +25,69 @@ Meteor.startup(function() {
 		}
 	});
 	RocketChat.MessageTypes.registerType({
-		id: 'link-requests',
+		id: 'thread-started-message',
 		system: true,
-		message: 'Link-requests',
+		message: 'Thread-Started-Message',
 		data(message) {
+			/* Thread Start Message
+			 * @Returns
+			 * Thread Initiator
+			 * Thread Room
+			 * */
+			return {
+				initiator: ` <a class="mention-link" data-username= "${ message.mentions[0].name }" >${ message.mentions[0].name } </a> `
+			};
+		}
+	});
+	RocketChat.MessageTypes.registerType({
+		id: 'thread-welcome-message',
+		system: true,
+		message: 'Thread-Welcome-Message',
+		data(message) {
+			/* Thread Welcome Message
+ 			 * @Returns
+		     * Thread Initiator
+		     * Parent Room Name
+			 * Original Message
+ 			 * */
 			const room = RocketChat.models.Rooms.findOne({_id: message.channels[0]._id});
-			let eventFound = null;
+			let attachEvents = true;
 			for (const e of Template.room.__eventMaps) {
-				eventFound = Object.keys(e).find(eventName => eventName === 'click .mention-request' || eventName === 'click .mention-expertise');
+				if (Object.keys(e).find(eventName => eventName === 'click .mention-request' || eventName === 'click .mention-expertise')) {
+					attachEvents = false; // we do not need to attach the events over and over.
+				}
 			}
-			if (!eventFound) {
-				const attachEvents = {
+			if (attachEvents) {
+				Template.room.events({
 					'click .mention-request'(event) {
-						//get the request name for router navigation
+						//Get the request name for router navigation
 						FlowRouter.go('request', {name: $(event.currentTarget).data('request')}, FlowRouter.current().queryParams);
 					},
 					'click .mention-expertise'(event) {
-						//get the request name for router navigation
+						//Get the expertise name for router navigation
 						FlowRouter.go('expertise', {name: $(event.currentTarget).data('expertise')}, FlowRouter.current().queryParams);
 					}
-				};
-				//attach room events
-				Template.room.events(attachEvents);
+				});
+				console.log('eventsAttached');
 			}
-
+			/* Replace the place holder values of the system message*/
 			if (room.t === 'r') {
 				return {
-					roomName: ` <a class="mention-request" data-request="${ room.name }">${ message.msg } </a>`
+					initiator: ` <a class="mention-link" data-username= "${ message.mentions[0].name }" >${ message.mentions[0].name } </a> `,
+					roomName: ` <a class="mention-request" data-request="${ room.name }">${ room.fname || room.name } </a>`,
+					message: ` <a href="${ message.msg }"> message </a>`
 				};
 			} else if (room.t === 'e') {
 				return {
-					roomName: ` <a class="mention-expertise" data-expertise="${ room.name }">${ message.msg } </a>`
+					initiator: ` <a class="mention-link" data-username= "${ message.mentions[0].name }" >${ message.mentions[0].name } </a> `,
+					roomName: ` <a class="mention-expertise" data-expertise="${ room.name }">${ room.fname || room.name } </a>`,
+					message: ` <a href="${ message.msg }"> message </a>`
 				};
 			}
 			return {
-				roomName: ` <a class="mention-link" data-channel="${ room.name }" >${ message.msg } </a>`
+				initiator: ` <a class="mention-link" data-username= "${ message.mentions[0].name }" >${ message.mentions[0].name } </a> `,
+				roomName: ` <a class="mention-link" data-channel="${ room.name }" >${ room.fname || room.name } </a>`,
+				message: ` <a href="${ message.msg }"> message </a>`
 			};
 		}
 	});
