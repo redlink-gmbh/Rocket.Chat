@@ -50,6 +50,6 @@ view-e-room: View all topics
 Your_question: Question
 Start-Thread: Start Thread
 About-Threading: To serve you better, we will post this question in a separate room with the expertises. You can continue to chat in this room with out any interrruption.
-Thread-Welcome-Message: __initiator__ has re-posted this __message__ from __roomName__ for discussion. Help us to improve the conversation experiance by closing the room after you have found answer.
-Thread-Started-Message: This question has been removed from this room. __initiator__ has re-posted this question into a new room for discussion. Show your support!.
+Thread-Welcome-Message: __initiator__ moved this __message__ from room __roomName__ to here . Help us to improve the conversation experiance by closing the room after you have found answer.
+Thread-Started-Message: This question has been removed from this room. __initiator__ has posted this question into a new room for discussion. Show your support!.
 Post-Answer: Post your answers here to help

@@ -86,7 +86,7 @@ class CreateRequestFromRoomId extends CreateRequestBase {
 					mentions: [
 						{
 							_id: Meteor.user()._id, // Thread Initiator
-							name: Meteor.user().username
+							name: Meteor.user().name
 						}]
 				});
 
@@ -97,7 +97,7 @@ class CreateRequestFromRoomId extends CreateRequestBase {
 				{
 					mentions: [{
 						_id: Meteor.user()._id, // Thread Initiator
-						name: Meteor.user().username
+						name: Meteor.user().name // User Display Name
 					}],
 					channels: [{
 						_id: parentRoom._id, // Parent Room ID
@@ -105,7 +105,7 @@ class CreateRequestFromRoomId extends CreateRequestBase {
 					}]
 				});
 			// Re-post message
-			const msgAuthor = RocketChat.models.Users.findOneByUsername(this._openingQuestion.u.username);
+			const msgAuthor = RocketChat.models.Users.findOneByUsername(this._openingQuestion.u.username); // Search with the technical username
 			const msgRePosted = this._postMessage(roomCreated, msgAuthor);
 			if (msgRePosted) {
 				Meteor.call('assistify:getMessageURL', msgRePosted._id, (error, result) => {
@@ -113,8 +113,8 @@ class CreateRequestFromRoomId extends CreateRequestBase {
 						/* Parent Room update the links by attaching the child room */
 						RocketChat.models.Messages.setMessageAttachments(message._id, [{
 							text: this._openingQuestion.msg,
-							author_name: this._openingQuestion.u.name,
-							author_icon: `/avatar/${ this._openingQuestion.u.name }?_dc=0 `,
+							author_name: this._openingQuestion.u.name || this._openingQuestion.u.username,
+							author_icon: `/avatar/${ this._openingQuestion.u.username }?_dc=0 `,
 							message_link: result,
 							ts: this._openingQuestion.ts,
 							fields: [{
