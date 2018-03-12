@@ -86,7 +86,7 @@ class CreateRequestFromRoomId extends CreateRequestBase {
 					mentions: [
 						{
 							_id: Meteor.user()._id, // Thread Initiator
-							name: Meteor.user().name
+							name: Meteor.user().username
 						}]
 				});
 
@@ -97,7 +97,7 @@ class CreateRequestFromRoomId extends CreateRequestBase {
 				{
 					mentions: [{
 						_id: Meteor.user()._id, // Thread Initiator
-						name: Meteor.user().name // User Display Name
+						name: Meteor.user().username // User @Name field for navigation
 					}],
 					channels: [{
 						_id: parentRoom._id, // Parent Room ID
@@ -113,7 +113,7 @@ class CreateRequestFromRoomId extends CreateRequestBase {
 						/* Parent Room update the links by attaching the child room */
 						RocketChat.models.Messages.setMessageAttachments(message._id, [{
 							text: this._openingQuestion.msg,
-							author_name: this._openingQuestion.u.name || this._openingQuestion.u.username,
+							author_name: this._openingQuestion.u.username || this._openingQuestion.u.name,
 							author_icon: `/avatar/${ this._openingQuestion.u.username }?_dc=0 `,
 							message_link: result,
 							ts: this._openingQuestion.ts,
