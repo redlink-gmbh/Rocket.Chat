@@ -1,7 +1,7 @@
 {
 	"name": "Rocket.Chat",
 	"description": "The Ultimate Open Source WebChat Platform",
-	"version": "0.62.1",
+	"version": "0.63.0-develop",
 	"author": {
 		"name": "Rocket.Chat",
 		"url": "https://rocket.chat/"
@@ -60,16 +60,13 @@
 		"chat"
 	],
 	"scripts": {
-		"start": "meteor npm i && meteor run",
-		"debug": "meteor run --inspect",
-		"debug-brk": "meteor run --inspect-brk",
+		"start": "meteor npm i && meteor",
 		"lint": "eslint .",
 		"lint-fix": "eslint . --fix",
 		"stylelint": "stylelint packages/**/*.css",
 		"test": "node .scripts/start.js",
 		"deploy": "npm run build && pm2 startOrRestart pm2.json",
 		"chimp-watch": "chimp --ddp=http://localhost:3000 --watch --mocha --path=tests/end-to-end",
-		"chimp-path": "chimp tests/chimp-config.js --path=$CHIMP_PATH",
 		"chimp-test": "chimp tests/chimp-config.js",
 		"postinstall": "cd packages/rocketchat-katex && npm i",
 		"testunit-watch": "mocha --watch --opts ./mocha.opts \"`node -e \"console.log(require('./package.json').mocha.tests.join(' '))\"`\"",
@@ -94,8 +91,6 @@
 		"babel-plugin-array-includes": "^2.0.3",
 		"chimp": "^0.51.0",
 		"conventional-changelog-cli": "^1.3.14",
-		"ddp": "^0.12.1",
-		"ddp-login": "^1.0.10",
 		"eslint": "^4.18.1",
 		"mocha": "^5.0.1",
 		"mock-require": "^3.0.1",
