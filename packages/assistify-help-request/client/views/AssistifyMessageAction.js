@@ -9,13 +9,13 @@ Meteor.startup(function() {
 	RocketChat.MessageAction.addButton({
 		id: 'start-thread',
 		icon: 'help',
-		label: t('Start-Thread'),
+		label: t('Thread_start'),
 		context: ['message', 'message-mobile'],
 		action() {
 			const question = this._arguments[1];
 			const modalConfig = {
 				title: t('create-r'),
-				text: t('About-Threading'),
+				text: t('Threading_about'),
 				type: 'info',
 				showCancelButton: true,
 				confirmButtonText: t('Create'),

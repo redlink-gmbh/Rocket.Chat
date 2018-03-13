@@ -27,7 +27,7 @@ Meteor.startup(function() {
 	RocketChat.MessageTypes.registerType({
 		id: 'thread-started-message',
 		system: true,
-		message: 'Thread-Started-Message',
+		message: 'Thread_started_message',
 		data(message) {
 			/* Thread Start Message
 			 * @Returns
@@ -42,7 +42,7 @@ Meteor.startup(function() {
 	RocketChat.MessageTypes.registerType({
 		id: 'thread-welcome-message',
 		system: true,
-		message: 'Thread-Welcome-Message',
+		message: 'Thread_welcome_message',
 		data(message) {
 			/* Thread Welcome Message
  			 * @Returns
