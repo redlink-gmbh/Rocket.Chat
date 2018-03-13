@@ -189,3 +189,6 @@ assistify:ai
 assistify:defaults
 chatpal:search
 rocketchat:version-check
+
+rocketchat:search
+chatpal:search
