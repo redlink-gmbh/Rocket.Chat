@@ -1,11 +1,9 @@
 import _ from 'underscore';
 
+import SearchLogger from '../logger/logger';
+
 class ValidationService {
 	constructor() {}
-
-	_getSubscription(room_id, user_id) {
-		return RocketChat.models.Subscriptions.findOneByRoomIdAndUserId(room_id, user_id);
-	}
 
 	validateSearchResult(result) {
 		//TODO validate if current user is able to get the results
@@ -19,6 +17,9 @@ class ValidationService {
 						msg.r = {name: subscription.name, t: subscription.t};
 						msg.username = subscription.username;
 						msg.valid = true;
+						SearchLogger.debug(`user ${ uid } can access ${ msg.rid } ( ${ subscription.t === 'd' ? subscription.username : subscription.name } )`);
+					} else {
+						SearchLogger.debug(`user ${ uid } can NOT access ${ msg.rid }`);
 					}
 				})
 				.filter((msg) => {
@@ -32,6 +33,9 @@ class ValidationService {
 					const subscription = Meteor.call('canAccessRoom', room._id, uid);
 					if (subscription) {
 						room.valid = true;
+						SearchLogger.debug(`user ${ uid } can access ${ room._id } ( ${ subscription.t === 'd' ? subscription.username : subscription.name } )`);
+					} else {
+						SearchLogger.debug(`user ${ uid } can NOT access ${ room._id }`);
 					}
 				})
 				.filter((room) => {
