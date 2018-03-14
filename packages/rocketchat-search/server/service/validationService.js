@@ -6,7 +6,7 @@ class ValidationService {
 	constructor() {}
 
 	validateSearchResult(result) {
-		//TODO validate if current user is able to get the results
+
 		const uid = Meteor.userId();
 		//get subscription for message
 		if (result.message) {
