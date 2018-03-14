@@ -10,7 +10,7 @@ class ValidationService {
 		const uid = Meteor.userId();
 		//get subscription for message
 		if (result.message) {
-			result.message.doc = _.chain(result.message.docs)
+			result.message.docs = _.chain(result.message.docs)
 				.each((msg) => {
 					const subscription = Meteor.call('canAccessRoom', msg.rid, uid);
 					if (subscription) {
@@ -43,9 +43,6 @@ class ValidationService {
 					return room.valid;
 				}).value();
 		}
-
-		//TODO what to do with non valid massages and rooms?
-		SearchLogger.debug(JSON.stringify(result,null,2));
 
 		return result;
 	}
