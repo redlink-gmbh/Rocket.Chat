@@ -45,6 +45,7 @@ class ValidationService {
 		}
 
 		//TODO what to do with non valid massages and rooms?
+		SearchLogger.debug(JSON.stringify(result,null,2));
 
 		return result;
 	}
