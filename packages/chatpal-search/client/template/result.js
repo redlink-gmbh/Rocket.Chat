@@ -2,7 +2,7 @@ import moment from 'moment';
 
 Template.ChatpalSearchResultTemplate.onCreated(function() {
 	this.badRequest = new ReactiveVar(false);
-	this.resultType = new ReactiveVar('Messages');
+	this.resultType = new ReactiveVar(this.data.settings.DefaultResultType);console.log(this.resultType.get())
 	this.data.parentPayload.resultType = this.resultType.get();
 });
 
@@ -92,6 +92,11 @@ Template.ChatpalSearchSingleMessage.helpers({
 	roomLink() {
 		const subscription = RocketChat.models.Subscriptions.findOne({rid: this.rid});
 		return RocketChat.roomTypes.getRouteLink(subscription.t, subscription);
+	},
+
+	roomName() {
+		const room = Session.get(`roomData${ this.rid }`);
+		return RocketChat.roomTypes.getRoomName(room.t, room);
 	},
 
 	time() {
