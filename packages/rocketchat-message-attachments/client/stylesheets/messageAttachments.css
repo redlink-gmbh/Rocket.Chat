@@ -144,8 +144,7 @@ html.rtl .attachment {
 	  	font-weight: 500;
 	}
 
-&
-.field button {
+	& .field button {
 		width: fit-content;
 	  	padding: 3px 10px;
 		min-height: 20px;
@@ -155,8 +154,7 @@ html.rtl .attachment {
 		  margin-right: 8px;
 		}
 
-&
-:hover {
+		&:hover {
 		  text-decoration: none;
 	 	}
   	}
