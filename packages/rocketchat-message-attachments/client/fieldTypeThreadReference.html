@@ -1,11 +1,9 @@
 <template name="fieldTypeThreadReference">
-	<div>
 		<div class="thread-reference">{{value}}</div>
-		<a href="{{threadUrl}}">
-			<button class="rc-button rc-button--primary thread-url">
+	<a class="thread-url" href="{{threadUrl}}">
+		<button class="rc-button rc-button--primary">
 				{{> icon icon="jump"}}
-				{{_ "View_thread"}}
+			{{_ "Thread_view"}}
 			</button>
 		</a>
-	</div>
 </template>

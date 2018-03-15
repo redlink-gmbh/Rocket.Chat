@@ -81,7 +81,11 @@ class CreateRequestFromRoomId extends CreateRequestBase {
 			 * the original message with system message to allow user to navigate to the message created in the new Room and vice verse.
 			 *
 			 * Parent Room */
-			RocketChat.models.Messages.updateMsgWithThreadMessage('thread-started-message', this._openingQuestion._id, '', Meteor.user(),
+			RocketChat.models.Messages.updateMsgWithThreadMessage(
+				Meteor.user().username === this._openingQuestion.u.username ? 'thread-started-message-self' : 'thread-started-message',
+				this._openingQuestion._id,
+				'',
+				Meteor.user(),
 				{
 					mentions: [
 						{
@@ -116,7 +120,7 @@ class CreateRequestFromRoomId extends CreateRequestBase {
 							author_icon: `/avatar/${ this._openingQuestion.u.username }?_dc=0`,
 							ts: this._openingQuestion.ts,
 							fields: [{
-								type:'threadReference',
+								type: 'threadReference',
 								value: this._openingQuestion.msg,
 								threadUrl: result
 							}]

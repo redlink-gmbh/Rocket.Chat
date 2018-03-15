@@ -34,15 +34,25 @@ Meteor.startup(function() {
 			 * Thread Initiator
 			 * Thread Room
 			 * */
-			if (message.mentions[0].name === message.u.username) {
-				return {
-					initiator: ` <a class="mention-link" data-username= "${ message.mentions[0].name }" >${ message.mentions[0].name } </a> `,
-					showAuthor: ` <a class="mention-link" data-username= "${ message.u.name }" > </a>`
-				};
-			}
 			return {
 				initiator: ` <a class="mention-link" data-username= "${ message.mentions[0].name }" >${ message.mentions[0].name } </a> `,
-				showAuthor: ` <a class="mention-link" data-username= "${ message.u.name }" >${ message.u.username } </a>`
+				author: ` <a class="mention-link" data-username= "${ message.u.name }" >${ message.u.username } </a>`
+			};
+		}
+	});
+	RocketChat.MessageTypes.registerType({
+		id: 'thread-started-message-self',
+		system: true,
+		message: 'Thread_started_message_self',
+		data(message) {
+			/* Thread Start Message
+			 * @Returns
+			 * Thread Initiator
+			 * Thread Room
+			 * */
+			return {
+				initiator: ` <a class="mention-link" data-username= "${ message.mentions[0].name }" >${ message.mentions[0].name } </a> `,
+				author: ` <a class="mention-link" data-username= "${ message.u.name }" > </a>`
 			};
 		}
 	});
