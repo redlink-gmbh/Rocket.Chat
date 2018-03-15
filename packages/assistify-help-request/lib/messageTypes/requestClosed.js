@@ -76,15 +76,20 @@ Meteor.startup(function() {
 			}
 			if (attachEvents) {
 				Template.room.events({
-					'click .mention-request'(event) {
-						//Get the request name for router navigation
-						FlowRouter.go('request', {name: $(event.currentTarget).data('request')}, FlowRouter.current().queryParams);
-					},
-					'click .mention-expertise'(event) {
-						//Get the expertise name for router navigation
-						FlowRouter.go('expertise', {name: $(event.currentTarget).data('expertise')}, FlowRouter.current().queryParams);
+						'click .mention-request'(event) {
+							//Get the request name for router navigation
+							FlowRouter.go('request', {name: $(event.currentTarget).data('request')}, FlowRouter.current().queryParams);
+						},
+						'click .mention-expertise'(event) {
+							//Get the expertise name for router navigation
+							FlowRouter.go('expertise', {name: $(event.currentTarget).data('expertise')}, FlowRouter.current().queryParams);
+						},
+						'click .mention-group'(event) {
+							//Get the expertise name for router navigation
+							FlowRouter.go('group', {name: $(event.currentTarget).data('group')}, FlowRouter.current().queryParams);
+						}
 					}
-				});
+				);
 			}
 			/* Replace the place holder values of the system message*/
 			if (room.t === 'r') {
@@ -99,6 +104,12 @@ Meteor.startup(function() {
 					roomName: ` <a class="mention-expertise" data-expertise="${ room.name }">${ room.fname || room.name } </a>`,
 					message: ` <a href="${ message.msg }"> message </a>`
 				};
+			} else if (room.t === 'p') {
+				return {
+					initiator: ` <a class="mention-link" data-username= "${ message.mentions[0].name }" >${ message.mentions[0].name } </a> `,
+					roomName: ` <a class="mention-group" data-group="${ room.name }">${ room.fname || room.name } </a>`,
+					message: ` <a href="${ message.msg }"> message </a>`
+				};
 			}
 			return {
 				initiator: ` <a class="mention-link" data-username= "${ message.mentions[0].name }" >${ message.mentions[0].name } </a> `,
@@ -106,5 +117,7 @@ Meteor.startup(function() {
 				message: ` <a href="${ message.msg }"> message </a>`
 			};
 		}
-	});
-});
+	})
+	;
+})
+;
