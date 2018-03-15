@@ -112,15 +112,13 @@ class CreateRequestFromRoomId extends CreateRequestBase {
 					if (result) {
 						/* Parent Room update the links by attaching the child room */
 						RocketChat.models.Messages.setMessageAttachments(this._openingQuestion._id, [{
-							text: this._openingQuestion.msg,
-							title: TAPi18n.__('Threaded_message'),
 							author_name: this._openingQuestion.u.username || this._openingQuestion.u.name,
 							author_icon: `/avatar/${ this._openingQuestion.u.username }?_dc=0 `,
-							message_link: result,
 							ts: this._openingQuestion.ts,
 							fields: [{
-								short: true,
-								value: `[Post your answer](${ result })`
+								type:'threadReference',
+								value: this._openingQuestion.msg,
+								threadUrl: result
 							}]
 						}]);
 					}
