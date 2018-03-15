@@ -36,7 +36,7 @@ Meteor.startup(function() {
 			 * */
 			return {
 				initiator: ` <a class="mention-link" data-username= "${ message.mentions[0].name }" >${ message.mentions[0].name } </a> `,
-				author: ` <a class="mention-link" data-username= "${ message.u.name }" >${ message.u.username } </a>`
+				author: ` <a class="mention-link" data-username= "${ message.u.username }" >${ message.u.username }</a>`
 			};
 		}
 	});
@@ -52,7 +52,7 @@ Meteor.startup(function() {
 			 * */
 			return {
 				initiator: ` <a class="mention-link" data-username= "${ message.mentions[0].name }" >${ message.mentions[0].name } </a> `,
-				author: ` <a class="mention-link" data-username= "${ message.u.name }" > </a>`
+				author: ` <a class="mention-link" data-username= "${ message.u.username }" > </a>`
 			};
 		}
 	});
