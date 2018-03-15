@@ -34,9 +34,15 @@ Meteor.startup(function() {
 			 * Thread Initiator
 			 * Thread Room
 			 * */
+			if (message.mentions[0].name === message.u.name) {
+				return {
+					initiator: ` <a class="mention-link" data-username= "${ message.mentions[0].name }" >${ message.mentions[0].name } </a> `,
+					showAuthor: ` <a class="mention-link" data-username= "${ message.u.name }" > </a> `
+				};
+			}
 			return {
 				initiator: ` <a class="mention-link" data-username= "${ message.mentions[0].name }" >${ message.mentions[0].name } </a> `,
-				author: ` <a class="mention-link" data-username= "${ message.u.name }" >${ message.u.username } </a> `
+				showAuthor: ` for <a class="mention-link" data-username= "${ message.u.name }" >${ message.u.username }'s </a> question `
 			};
 		}
 	});

@@ -113,7 +113,7 @@ class CreateRequestFromRoomId extends CreateRequestBase {
 						/* Parent Room update the links by attaching the child room */
 						RocketChat.models.Messages.setMessageAttachments(this._openingQuestion._id, [{
 							author_name: this._openingQuestion.u.username || this._openingQuestion.u.name,
-							author_icon: `/avatar/${ this._openingQuestion.u.username }?_dc=0 `,
+							author_icon: `/avatar/${ this._openingQuestion.u.username }?_dc=0`,
 							ts: this._openingQuestion.ts,
 							fields: [{
 								type:'threadReference',
