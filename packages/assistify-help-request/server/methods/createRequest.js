@@ -60,7 +60,7 @@ class CreateRequestBase {
 		return RocketChat.sendMessage(user, msgObject, room);
 	}
 
-	//abstract method should implemented.
+	//abstract method must be implemented.
 	create() {
 	}
 
@@ -79,9 +79,9 @@ class CreateRequestFromRoomId extends CreateRequestBase {
 			 * When a message is eligible to be answered as a independent question then it can be threaded into a new channel.
 			 * When threading, the question is re-posted into a new room. To leave origin traces between the messages we update
 			 * the original message with system message to allow user to navigate to the message created in the new Room and vice verse.
-			 */
-			/* Parent Room */
-			const message = RocketChat.models.Messages.createWithTypeRoomIdMessageAndUser('thread-started-message', parentRoom._id, '', rocketCatUser,
+			 *
+			 * Parent Room */
+			RocketChat.models.Messages.updateMsgWithThreadMessage('thread-started-message', this._openingQuestion._id, 'User has started', Meteor.user(),
 				{
 					mentions: [
 						{
@@ -91,13 +91,13 @@ class CreateRequestFromRoomId extends CreateRequestBase {
 				});
 
 			// synchronous call: Get the message url of the system message
-			const messageURL = Meteor.call('assistify:getMessageURL', message._id);
+			const messageURL = Meteor.call('assistify:getMessageURL', this._openingQuestion._id);
 			/* Child Room*/
 			RocketChat.models.Messages.createWithTypeRoomIdMessageAndUser('thread-welcome-message', roomCreated._id, messageURL, rocketCatUser,
 				{
 					mentions: [{
 						_id: Meteor.user()._id, // Thread Initiator
-						name: Meteor.user().username // User @Name field for navigation
+						name: Meteor.user().username // Use @Name field for navigation
 					}],
 					channels: [{
 						_id: parentRoom._id, // Parent Room ID
@@ -111,8 +111,9 @@ class CreateRequestFromRoomId extends CreateRequestBase {
 				Meteor.call('assistify:getMessageURL', msgRePosted._id, (error, result) => {
 					if (result) {
 						/* Parent Room update the links by attaching the child room */
-						RocketChat.models.Messages.setMessageAttachments(message._id, [{
+						RocketChat.models.Messages.setMessageAttachments(this._openingQuestion._id, [{
 							text: this._openingQuestion.msg,
+							title: TAPi18n.__('Threaded_message'),
 							author_name: this._openingQuestion.u.username || this._openingQuestion.u.name,
 							author_icon: `/avatar/${ this._openingQuestion.u.username }?_dc=0 `,
 							message_link: result,
@@ -125,8 +126,6 @@ class CreateRequestFromRoomId extends CreateRequestBase {
 					}
 
 				});
-				// Delete the original message.
-				Meteor.call('deleteMessage', {_id: this._openingQuestion._id});
 			}
 		}
 	}

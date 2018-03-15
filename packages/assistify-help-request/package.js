@@ -36,6 +36,7 @@ Package.onUse(function(api) {
 	api.addFiles('server/models/Rooms.js', ['server', 'client']);
 	api.addFiles('server/models/HelpRequests.js', ['server', 'client']);
 	api.addFiles('server/models/LivechatExternalMessage.js', ['server', 'client']);
+	api.addFiles('server/models/Message.js', ['server', 'client']);
 
 	api.addFiles('server/publications/Rooms.js', 'server');
 	api.addFiles('server/publications/HelpRequests.js', 'server');
@@ -76,7 +77,7 @@ Package.onUse(function(api) {
 	api.addFiles('client/views/sideNav/expertise.js', 'client');
 	api.addFiles('client/views/sideNav/listRequestsFlex.html', 'client');
 	api.addFiles('client/views/sideNav/listRequestsFlex.js', 'client');
-	api.addFiles('client/views/AssistifyMessageAction.js', 'client');
+	api.addFiles('client/views/messageActions/AssistifyMessageAction.js', 'client');
 	//Libraries
 	api.addFiles('client/lib/collections.js', 'client');
 
