@@ -35,7 +35,8 @@ Meteor.startup(function() {
 			 * Thread Room
 			 * */
 			return {
-				initiator: ` <a class="mention-link" data-username= "${ message.mentions[0].name }" >${ message.mentions[0].name } </a> `
+				initiator: ` <a class="mention-link" data-username= "${ message.mentions[0].name }" >${ message.mentions[0].name } </a> `,
+				author: ` <a class="mention-link" data-username= "${ message.u.name }" >${ message.u.username } </a> `
 			};
 		}
 	});
