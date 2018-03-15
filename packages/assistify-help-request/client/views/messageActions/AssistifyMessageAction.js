@@ -8,8 +8,8 @@ Meteor.startup(function() {
 	instance.room = new ReactiveVar('');
 	RocketChat.MessageAction.addButton({
 		id: 'start-thread',
-		icon: 'help',
-		label: t('Start-Thread'),
+		icon: 'thread',
+		label: t('Thread_start'),
 		context: ['message', 'message-mobile'],
 		action() {
 			const question = this._arguments[1];
