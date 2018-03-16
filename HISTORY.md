@@ -1,3 +1,33 @@
+<a name="assistify-0.6.9"></a>
+## Assistify-0.6.0
+
+This release brings not only the very latest Rocket.Chat version, but
+*a completely revamped Smarti-widget*.
+We heavily tuned not only the look, but also the search features. You have not seen it yet? Create a new request (from the create dialog), ask a question and see the implicitly found knowledge.
+
+You may not have know:
+
+- You can customize the sources that are being searched. Got an own wiki-space? Great, let us know!
+- You can add terms you know should be searched for yourself - and thus refine the search results
+- You can easily share the ansers found: Select the circle on the search result and post it with only one single click
+
+<a name="0.61.1"></a>
+## 0.61.1 (2018-02-14)
+
+
+### Bug Fixes
+
+- [#9714](https://github.com/RocketChat/Rocket.Chat/pull/9714) Close Livechat conversation by visitor not working in version 0.61.0
+- [#9639](https://github.com/RocketChat/Rocket.Chat/pull/9639) Desktop notification not showing when avatar came from external storage service
+- [#9640](https://github.com/RocketChat/Rocket.Chat/pull/9640) Facebook integration in livechat not working on version 0.61.0
+- [#9067](https://github.com/RocketChat/Rocket.Chat/pull/9067) Formal pronouns and some small mistakes in German texts
+- [#9716](https://github.com/RocketChat/Rocket.Chat/pull/9716) GitLab OAuth does not work when GitLab’s URL ends with slash
+- [#9720](https://github.com/RocketChat/Rocket.Chat/pull/9720) Messages can't be quoted sometimes
+- [#9626](https://github.com/RocketChat/Rocket.Chat/pull/9626) Missing string 'There_are_no_applications' on the OAuth Apps Page
+- [#9623](https://github.com/RocketChat/Rocket.Chat/pull/9623) Weird rendering of emojis at sidebar when `last message` is activated
+
+
+
 <a name="0.61.0"></a>
 # 0.61.0 (2018-01-27)
 

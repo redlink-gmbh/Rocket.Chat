@@ -1,3 +1,4 @@
+/* globals _ */
 /* globals AutoComplete, Deps */
 /* globals _ */
 import {RocketChat} from 'meteor/rocketchat:lib';
