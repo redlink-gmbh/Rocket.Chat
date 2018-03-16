@@ -76,19 +76,19 @@ Meteor.startup(function() {
 			}
 			if (attachEvents) {
 				Template.room.events({
-						'click .mention-request'(event) {
-							//Get the request name for router navigation
-							FlowRouter.go('request', {name: $(event.currentTarget).data('request')}, FlowRouter.current().queryParams);
-						},
-						'click .mention-expertise'(event) {
-							//Get the expertise name for router navigation
-							FlowRouter.go('expertise', {name: $(event.currentTarget).data('expertise')}, FlowRouter.current().queryParams);
-						},
-						'click .mention-group'(event) {
-							//Get the expertise name for router navigation
-							FlowRouter.go('group', {name: $(event.currentTarget).data('group')}, FlowRouter.current().queryParams);
-						}
+					'click .mention-request'(event) {
+						//Get the request name for router navigation
+						FlowRouter.go('request', {name: $(event.currentTarget).data('request')}, FlowRouter.current().queryParams);
+					},
+					'click .mention-expertise'(event) {
+						//Get the expertise name for router navigation
+						FlowRouter.go('expertise', {name: $(event.currentTarget).data('expertise')}, FlowRouter.current().queryParams);
+					},
+					'click .mention-group'(event) {
+						//Get the expertise name for router navigation
+						FlowRouter.go('group', {name: $(event.currentTarget).data('group')}, FlowRouter.current().queryParams);
 					}
+				}
 				);
 			}
 			/* Replace the place holder values of the system message*/
