@@ -3,7 +3,8 @@ import {RocketChat} from 'meteor/rocketchat:lib';
 
 const _createRolesAndPermissions = function() {
 	const permissions = [
-		{_id: 'start-thread', roles: ['user', 'expert']},
+		{_id: 'start-thread', roles: ['user', 'expert', 'guest']},
+		{_id: 'start-thread-other-user', roles: ['user', 'expert', 'owner']},
 		{_id: 'create-r', roles: ['admin', 'user', 'bot', 'guest', 'expert']},
 		{_id: 'create-e', roles: ['admin', 'expert', 'bot']},
 		{_id: 'delete-r', roles: ['admin']},
