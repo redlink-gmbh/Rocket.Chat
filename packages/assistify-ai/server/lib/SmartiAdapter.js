@@ -58,15 +58,21 @@ export class SmartiAdapter {
 			'content': message.msg,
 			'user': {
 				'id': message.u._id
-			}
+			},
+			'metadata': {}
 			//,"private" : false
 		};
 
+		if (message.origin === 'smartiWidget') {
+			requestBodyMessage.metadata.widgetMessage = true;
+		}
+
+		SystemLogger.debug('RocketChatMessage:', message);
 		SystemLogger.debug('Message:', requestBodyMessage);
 
 		const m = RocketChat.models.LivechatExternalMessage.findOneById(message.rid);
 		let conversationId;
-
+		
 		// conversation exists for channel?
 		if (m && m.conversationId) {
 			conversationId = m.conversationId;
