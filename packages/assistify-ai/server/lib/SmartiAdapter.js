@@ -41,7 +41,7 @@ export class SmartiAdapter {
 				}, {
 					rid: message.rid,
 					knowledgeProvider: 'smarti',
-					conversationId: conversationId,
+					conversationId,
 					ts: message.ts
 				}, {
 					upsert: true
@@ -73,8 +73,7 @@ export class SmartiAdapter {
 		} else {
 			SystemLogger.debug('Smarti - Trying legacy service to retrieve conversation ID...');
 			const conversation = SmartiProxy.propagateToSmarti(verbs.get,
-				`legacy/rocket.chat?channel_id=${ message.rid }`, null,
-				function (error) {
+				`legacy/rocket.chat?channel_id=${ message.rid }`, null, (error) => {
 					// 404 is expected if no mapping exists
 					if (error.response.statusCode === 404) {
 						return null;
@@ -87,7 +86,7 @@ export class SmartiAdapter {
 		}
 
 		if (conversationId) {
-			SystemLogger.debug(`Conversation ${conversationId} found for channel ${message.rid}`);
+			SystemLogger.debug(`Conversation ${ conversationId } found for channel ${ message.rid }`);
 			// add message to conversation
 			SmartiProxy.propagateToSmarti(verbs.post, `conversation/${ conversationId }/message`, requestBodyMessage);
 		} else {
@@ -151,7 +150,13 @@ export class SmartiAdapter {
 			conversationId = m.conversationId;
 		} else {
 			SystemLogger.debug('Smarti - Trying legacy service to retrieve conversation ID...');
-			const conversation = SmartiProxy.propagateToSmarti(verbs.get, `legacy/rocket.chat?channel_id=${ room._id }`);
+			const conversation = SmartiProxy.propagateToSmarti(verbs.get,
+				`legacy/rocket.chat?channel_id=${ room._id }`, null, (error) => {
+					// 404 is expected if no mapping exists
+					if (error.response.statusCode === 404) {
+						return null;
+					}
+				});
 			if (conversation && conversation.id) {
 				conversationId = conversation.id;
 			}

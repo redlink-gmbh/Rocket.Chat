@@ -1,9 +1,19 @@
 #!/bin/bash
 tmpPath=tests/end-to-end/temporary_staged_test
+stopfile=`find ${tmpPath} -type f | head -1`
+echo 'Last stop at:' $stopfile
+[ -z "$retry_test" ] && retry_test=1
+stopfile=`find ${tmpPath} -type f | head -1`
+array=(`find tests/end-to-end/*/*.js -type f`)
+
+for j in ${!array[@]}; do
+  file=${array[$j]}
+  [[ ${stopfile##*/} == ${file##*/} ]] && [[ $stopfile != $file ]] && break
+done
+
 rm -rf $tmpPath
 mkdir -p $tmpPath
-[ -z "$retry_test" ] && retry_test=1
-for file in tests/end-to-end/*/*.js; do
+for file in ${array[@]:$j}; do
   failed=1
   for i in `seq 1 $retry_test`; do
     echo '-------------- '$i' try ---------------'
