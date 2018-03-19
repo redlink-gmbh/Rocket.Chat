@@ -6,7 +6,7 @@ branches:
   only:
   - develop
   - master
-  - "/^\\d+\\.\\d+\\.\\d+(-rc\\.\\d+)?$/"
+  - "^release\\/.+.*"
 git:
   depth: 1
 node_js:
@@ -68,7 +68,7 @@ before_script:
 - mongo --eval 'rs.status()'
 - mongo meteor --eval 'db.getCollectionNames()'
 script:
-- if [[ $RUN_TESTS ]]; then npm test; fi
+- if [[ ! $SKIP_TESTS ]]; then npm test; fi
 # - mongo meteor --eval 'db.dropDatabase()'
 # - unset MONGO_OPLOG_URL
 # - npm test
