@@ -46,7 +46,7 @@ describe('[Help Reqeust]', function() {
 	});
 
 });
-describe('[In-Chat Help]', function() {
+describe('[Threading]', function() {
 	const helpRequest = 'execute-test-cases';
 	const inChatHelp = 'what-is-test-case';
 
@@ -81,32 +81,32 @@ describe('[In-Chat Help]', function() {
 		}
 	});
 
-	describe('Help:', () => {
+	describe('Thread:', () => {
 		before(() => {
 			sideNav.spotlightSearch.waitForVisible(10000);
 			mainContent.openMessageActionMenu();
 		});
 
-		it('it should show a dialog for Help requestTitle', () => {
-			mainContent.selectAction('help');
+		it('it should show a dialog for starting a thread', () => {
+			mainContent.selectAction('thread');
 		});
 
 		it.skip('it should fill values in popup', function() {
-			globalObject.supplyInput(inChatHelp);
+			globalObject.modalInput(inChatHelp);
 			browser.pause(1000);
 		});
 
-		it('It should create a new Help Request from chat Room', function() {
+		it('It should create a new request from chat Room', function() {
 			globalObject.confirmPopup();
 			sideNav.spotlightSearch.waitForVisible(5000);
 		});
 
-		it.skip('It should show the new in-chat-help request room', function() {
+		it.skip('It should show the thread\'s request room', function() {
 			sideNav.searchChannel(helpRequest);
 			sideNav.spotlightSearch.waitForVisible(10000);
 		});
 
-		it('it should compare the last message', function() {
+		it('The message should be copied', function() {
 			try {
 				mainContent.waitForLastMessageEqualsText(message);
 			} catch (e) {

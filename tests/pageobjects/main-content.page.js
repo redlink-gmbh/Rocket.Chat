@@ -35,7 +35,7 @@ class MainContent extends Page {
 	get messageOptionsBtn() { return browser.element('.message:last-child .message-actions__menu'); }
 	get messageActionMenu() { return browser.element('.rc-popover .rc-popover__content'); }
 	get messageReply() { return browser.element('[data-id="reply-message"][data-type="message-action"]'); }
-	get messageHelp() { return browser.element('[data-id="help"][data-type="message-action"]'); }
+	get messageThread() { return browser.element('[data-id="start-thread"][data-type="message-action"]'); }
 	get messageEdit() { return browser.element('[data-id="edit-message"][data-type="message-action"]'); }
 	get messageDelete() { return browser.element('[data-id="delete-message"][data-type="message-action"]'); }
 	get messagePermalink() { return browser.element('[data-id="permalink"][data-type="message-action"]'); }
@@ -172,9 +172,9 @@ class MainContent extends Page {
 	// Do one of the message actions, based on the "action" parameter inserted.
 	selectAction(action) {
 		switch (action) {
-			case 'help':
-				this.messageHelp.waitForVisible(5000);
-				this.messageHelp.click();
+			case 'thread':
+				this.messageThread.waitForVisible(5000);
+				this.messageThread.click();
 				break;
 			case 'edit':
 				this.messageEdit.waitForVisible(5000);
