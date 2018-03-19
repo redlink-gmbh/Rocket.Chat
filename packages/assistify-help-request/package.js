@@ -27,6 +27,7 @@ Package.onUse(function(api) {
 	api.addFiles('startup/customRoomTypes.js');
 	api.addFiles('startup/rolesAndPermissions.js', 'server');
 	api.addFiles('lib/messageTypes/requestClosed.js');
+	api.addFiles('lib/messageTypes/threadMessage.js');
 
 	// Libraries
 	api.addFiles('server/inject.js', 'server');
@@ -45,11 +46,13 @@ Package.onUse(function(api) {
 	//Methods
 	api.addFiles('server/methods/helpRequestByRoomId.js', 'server');
 	api.addFiles('server/methods/closeHelpRequest.js', 'server');
-	api.addFiles('server/methods/createRequest.js', 'server');
 	api.addFiles('server/methods/createExpertise.js', 'server');
+	api.addFiles('server/methods/createRequestFactory.js', 'server');
+	api.addFiles('server/methods/createRequestBase.js', 'server');
+	api.addFiles('server/methods/createRequestFromExpertise.js', 'server');
+	api.addFiles('server/methods/createRequestFromRoomId.js', 'server');
 	api.addFiles('server/methods/requestsList.js', 'server');
 	api.addFiles('server/methods/isValidExpertise.js', 'server');
-	api.addFiles('server/methods/helpers.js', 'server');
 
 	// Hooks
 	api.addFiles('server/hooks/sendMessageToKnowledgeAdapter.js', 'server');
