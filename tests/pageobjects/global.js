@@ -9,7 +9,7 @@ class Global {
 	get modalFileDescription() { return browser.element('.rc-modal #file-description'); }
 	get modalFilePreview() { return browser.element('.rc-modal .upload-preview-file'); }
 	get modalFileTitle() { return browser.element('.rc-modal .upload-preview-title'); }
-	get modelInput() { return browser.element('.js-modal-input'); }
+	get modalInput() { return browser.element('.js-modal-input'); }
 
 	get toastAlert() { return browser.element('.toast'); }
 
@@ -20,9 +20,9 @@ class Global {
 		this.modal.waitForVisible(5000, true);
 	}
 
-	supplyInput(input) {
+	enterModalText(input) {
 		this.modalConfirm.waitForVisible(5000);
-		this.modelInput.setValue(input);
+		this.modalInput.setValue(input);
 		this.modalConfirm.waitForVisible(5000);
 	}
 

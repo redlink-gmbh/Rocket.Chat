@@ -92,7 +92,7 @@ describe('[Threading]', function() {
 		});
 
 		it.skip('it should fill values in popup', function() {
-			globalObject.modalInput(inChatHelp);
+			globalObject.enterModalText(inChatHelp);
 			browser.pause(1000);
 		});
 
