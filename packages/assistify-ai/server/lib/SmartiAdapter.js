@@ -92,8 +92,11 @@ export class SmartiAdapter {
 		} else {
 			SystemLogger.debug('Conversation not found for channel');
 			const helpRequest = RocketChat.models.HelpRequests.findOneByRoomId(message.rid);
-			const supportArea = helpRequest ? helpRequest.supportArea : undefined;
 			const room = RocketChat.models.Rooms.findOneById(message.rid);
+
+			// The "support_area" in Smarti is an optional property. A historic conversation belonging to the same support_are increases relevance
+			const supportArea = room.parentRoomId || room.topic || room.expertise || helpRequest.supportArea || room.name;
+
 			SystemLogger.debug('HelpRequest:', helpRequest);
 			SystemLogger.debug('Room:', room);
 
