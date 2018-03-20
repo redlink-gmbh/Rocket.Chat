@@ -64,7 +64,7 @@ export class SmartiAdapter {
 		};
 
 		if (message.origin === 'smartiWidget') {
-			requestBodyMessage.metadata.widgetMessage = true;
+			requestBodyMessage.metadata.skipAnalysis = true;
 		}
 
 		SystemLogger.debug('RocketChatMessage:', message);
