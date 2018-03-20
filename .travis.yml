@@ -20,16 +20,16 @@ addons:
     - google-chrome-stable
     - g++-4.8
   firefox: "latest"
-before_cache:
-- rm -rf $HOME/build/RocketChat/Rocket.Chat/.meteor/local/log
-- rm -rf $HOME/build/RocketChat/Rocket.Chat/.meteor/local/run
-- rm -rf $HOME/build/RocketChat/Rocket.Chat/.meteor/local/db
-cache:
-  directories:
-  - "$HOME/node_modules"
-  - "$HOME/.meteor"
-  - "$HOME/.npm"
-  - "$HOME/.node-gyp"
+# before_cache:
+# - rm -rf $HOME/build/RocketChat/Rocket.Chat/.meteor/local/log
+# - rm -rf $HOME/build/RocketChat/Rocket.Chat/.meteor/local/run
+# - rm -rf $HOME/build/RocketChat/Rocket.Chat/.meteor/local/db
+# cache:
+#   directories:
+#   - "$HOME/node_modules"
+#   - "$HOME/.meteor"
+#   - "$HOME/.npm"
+#   - "$HOME/.node-gyp"
   # - "$HOME/build/RocketChat/Rocket.Chat/node_modules"
   # - "$HOME/build/RocketChat/Rocket.Chat/.meteor/local"
   # - "$HOME/build/RocketChat/Rocket.Chat/packages/rocketchat-livechat/.npm"
