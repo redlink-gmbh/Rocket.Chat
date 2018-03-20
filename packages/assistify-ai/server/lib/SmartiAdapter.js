@@ -11,7 +11,7 @@ export class SmartiAdapter {
 	static get rocketWebhookUrl() {
 		let rocketUrl = RocketChat.settings.get('Site_Url');
 		rocketUrl = rocketUrl ? rocketUrl.replace(/\/?$/, '/') : rocketUrl;
-		return `${rocketUrl}api/v1/smarti.result/${RocketChat.settings.get('Assistify_AI_RocketChat_Webhook_Token')}`;
+		return `${ rocketUrl }api/v1/smarti.result/${ RocketChat.settings.get('Assistify_AI_RocketChat_Webhook_Token') }`;
 	}
 
 	static get smartiKnowledgeDomain() {
@@ -73,7 +73,7 @@ export class SmartiAdapter {
 		} else {
 			SystemLogger.debug('Smarti - Trying legacy service to retrieve conversation ID...');
 			const conversation = SmartiProxy.propagateToSmarti(verbs.get,
-				`legacy/rocket.chat?channel_id=${message.rid}`, null, (error) => {
+				`legacy/rocket.chat?channel_id=${ message.rid }`, null, (error) => {
 					// 404 is expected if no mapping exists
 					if (error.response.statusCode === 404) {
 						return null;
@@ -86,9 +86,9 @@ export class SmartiAdapter {
 		}
 
 		if (conversationId) {
-			SystemLogger.debug(`Conversation ${conversationId} found for channel ${message.rid}`);
+			SystemLogger.debug(`Conversation ${ conversationId } found for channel ${ message.rid }`);
 			// add message to conversation
-			SmartiProxy.propagateToSmarti(verbs.post, `conversation/${conversationId}/message`, requestBodyMessage);
+			SmartiProxy.propagateToSmarti(verbs.post, `conversation/${ conversationId }/message`, requestBodyMessage);
 		} else {
 			SystemLogger.debug('Conversation not found for channel');
 			const helpRequest = RocketChat.models.HelpRequests.findOneByRoomId(message.rid);
@@ -98,7 +98,7 @@ export class SmartiAdapter {
 			let supportArea = room.parentRoomId || room.topic || room.expertise;
 			if (!supportArea) {
 				if (helpRequest && helpRequest.supportArea) {
-					supportArea = helpRequest.supportArea
+					supportArea = helpRequest.supportArea;
 				} else {
 					supportArea = room.name;
 				}
@@ -138,7 +138,7 @@ export class SmartiAdapter {
 		}
 
 		// request analysis results
-		const analysisResult = SmartiProxy.propagateToSmarti(verbs.get, `conversation/${conversationId}/analysis`);
+		const analysisResult = SmartiProxy.propagateToSmarti(verbs.get, `conversation/${ conversationId }/analysis`);
 		SystemLogger.debug('analysisResult:', JSON.stringify(analysisResult, null, '\t'));
 		if (analysisResult) {
 			RocketChat.Notifications.notifyRoom(message.rid, 'newConversationResult', analysisResult);
@@ -161,7 +161,7 @@ export class SmartiAdapter {
 		} else {
 			SystemLogger.debug('Smarti - Trying legacy service to retrieve conversation ID...');
 			const conversation = SmartiProxy.propagateToSmarti(verbs.get,
-				`legacy/rocket.chat?channel_id=${room._id}`, null, (error) => {
+				`legacy/rocket.chat?channel_id=${ room._id }`, null, (error) => {
 					// 404 is expected if no mapping exists
 					if (error.response.statusCode === 404) {
 						return null;
@@ -172,9 +172,9 @@ export class SmartiAdapter {
 			}
 		}
 		if (conversationId) {
-			SmartiProxy.propagateToSmarti(verbs.put, `/conversation/${conversationId}/meta.status`, 'Complete');
+			SmartiProxy.propagateToSmarti(verbs.put, `/conversation/${ conversationId }/meta.status`, 'Complete');
 		} else {
-			SystemLogger.error(`Smarti - closing room failed: No conversation id for room: ${room._id}`);
+			SystemLogger.error(`Smarti - closing room failed: No conversation id for room: ${ room._id }`);
 		}
 	}
 
