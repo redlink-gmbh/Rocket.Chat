@@ -16,7 +16,6 @@ else
   if [[ ${TRAVIS_BRANCH} == develop ]] || [[ $TRAVIS_BRANCH == "release/"* ]]
       then
       	TARGET_ENVIRONMENT=test
-    else  
   fi
 fi
 
