@@ -110,11 +110,11 @@ export class SmartiAdapter {
 			}
 		} else {
 			SystemLogger.debug('Conversation not found for channel');
-			//const helpRequest = RocketChat.models.HelpRequests.findOneByRoomId(message.rid);
-			//SystemLogger.debug('HelpRequest:', helpRequest);
+			const helpRequest = RocketChat.models.HelpRequests.findOneByRoomId(message.rid);
+			const supportArea = helpRequest ? helpRequest.supportArea : undefined;
 			const room = RocketChat.models.Rooms.findOneById(message.rid);
+			SystemLogger.debug('HelpRequest:', helpRequest);
 			SystemLogger.debug('Room:', room);
-			const supportArea = room.topic;
 
 			const requestBodyConversation = {
 				'meta': {
