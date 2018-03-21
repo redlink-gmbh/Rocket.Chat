@@ -19,7 +19,7 @@ for file in ${array[@]:$j}; do
     echo '-------------- '$i' try ---------------'
     set -x
     cp $file $tmpPath
-    CHIMP_PATH=$tmpPath meteor npm run chimp-path
+    CHIMP_PATH=$tmpPath npm run chimp-path
     failed=$?
     set +x
     if [ $failed -eq 0 ]; then
