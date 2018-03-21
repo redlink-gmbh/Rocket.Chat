@@ -57,6 +57,11 @@ jobs:
             meteor npm install
 
       - run:
+          name: Install submodules
+          command: |
+            git submodule init && git submodule updated
+
+      - run:
           name: Lint
           command: |
             meteor npm run lint
@@ -167,11 +172,6 @@ jobs:
           name: NPM install
           command: |
             npm install
-
-      - run:
-          name: Install submodules
-          command: |
-            git submodule init && git submodule updated
 
       - run:
           name: Run Tests
