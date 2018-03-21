@@ -20,22 +20,22 @@ addons:
     - google-chrome-stable
     - g++-4.8
   firefox: "latest"
-before_cache:
-- rm -rf $TRAVIS_BUILD_DIR/.meteor/local/log
-- rm -rf $TRAVIS_BUILD_DIR/.meteor/local/run
-- rm -rf $TRAVIS_BUILD_DIR/.meteor/local/db
-cache:
-  bundler: true
-  directories:
-  - "$HOME/node_modules"
-  - "$HOME/.meteor"
-  - "$HOME/.npm"
-  - "$HOME/.node-gyp"
-  - "$TRAVIS_BUILD_DIR/node_modules"
-  - "$TRAVIS_BUILD_DIR/.meteor/local"
-  - "$TRAVIS_BUILD_DIR/packages/rocketchat-livechat/.npm"
-  - "$TRAVIS_BUILD_DIR/packages/rocketchat-livechat/.app/node_modules"
-  - "$TRAVIS_BUILD_DIR/packages/rocketchat-livechat/.app/.meteor/local"
+# before_cache:
+# - rm -rf $TRAVIS_BUILD_DIR/.meteor/local/log
+# - rm -rf $TRAVIS_BUILD_DIR/.meteor/local/run
+# - rm -rf $TRAVIS_BUILD_DIR/.meteor/local/db
+# cache:
+#   bundler: true
+#   directories:
+#   - "$HOME/node_modules"
+#   - "$HOME/.meteor"
+#   - "$HOME/.npm"
+#   - "$HOME/.node-gyp"
+#   - "$TRAVIS_BUILD_DIR/node_modules"
+#   - "$TRAVIS_BUILD_DIR/.meteor/local"
+#   - "$TRAVIS_BUILD_DIR/packages/rocketchat-livechat/.npm"
+#   - "$TRAVIS_BUILD_DIR/packages/rocketchat-livechat/.app/node_modules"
+#   - "$TRAVIS_BUILD_DIR/packages/rocketchat-livechat/.app/.meteor/local"
 before_install:
 - if [ ! -e "$HOME/.meteor/meteor" ]; then curl https://install.meteor.com | sed s/--progress-bar/-sL/g | /bin/sh; fi
 # Start X Virtual Frame Buffer for headless testing with real browsers
