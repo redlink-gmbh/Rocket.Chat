@@ -302,15 +302,15 @@ workflows:
             tags:
               only: /^[0-9]+\.[0-9]+\.[0-9]+(-rc\.[0-9]+)?$/
       - test-smarti:
-          requires:
-            - build
+          # requires:
+          #   - build
           filters:
             tags:
               only: /^[0-9]+\.[0-9]+\.[0-9]+(-rc\.[0-9]+)?$/
       - deploy:
           requires:
-            - test-with-oplog
-            - test-without-oplog
+            # - test-with-oplog
+            # - test-without-oplog
             - test-smarti
           filters:
             branches:
