@@ -246,7 +246,8 @@ jobs:
       - run:
           name: Run Tests
           command: |
-            shopt -s extglob && rm -rf ./tests/end-to-end/!(ui_smarti) # remove all non-Smarti-tests
+            shopt -s extglob
+            rm -rf ./tests/end-to-end/!(ui_smarti) # remove all non-Smarti-tests
             npm test
 
       - store_artifacts:
