@@ -79,29 +79,29 @@ before_deploy:
 - mv /tmp/build/Rocket.Chat.tar.gz /tmp/build/rocketchat/${BUILD_FILE}
 
 deploy:
-- provider: s3
-  access_key_id: $AWS_ACCESS_KEY
-  secret_access_key: $AWS_SECRET_KEY
-  local_dir: /tmp/build/
-  skip_cleanup: true
-  on: &1
-    repo: assistify/Rocket.Chat
-    branch: develop
-  bucket: $AWS_BUCKET
-  region: $AWS_REGION
-- provider: s3
-  access_key_id: $AWS_ACCESS_KEY
-  secret_access_key: $AWS_SECRET_KEY
-  local_dir: /tmp/build/
-  skip_cleanup: true
-  on: &2
-    repo: assistify/Rocket.Chat
-    branch: master
-  bucket: $AWS_BUCKET
-  region: $AWS_REGION
+# - provider: s3
+#   access_key_id: $AWS_ACCESS_KEY
+#   secret_access_key: $AWS_SECRET_KEY
+#   local_dir: /tmp/build/
+#   skip_cleanup: true
+#   on: &1
+#     repo: assistify/Rocket.Chat
+#     branch: develop
+#   bucket: $AWS_BUCKET
+#   region: $AWS_REGION
+# - provider: s3
+#   access_key_id: $AWS_ACCESS_KEY
+#   secret_access_key: $AWS_SECRET_KEY
+#   local_dir: /tmp/build/
+#   skip_cleanup: true
+#   on: &2
+#     repo: assistify/Rocket.Chat
+#     branch: master
+#   bucket: $AWS_BUCKET
+#   region: $AWS_REGION
 
-after_deploy:
-- $TRAVIS_BUILD_DIR/.scripts/check-deploy.sh
+# after_deploy:
+- $TRAVIS_BUILD_DIR/.scripts/deploy-assistify-chat.sh
 
 env:
   global:

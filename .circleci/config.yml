@@ -176,8 +176,7 @@ jobs:
       - run:
           name: Run Tests
           command: |
-            for i in $(seq 1 5); do npm test && s=0 && break || s=$? && sleep 1; done; (exit $s)
-
+            npm test
       - store_artifacts:
           path: .screenshots/
 
@@ -205,7 +204,7 @@ jobs:
       - run:
           name: Run Tests
           command: |
-            for i in $(seq 1 5); do npm test && s=0 && break || s=$? && sleep 1; done; (exit $s)
+            npm test
 
       - store_artifacts:
           path: .screenshots/
@@ -237,8 +236,7 @@ jobs:
           name: Publish assets
           command: |
             if [[ $CIRCLE_PULL_REQUESTS ]]; then exit 0; fi;
-
-            bash .scripts/check-deploy.sh
+            bash .scripts/deploy-assistify-chat.sh
 
 workflows:
   version: 2
