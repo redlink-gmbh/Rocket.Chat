@@ -238,10 +238,10 @@ jobs:
             docker build -t smarti-with-stanfordnlp - < .scripts/dockerfile-smarti-with-nlp
             docker run -d --name smarti --net=host smarti-with-stanfordnlp  --security.config.mongo.admin-password=admin --spring.data.mongodb.uri=mongodb://localhost/smarti
 
-      - run:
-          name: NPM install
-          command: |
-            npm install
+      # - run:
+      #     name: NPM install
+      #     command: |
+      #       npm install
 
       - run:
           name: Run Tests
