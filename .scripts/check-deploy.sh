@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-pip install --user awscli
+pip install --user --upgrade awscli
 export PATH=$PATH:$HOME/.local/bin
 
 mkdir -p ~/.aws
@@ -22,4 +22,4 @@ else
   fi
 fi
 
-aws s3api put-object-tagging --region ${AWS_REGION} --bucket ${AWS_BUCKET} --key rocketchat/${BUILD_FILE} --tagging "{ "TagSet": [ { "Key": "environment", "Value": "${TARGET_ENVIRONMENT}" }, { "Key": "nodejs_version", "Value": "${NODEJS_VERSION}" }, { "Key": "nodejs_checksum", "Value": "${NODEJS_CHECKSUM}" }, { "Key": "assets", "Value": "${ASSETS_URL}" } ] }"
+aws s3api put-object-tagging --region ${AWS_REGION} --bucket ${AWS_BUCKET} --key rocketchat/${BUILD_FILE} --tagging "{ \"TagSet\": [ { \"Key\": \"environment\", \"Value\": \"${TARGET_ENVIRONMENT}\" }, { \"Key\": \"nodejs_version\", \"Value\": \"${NODEJS_VERSION}\" }, { \"Key\": \"nodejs_checksum\", \"Value\": \"${NODEJS_CHECKSUM}\" }, { \"Key\": \"assets\", \"Value\": \"${ASSETS_URL}\" } ] }"
