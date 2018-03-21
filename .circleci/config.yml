@@ -216,10 +216,13 @@ jobs:
     docker:
       - image: circleci/node:8-browsers
       - image: circleci/mongo:3.4
+      - image: assisitfy/smarti:0.7.0-RC1
 
     environment:
       TEST_MODE: "true"
       MONGO_URL: mongodb://localhost:27017/testsmarti
+      SPRING_DATA_MONGODB_URI: mongodb://localhost:27017/smarti
+      SECURITY_CONFIG_MONGO_ADMIN-PASSWORD: admin
 
     steps:
       - attach_workspace:
@@ -231,13 +234,13 @@ jobs:
       - setup_remote_docker:
           docker_layer_caching: true
 
-      - run:
-          name: Build and start Smarti
-          command: |
-            docker pull assisitfy/smarti:0.7.0-RC1
-            docker build -t smarti-with-stanfordnlp - < .scripts/dockerfile-smarti-with-nlp
-            docker run -d --name smarti --net=host smarti-with-stanfordnlp  --security.config.mongo.admin-password=admin --spring.data.mongodb.uri=mongodb://localhost/smarti
-
+      # - run:
+      #     name: Build and start Smarti
+      #     command: |
+      #       docker pull assisitfy/smarti:0.7.0-RC1
+      #       docker build -t smarti-with-stanfordnlp - < .scripts/dockerfile-smarti-with-nlp
+      #       docker run -d --name smarti --net=host smarti-with-stanfordnlp  --security.config.mongo.admin-password=admin --spring.data.mongodb.uri=mongodb://localhost/smarti
+#
       # - run:
       #     name: NPM install
       #     command: |
