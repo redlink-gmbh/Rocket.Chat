@@ -176,6 +176,7 @@ jobs:
       - run:
           name: Run Tests
           command: |
+            rm -rf ./tests/end-to-end/ui_smarti # Smarti tests run separately
             npm test
       - store_artifacts:
           path: .screenshots/
@@ -204,6 +205,57 @@ jobs:
       - run:
           name: Run Tests
           command: |
+            rm -rf ./tests/end-to-end/ui_smarti # Smarti tests run separately
+            npm test
+
+      - store_artifacts:
+          path: .screenshots/
+
+  test-smarti:
+    <<: *defaults
+    docker:
+      - image: circleci/node:8-browsers
+      - image: circleci/mongo:3.4
+
+    environment:
+      TEST_MODE: "true"
+      MONGO_URL: mongodb://localhost:27017/testsmarti
+
+    steps:
+      - attach_workspace:
+          at: /tmp
+
+      - checkout
+
+      # Enable remote docker host for temporary images (see https://circleci.com/docs/2.0/building-docker-images/
+      - setup_remote_docker:
+          docker_layer_caching: true
+
+      - run:
+          name: Install Docker client
+          command: |
+            set -x
+            VER="17.11.0-ce"
+            curl -L -o /tmp/docker-$VER.tgz https://download.docker.com/linux/static/stable/x86_64/docker-$VER.tgz
+            tar -xz -C /tmp -f /tmp/docker-$VER.tgz
+            mv /tmp/docker/* /usr/bin
+
+      - run:
+          name: Build and start Smarti
+          command: |
+            docker pull assisitfy/smarti:0.7.0
+            docker build -t smarti-with-stanfordnlp - < .scripts/dockerfile-smarti-with-nlp
+            docker run -d --name smarti --net=host smarti-with-stanfordnlp  --security.config.mongo.admin-password=admin --spring.data.mongodb.uri=mongodb://localhost/smarti
+
+      - run:
+          name: NPM install
+          command: |
+            npm install
+
+      - run:
+          name: Run Tests
+          command: |
+            shopt -s extglob && rm -rf ./tests/end-to-end/!(ui_smarti) # remove all non-Smarti-tests
             npm test
 
       - store_artifacts:

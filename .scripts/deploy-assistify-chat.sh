@@ -1,12 +1,16 @@
 #!/usr/bin/env bash
 
+function parse_git_hash(){
+  git rev-parse --short HEAD 2> /dev/null | sed "s/\(.*\)/\1/"
+}
+
 # Install AWS-CLI - if it's there, this will be done quickly
 pip install --user --upgrade awscli
 export PATH=$PATH:$HOME/.local/bin # add user-installed aws-cli to path
 
 # we want this script to work with Travis and CircleCi, so abstract the Environment variables
 export BRANCH=${TRAVIS_BRANCH}${CIRCLE_BRANCH}
-export COMMIT=${TRAVIS_COMMIT}${CIRCLE_SHA1}
+export COMMIT= $(parse_git_hash) # ${TRAVIS_COMMIT}${CIRCLE_SHA1} will return the long sha which is too long to be readable
 export BUILD_FILE=Assistify_Chat_${BRANCH/\//_}_${COMMIT:1}.tar.gz
 
 export NODEJS_VERSION="8.9.4"
