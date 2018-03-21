@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-docker pull assisitfy/smarti:0.7.0
+docker pull assisitfy/smarti:0.7.0-RC1
 
 docker build -t smarti-with-stanfordnlp - < .scripts/dockerfile-smarti-with-nlp
 
