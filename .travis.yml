@@ -25,6 +25,7 @@ before_cache:
 - rm -rf $TRAVIS_BUILD_DIR/.meteor/local/run
 - rm -rf $TRAVIS_BUILD_DIR/.meteor/local/db
 cache:
+  bundler: true
   directories:
   - "$HOME/node_modules"
   - "$HOME/.meteor"
