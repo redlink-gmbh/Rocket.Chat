@@ -15,9 +15,7 @@ export class CreateRequestFromRoomId extends CreateRequestBase {
 	}
 
 	_getMessageUrl(msgId) {
-		const message = RocketChat.models.Messages.findOneById(msgId);
-		const room = RocketChat.models.Rooms.findOneById(message.rid);
-		return FlowRouter.path(RocketChat.roomTypes.getRouteLink(room.t, room), '', {msg: msgId});
+		return FlowRouter.path('message', {id: msgId});
 	}
 
 	_linkMessages(roomCreated, parentRoom) {
@@ -48,8 +46,8 @@ export class CreateRequestFromRoomId extends CreateRequestBase {
 						name: Meteor.user().username // Use @Name field for navigation
 					}],
 					channels: [{
-						_id: parentRoom._id, // Parent Room ID
-						name: parentRoom.fname || parentRoom.name
+						_id: parentRoom._id // Parent Room ID
+						// name: parentRoom.fname || parentRoom.name
 					}]
 				});
 			// Re-post message in the new room

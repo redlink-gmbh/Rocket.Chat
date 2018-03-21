@@ -208,6 +208,9 @@ Package.onUse(function(api) {
 	api.addFiles('client/lib/userRoles.js', 'client');
 	api.addFiles('client/lib/Layout.js', 'client');
 
+	// COMMON ROUTES
+	api.addFiles('startup/routes.js');
+
 	// CLIENT METHODS
 	api.addFiles('client/methods/sendMessage.js', 'client');
 	api.addFiles('client/AdminBox.js', 'client');
