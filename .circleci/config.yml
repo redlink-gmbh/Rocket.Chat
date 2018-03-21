@@ -186,7 +186,7 @@ jobs:
     docker:
       - image: circleci/node:8-browsers
       - image: circleci/mongo:3.4
-´
+
     environment:
       TEST_MODE: "true"
       MONGO_URL: mongodb://localhost:27017/testwithoutplog
