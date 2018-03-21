@@ -231,8 +231,8 @@ jobs:
       - checkout
 
       # Enable remote docker host for temporary images (see https://circleci.com/docs/2.0/building-docker-images/
-      - setup_remote_docker:
-          docker_layer_caching: true
+      # - setup_remote_docker:
+      #     docker_layer_caching: true
 
       # - run:
       #     name: Build and start Smarti
