@@ -101,7 +101,7 @@ deploy:
 #   region: $AWS_REGION
 
 # after_deploy:
-- $TRAVIS_BUILD_DIR/.scripts/deploy-assistify-chat.sh
+  - $TRAVIS_BUILD_DIR/.scripts/deploy-assistify-chat.sh
 
 env:
   global:

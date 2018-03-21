@@ -189,13 +189,27 @@ jobs:
 
     environment:
       TEST_MODE: "true"
-      MONGO_URL: mongodb://localhost:27017/testwithoplog
+      MONGO_URL: mongodb://localhost:27017/testwithoutplog
 
     steps:
       - attach_workspace:
           at: /tmp
 
       - checkout
+
+      - run:
+          name: Install dependencies
+          command: |
+            sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0C49F3730359A14518585931BC711F9BA15703C6
+            echo "deb [ arch=amd64 ] http://repo.mongodb.org/apt/ubuntu trusty/mongodb-org/3.4 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.4.list
+            sudo apt-get update
+            sudo apt-get install -y mongodb-org-shell
+
+      - run:
+          name: Configure Replica Set
+          command: |
+            mongo --eval 'rs.initiate({_id:"rs0", members: [{"_id":1, "host":"localhost:27017"}]})'
+            mongo --eval 'rs.status()'
 
       - run:
           name: NPM install
