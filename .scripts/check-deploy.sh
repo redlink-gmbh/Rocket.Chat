@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+pip install --user awscli
+export PATH=$PATH:$HOME/.local/bin
+
 mkdir -p ~/.aws
 
 cat > ~/.aws/credentials << EOL
