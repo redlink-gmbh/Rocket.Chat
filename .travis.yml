@@ -68,17 +68,20 @@ before_script:
 - mongo --eval 'rs.status()'
 - mongo meteor --eval 'db.getCollectionNames()'
 script:
+- shopt -s extglob
+- rm -rf ./tests/end-to-end/!(ui_smarti) # remove all non-Smarti-tests
 - if [[ ! $SKIP_TESTS ]]; then npm test; fi
+
 # - mongo meteor --eval 'db.dropDatabase()'
 # - unset MONGO_OPLOG_URL
 # - npm test
 
-before_deploy:
-- mkdir -p /tmp/build/rocketchat
-- export BUILD_FILE=Assistify_Chat_${TRAVIS_BRANCH/\//_}_${TRAVIS_COMMIT:1}.tar.gz
-- mv /tmp/build/Rocket.Chat.tar.gz /tmp/build/rocketchat/${BUILD_FILE}
+# before_deploy:
+# - mkdir -p /tmp/build/rocketchat
+# - export BUILD_FILE=Assistify_Chat_${TRAVIS_BRANCH/\//_}_${TRAVIS_COMMIT:1}.tar.gz
+# - mv /tmp/build/Rocket.Chat.tar.gz /tmp/build/rocketchat/${BUILD_FILE}
 
-deploy:
+# deploy:
 # - provider: s3
 #   access_key_id: $AWS_ACCESS_KEY
 #   secret_access_key: $AWS_SECRET_KEY
@@ -101,7 +104,7 @@ deploy:
 #   region: $AWS_REGION
 
 # after_deploy:
-  - $TRAVIS_BUILD_DIR/.scripts/deploy-assistify-chat.sh
+  # - $TRAVIS_BUILD_DIR/.scripts/deploy-assistify-chat.sh
 
 env:
   global:
