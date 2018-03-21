@@ -169,6 +169,11 @@ jobs:
             npm install
 
       - run:
+          name: Install submodules
+          command: |
+            git submodule init && git submodule updated
+
+      - run:
           name: Run Tests
           command: |
             for i in $(seq 1 5); do npm test && s=0 && break || s=$? && sleep 1; done; (exit $s)
@@ -233,20 +238,7 @@ jobs:
           command: |
             if [[ $CIRCLE_PULL_REQUESTS ]]; then exit 0; fi;
 
-            export PATH=~/.local/bin:$PATH
-            export CIRCLE_TAG=${CIRCLE_TAG:=}
-
-            source .circleci/setartname.sh
-            source .circleci/setdeploydir.sh
-            bash .circleci/setupsig.sh
-            bash .circleci/namefiles.sh
-            # echo ".circleci/sandstorm.sh"
-
-            aws s3 cp $ROCKET_DEPLOY_DIR/ s3://download.rocket.chat/build/ --recursive
-
-            bash .circleci/update-releases.sh
-            bash .circleci/docker.sh
-            bash .circleci/snap.sh
+            bash .scripts/check-deploy.sh
 
 workflows:
   version: 2
