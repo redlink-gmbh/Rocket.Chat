@@ -5,13 +5,19 @@ function parse_git_hash(){
 }
 
 # Install AWS-CLI - if it's there, this will be done quickly
-pip install --user --upgrade awscli
-export PATH=$PATH:$HOME/.local/bin # add user-installed aws-cli to path
+sudo apt-get -y -qq update
+sudo apt-get -y -qq install python3.4-dev
+curl -O https://bootstrap.pypa.io/get-pip.py
+python3.4 get-pip.py --user
+export PATH=~/.local/bin:$PATH
+pip install awscli --upgrade --user
 
 # we want this script to work with Travis and CircleCi, so abstract the Environment variables
 export BRANCH=${TRAVIS_BRANCH}${CIRCLE_BRANCH}
-export COMMIT= $(parse_git_hash) # ${TRAVIS_COMMIT}${CIRCLE_SHA1} will return the long sha which is too long to be readable
-export BUILD_FILE=Assistify_Chat_${BRANCH/\//_}_${COMMIT:1}.tar.gz
+export COMMIT=${TRAVIS_COMMIT}${CIRCLE_SHA1} #will return the long sha which is too long to be readable
+export COMMIT_SHORT=$(parse_git_hash) # ${TRAVIS_COMMIT}${CIRCLE_SHA1} will return the long sha which is too long to be readable
+export BUILD_FILE=Assistify_Chat_${BRANCH/\//_}_${COMMIT_SHORT}.tar.gz # replace slashes from the branch name (e. g. "feature/...")
+export DEPLOY_PATH=/tmp/build/
 
 export NODEJS_VERSION="8.9.4"
 export NODEJS_CHECKSUM="21fb4690e349f82d708ae766def01d7fec1b085ce1f5ab30d9bda8ee126ca8fc"
@@ -20,16 +26,15 @@ export NODEJS_CHECKSUM="21fb4690e349f82d708ae766def01d7fec1b085ce1f5ab30d9bda8ee
 if [ ! -f ~/.aws/credentials ]
   then
     mkdir -p ~/.aws
-
-    cat > ~/.aws/credentials << EOL
-    [default]
-    aws_access_key_id = ${AWS_ACCESS_KEY}
-    aws_secret_access_key = ${AWS_SECRET_KEY}
-    EOL
+    echo "Creating AWS credentials from environment variables"
+    echo "[default]
+      aws_access_key_id = ${AWS_ACCESS_KEY}
+      aws_secret_access_key = ${AWS_SECRET_KEY}" > ~/.aws/credentials
 fi
 
 # store the build artifact
-mv /tmp/build/Rocket.Chat.tar.gz /tmp/build/${BUILD_FILE}
+cd ${DEPLOY_PATH}
+mv Rocket.Chat.tar.gz ${BUILD_FILE}
 aws s3 cp ${BUILD_FILE} s3://${AWS_BUCKET}/rocketchat/ --region ${AWS_REGION} --acl bucket-owner-full-control
 
 # For dedicated branches, we tag the artifacts - this should actually be based on git tags
