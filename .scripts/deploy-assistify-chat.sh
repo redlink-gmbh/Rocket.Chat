@@ -20,7 +20,7 @@ export NODEJS_CHECKSUM="21fb4690e349f82d708ae766def01d7fec1b085ce1f5ab30d9bda8ee
 if [ ! -f ~/.aws/credentials ]
   then
     mkdir -p ~/.aws
-
+    echot "Creating AWS credentials from environment variables"
     echo "[default]
       aws_access_key_id = ${AWS_ACCESS_KEY}
       aws_secret_access_key = ${AWS_SECRET_KEY}" > ~/.aws/credentials
