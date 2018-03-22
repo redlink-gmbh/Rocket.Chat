@@ -52,8 +52,8 @@ export class CreateRequestBase {
 			}
 		});
 	}
-	_postMessage(room, user, message) {
-		const newMessage = { _id: Random.id(), rid: room.rid, msg: message.msg, attachments: message.attachments || [] };
+	_postMessage(room, user, message, attachments) {
+		const newMessage = { _id: Random.id(), rid: room.rid, msg: message, attachments: attachments || [] };
 		return RocketChat.sendMessage(user, newMessage, room);
 	}
 

@@ -54,12 +54,11 @@ export class CreateRequestFromRoomId extends CreateRequestBase {
 					}],
 					channels: [{
 						_id: parentRoom._id // Parent Room ID
-						// name: parentRoom.fname || parentRoom.name
 					}]
 				});
 			// Re-post message in the new room
 			const msgAuthor = RocketChat.models.Users.findOneByUsername(this._openingQuestion.u.username); // Search with the technical username
-			const msgRePosted = this._postMessage(roomCreated, msgAuthor, this._openingQuestion);
+			const msgRePosted = this._postMessage(roomCreated, msgAuthor, this._openingQuestion.msg, this._openingQuestion.attachments);
 
 			if (msgRePosted) {
 				/* Add a reference to the original message which can be rendered for navigation */
