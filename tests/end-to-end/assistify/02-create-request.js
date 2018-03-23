@@ -10,16 +10,17 @@ import { checkIfUserIsAdmin } from '../../data/checks';
 import globalObject from '../../pageobjects/global';
 const topicName = 'unit-testing';
 const message = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';
-describe('[Help Reqeust]', function() {
+describe('[Help Request]', function() {
 	const helpRequest = 'write-test-cases';
 	const comment = 'Request tested successfully';
 	before(function() {
 		checkIfUserIsAdmin(adminUsername, adminEmail, adminPassword);
-		sideNav.spotlightSearch.waitForVisible(10000);
+		sideNav.spotlightSearchIcon.waitForVisible(10000);
 	});
 
 	it('Create a Expertise', function() {
 		try {
+			sideNav.spotlightSearchIcon.click();
 			sideNav.searchChannel(topicName);
 			console.log('Expertise already Exists');
 		} catch (e) {
@@ -52,6 +53,7 @@ describe('[Threading]', function() {
 
 	before(()=> {
 		try {
+			sideNav.spotlightSearchIcon.click();
 			sideNav.searchChannel(inChatHelp);
 			assistify.closeTopic(inChatHelp);
 			console.log('Cleanup request from last run');
@@ -72,6 +74,7 @@ describe('[Threading]', function() {
 
 	it('Create a HelpRequest', function() {
 		try {
+			sideNav.spotlightSearchIcon.click();
 			sideNav.searchChannel(helpRequest);
 			console.log('HelpRequest already Exists');
 			assistify.sendTopicMessage(message);
@@ -83,7 +86,7 @@ describe('[Threading]', function() {
 
 	describe('Thread:', () => {
 		before(() => {
-			sideNav.spotlightSearch.waitForVisible(10000);
+			sideNav.spotlightSearchIcon.waitForVisible(10000);
 			mainContent.openMessageActionMenu();
 		});
 
@@ -98,10 +101,11 @@ describe('[Threading]', function() {
 
 		it('It should create a new request from chat Room', function() {
 			globalObject.confirmPopup();
-			sideNav.spotlightSearch.waitForVisible(5000);
+			sideNav.spotlightSearchIcon.waitForVisible(5000);
 		});
 
 		it.skip('It should show the thread\'s request room', function() {
+			sideNav.spotlightSearchIcon.click();
 			sideNav.searchChannel(helpRequest);
 			sideNav.spotlightSearch.waitForVisible(10000);
 		});
