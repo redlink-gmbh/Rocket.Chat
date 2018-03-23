@@ -233,7 +233,7 @@ Template.toolbar.events({
 	},
 
 	'click [role="search"] button, touchend [role="search"] button'(e) {
-		if (RocketChat.authz.hasAtLeastOnePermission(['create-c', 'create-p'])) {
+		if (RocketChat.authz.hasAtLeastOnePermission(RocketChat.roomTypes.roomTypesOrder.map((type) => `create-${ type.identifier }`))) {
 			// TODO: resolve this name menu/sidebar/sidebav/flex...
 			menu.close();
 			FlowRouter.go('create-channel');

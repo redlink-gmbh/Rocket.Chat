@@ -29,8 +29,8 @@ Package.onUse(function(api) {
 	api.use('rocketchat:version');
 	api.use('rocketchat:logger');
 	api.use('rocketchat:custom-oauth');
-	api.use('rocketchat:authorization', {unordered: true});
-	api.use('rocketchat:push-notifications', {unordered: true});
+	api.use('rocketchat:authorization', { unordered: true });
+	api.use('rocketchat:push-notifications', { unordered: true });
 
 	api.use('templating', 'client');
 	api.use('kadira:flow-router');
@@ -183,6 +183,7 @@ Package.onUse(function(api) {
 	api.addFiles('server/methods/unblockUser.js', 'server');
 	api.addFiles('server/methods/updateMessage.js', 'server');
 	api.addFiles('server/methods/globalAnnouncement.js', 'server');
+	api.addFiles('server/methods/getCurrentMessageRouteLink.js', 'server');
 
 	// SERVER STARTUP
 	api.addFiles('server/startup/settingsOnLoadCdnPrefix.js', 'server');
@@ -211,6 +212,9 @@ Package.onUse(function(api) {
 
 	// CLIENT LIB STARTUP
 	api.addFiles('client/lib/startup/commands.js', 'client');
+
+	// COMMON ROUTES
+	api.addFiles('lib/routes.js'); // those routes might be used on the server to calculate a URL
 
 	// CLIENT METHODS
 	api.addFiles('client/methods/sendMessage.js', 'client');

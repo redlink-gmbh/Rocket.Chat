@@ -144,7 +144,7 @@ const toolbarButtons = (user) => {
 	{
 		name: t('Create_A_New_Channel'),
 		icon: 'edit-rounded',
-		condition: () => RocketChat.authz.hasAtLeastOnePermission(['create-c', 'create-p']),
+		condition: () => RocketChat.authz.hasAtLeastOnePermission(RocketChat.roomTypes.roomTypesOrder.map((type) => `create-${ type.identifier }`)),
 		action: () => {
 			menu.close();
 			FlowRouter.go('create-channel');
