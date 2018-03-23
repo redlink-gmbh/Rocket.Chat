@@ -107,6 +107,10 @@ class ChatpalProvider extends SearchProvider {
 		return 'ChatpalSearchResultTemplate';
 	}
 
+	get suggestionItemTemplate() {
+		return 'ChatpalSuggestionItemTemplate';
+	}
+
 	get supportsSuggestions() {
 		return true;
 	}
@@ -180,9 +184,11 @@ class ChatpalProvider extends SearchProvider {
 
 		const maxTimeout = 200000;
 
-		if (Index.ping(config)) {
+		const stats = Index.ping(config);
+
+		if (stats) {
 			ChatpalLogger.debug('ping was successfull');
-			callback(config);
+			callback(config, stats);
 		} else {
 
 			ChatpalLogger.warn(`ping failed, retry in ${ timeout } ms`);
@@ -212,6 +218,7 @@ class ChatpalProvider extends SearchProvider {
 			config.updatepath = '/search/update';
 			config.pingpath = '/search/ping';
 			config.clearpath = '/search/clear';
+			config.suggestionpath = '/select';
 			config.httpOptions = {
 				headers: {
 					'X-Api-Key': this._settings.get('API_Key')
@@ -224,6 +231,7 @@ class ChatpalProvider extends SearchProvider {
 			config.updatepath = '/chatpal/update';
 			config.pingpath = '/chatpal/ping';
 			config.clearpath = '/chatpal/clear';
+			config.suggestionpath = '/select';
 			config.httpOptions = {
 				headers: this._parseHeaders()
 			};
@@ -260,12 +268,15 @@ class ChatpalProvider extends SearchProvider {
 
 		ChatpalLogger.debug(`clear = ${ clear } with reason '${ reason }'`);
 
-		this._getIndexConfig((config) => {
+		this._getIndexConfig((config, stats) => {
 			this._indexConfig = config;
 
-			ChatpalLogger.debug('config:', JSON.stringify(this._indexConfig, null, 2));
+			this._stats = stats;
 
-			this.index = new Index(this._indexConfig, this.indexFail || clear);
+			ChatpalLogger.debug('config:', JSON.stringify(this._indexConfig, null, 2));
+			ChatpalLogger.debug('stats:', JSON.stringify(this._stats, null, 2));
+
+			this.index = new Index(this._indexConfig, this.indexFail || clear, stats.message.oldest || new Date().valueOf());
 
 			callback();
 		});
@@ -282,10 +293,6 @@ class ChatpalProvider extends SearchProvider {
 
 	/**
 	 * @inheritDoc
-	 * @param text
-	 * @param context
-	 * @param payload
-	 * @param callback
 	 * @returns {*}
 	 */
 	search(text, context, payload, callback) {
@@ -304,6 +311,19 @@ class ChatpalProvider extends SearchProvider {
 			callback
 		);
 
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	suggest(text, context, payload, callback) {
+		this.index.suggest(
+			text,
+			this._settings.get('Main_Language'),
+			this._getAcl(context),
+			10,
+			callback
+		);
 	}
 }
 

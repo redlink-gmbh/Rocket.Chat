@@ -111,6 +111,33 @@ class Backend {
 		}
 	}
 
+	suggest(text, language, acl, size, callback) {
+		const options = {
+			params: {
+				q:'*:*',
+				facet:true,
+				'facet.field':`text_${ language }`,
+				'facet.prefix': text,
+				'facet.mincount': 1,
+				'json.nl': 'arrntv',
+				'facet.limit': size,
+				'fq':`rid:(${ acl.join(' OR ') })`
+			}
+		};
+
+		_.extend(options, this._options.httpOptions);
+
+		HTTP.call('POST', this._options.baseurl + this._options.suggestionpath, options, (err, result) => {
+			if (err) { return callback(err); }
+
+			try {
+				callback(undefined, _.map(result.data.facet_counts.facet_fields[`text_${ language }`], (item)=>{ return {text: item.name}; }));
+			} catch (e) {
+				callback(e);
+			}
+		});
+	}
+
 	clear() {
 		ChatpalLogger.debug('Clear Index');
 
@@ -137,11 +164,24 @@ class Backend {
 	 * @param options
 	 * @returns {boolean}
 	 */
-	static ping(options) {
-		try {
-			const response = HTTP.call('GET', options.baseurl + options.pingpath, options.httpOptions);
+	static ping(config) {
 
-			return response.statusCode >= 200 && response.statusCode < 300;
+		const options = {
+			params: {
+				stats:true
+			}
+		};
+
+		_.extend(options, config.httpOptions);
+
+		try {
+			const response = HTTP.call('GET', config.baseurl + config.pingpath, options);
+
+			if (response.statusCode >= 200 && response.statusCode < 300) {
+				return response.data.stats;
+			} else {
+				return false;
+			}
 		} catch (e) {
 			return false;
 		}
@@ -184,7 +224,7 @@ export default class Index {
 	 * @param options
 	 * @param clear if a complete reindex should be done
 	 */
-	constructor(options, clear) {
+	constructor(options, clear, date) {
 
 		this._id = Random.id();
 
@@ -194,7 +234,7 @@ export default class Index {
 
 		this._batchIndexer = new BatchIndexer(this._options.batchSize || 100, (values) => this._backend.index(values));
 
-		this._bootstrap(clear);
+		this._bootstrap(clear, date);
 	}
 
 	/**
@@ -309,28 +349,6 @@ export default class Index {
 		return start.getTime();
 	}
 
-	_getlastdate() {
-
-		try {
-
-			const result = this._backend.query({
-				rows:1,
-				sort:'created asc',
-				type: 'message',
-				text: '*'
-			});
-
-			if (result.message.numFound > 0) {
-				return new Date(result.message.docs[0].created).valueOf();
-			} else {
-				return new Date().valueOf();
-			}
-		} catch (e) {
-			ChatpalLogger.warn('cannot get latest date - complete reindex is triggered');
-			return new Date().valueOf();
-		}
-	}
-
 	_run(date, fut) {
 
 		this._running = true;
@@ -377,18 +395,15 @@ export default class Index {
 		}
 	}
 
-	_bootstrap(clear) {
+	_bootstrap(clear, date) {
 
 		ChatpalLogger.info('Start bootstrapping');
 
 		const fut = new Future();
 
-		let date = new Date().getTime();
-
 		if (clear) {
 			this._backend.clear();
-		} else {
-			date = this._getlastdate();
+			date = new Date().getTime();
 		}
 
 		this._run(date, fut);
@@ -431,6 +446,10 @@ export default class Index {
 			start,
 			rows
 		}), callback);
+	}
+
+	suggest(text, language, acl, size, callback) {
+		this._backend.suggest(text, language, acl, size, callback);
 	}
 
 }
