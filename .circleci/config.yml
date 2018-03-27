@@ -87,7 +87,7 @@ jobs:
       - run:
           name: Build Rocket.Chat
           command: |
-            if [[ $CIRCLE_TAG ]] || [[$CIRCLE_BRANCH == "develop"]] || [[$CIRCLE_BRANCH == "master"]]; then meteor reset; fi
+            if [[ $CIRCLE_TAG ]] || [[ $CIRCLE_BRANCH == "develop" ]] || [[ $CIRCLE_BRANCH == "master" ]]; then meteor reset; fi
             set +e
             meteor add rocketchat:lib
             set -e
