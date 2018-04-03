@@ -59,8 +59,7 @@
 						<div class="rc-input__icon">
 							{{> icon block="rc-input__icon-svg" icon="send"}}
 						</div>
-						<input name="first_question" type="text" class="rc-input__element" id="first_question"
-							   placeholder={{_ "New_request_first_question"}} autocomplete="off">
+						<textarea name="first_question" class="rc-input__textarea" placeholder="{{_ 'New_request_first_question'}}" maxlength="{{maxMessageLength}}"></textarea>
 					</div>
 				</label>
 			</div>
