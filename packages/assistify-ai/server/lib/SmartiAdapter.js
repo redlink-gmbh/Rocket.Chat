@@ -97,7 +97,9 @@ export class SmartiAdapter {
 			// The "support_area" in Smarti is an optional property. A historic conversation belonging to the same support_are increases relevance
 			let supportArea = room.parentRoomId || room.topic || room.expertise;
 			if (!supportArea) {
-				if (helpRequest && helpRequest.supportArea) {
+				if (room.t === '') {
+					supportArea = 'livechat';
+				} else if (helpRequest && helpRequest.supportArea) {
 					supportArea = helpRequest.supportArea;
 				} else {
 					supportArea = room.name;
@@ -113,7 +115,7 @@ export class SmartiAdapter {
 					'channel_id': [message.rid]
 				},
 				'user': {
-					'id': room.u._id
+					'id': room.u ? room.u._id : room.v._id
 				},
 				'messages': [requestBodyMessage],
 				'context': {
