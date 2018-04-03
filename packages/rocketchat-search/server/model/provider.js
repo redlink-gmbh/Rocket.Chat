@@ -28,7 +28,9 @@ class Setting {
 	}
 
 	load() {
-		this._value = RocketChat.settings.get(this.id) || this.defaultValue;
+		this._value = RocketChat.settings.get(this.id);
+
+		if (this._value === undefined) { this._value = this.defaultValue; }
 	}
 
 }
@@ -100,6 +102,10 @@ export default class SearchProvider {
 
 	get i18nDescription() {
 		return undefined;
+	}
+
+	get iconName() {
+		return 'magnifier';
 	}
 
 	get settings() {

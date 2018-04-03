@@ -85,6 +85,10 @@ class ChatpalProvider extends SearchProvider {
 		this._settings.add('PageSize', 'int', 15, {
 			i18nLabel: 'Search_Page_Size'
 		});
+		this._settings.add('SuggestionEnabled', 'boolean', true, {
+			i18nLabel: 'Chatpal_Suggestion_Enabled',
+			alert: 'This feature is currently in beta and will ne extended in the future'
+		});
 		this._settings.add('BatchSize', 'int', 100, {
 			i18nLabel: 'Chatpal_Batch_Size',
 			i18nDescription: 'Chatpal_Batch_Size_Description'
@@ -103,6 +107,10 @@ class ChatpalProvider extends SearchProvider {
 		return 'Chatpal Provider';
 	}
 
+	get iconName() {
+		return 'chatpal-logo-icon-darkblue';
+	}
+
 	get resultTemplate() {
 		return 'ChatpalSearchResultTemplate';
 	}
@@ -112,7 +120,7 @@ class ChatpalProvider extends SearchProvider {
 	}
 
 	get supportsSuggestions() {
-		return true;
+		return this._settings.get('SuggestionEnabled');
 	}
 
 	/**
@@ -151,7 +159,7 @@ class ChatpalProvider extends SearchProvider {
 		if (reason === 'switch') { return true; }
 
 		return this._indexConfig.backendtype !== this._settings.get('Backend') ||
-			(this._indexConfig.backendtype === 'onsite' && this._indexConfig.baseurl !== this._settings.get('Base_URL')) ||
+			(this._indexConfig.backendtype === 'onsite' && this._indexConfig.baseurl !== (this._settings.get('Base_URL').endsWith('/') ? this._settings.get('Base_URL').slice(0, -1) : this._settings.get('Base_URL'))) ||
 			(this._indexConfig.backendtype === 'cloud' && this._indexConfig.httpOptions.headers['X-Api-Key'] !== this._settings.get('API_Key')) ||
 			this._indexConfig.language !== this._settings.get('Main_Language');
 	}
