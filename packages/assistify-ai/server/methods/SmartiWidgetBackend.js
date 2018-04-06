@@ -37,6 +37,7 @@ Meteor.methods({
 				if (error.response.statusCode === 404) {
 					return null;
 				}
+				return {errorCode: error.code};
 			});
 
 			if (conversation && conversation.id) {
@@ -84,7 +85,13 @@ Meteor.methods({
 					return !RocketChat.authz.hasPermission(userId, 'send-many-messages');
 				}
 			}
-		)(verbs.get, `conversation/${ conversationId }/analysis`);
+		)(verbs.get, `conversation/${ conversationId }/analysis`, null, (error) => {
+			// 404 is expected if no mapping exists
+			if (error.response && error.response.statusCode === 404) {
+				return null;
+			}
+			return {errorCode: error.code};
+		});
 	},
 
 	/**
