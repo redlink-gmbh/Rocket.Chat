@@ -5,47 +5,40 @@ quotes, prefer-template, no-undef, no-unused-vars*/
 import mainContent from '../../pageobjects/main-content.page';
 import sideNav from '../../pageobjects/side-nav.page';
 import assistify from '../../pageobjects/assistify.page';
-import { username, email, password, adminUsername, adminEmail, adminPassword } from '../../data/user.js';
+import {username, email, password, adminUsername, adminEmail, adminPassword} from '../../data/user.js';
 import { checkIfUserIsAdmin } from '../../data/checks';
 import globalObject from '../../pageobjects/global';
 const topicName = 'unit-testing';
 const message = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';
-
-const sendEscape = function() {
-	browser.keys('\uE00C');
-};
-describe('[Help Request]', function () {
+describe('[Help Reqeust]', function() {
 	const helpRequest = 'write-test-cases';
 	const comment = 'Request tested successfully';
-	before(function () {
+	before(function() {
 		checkIfUserIsAdmin(adminUsername, adminEmail, adminPassword);
-		sideNav.spotlightSearchIcon.waitForVisible(10000);
+		sideNav.spotlightSearch.waitForVisible(10000);
 	});
 
-	it('Create a Expertise', function () {
+	it('Create a Expertise', function() {
 		try {
-			sideNav.spotlightSearchIcon.click();
 			sideNav.searchChannel(topicName);
 			console.log('Expertise already Exists');
 		} catch (e) {
-			sendEscape(); // press escape to make the empty list disappear
 			assistify.createTopic(topicName, adminUsername);
 			console.log('New Expertise created');
 		}
 	});
 
-	it('Create a HelpRequest', function () {
+	it('Create a HelpRequest', function() {
 		try {
 			sideNav.searchChannel(helpRequest);
 			console.log('HelpRequest already Exists');
 		} catch (e) {
-			sendEscape(); // press escape to make the empty list disappear
 			assistify.createHelpRequest(topicName, message, helpRequest);
 			console.log('New Help Request Created');
 		}
 	});
 
-	describe('[Clean Up]', function () {
+	describe('[Clean Up]', function() {
 		it('close new Topic', () => {
 			console.log('Clean for the Topic and Expertise Started...', topicName);
 			assistify.closeTopic(helpRequest);
@@ -53,42 +46,36 @@ describe('[Help Request]', function () {
 	});
 
 });
-describe('[Threading]', function () {
+describe('[Threading]', function() {
 	const helpRequest = 'execute-test-cases';
 	const inChatHelp = 'what-is-test-case';
 
-	before(() => {
+	before(()=> {
 		try {
-			sideNav.spotlightSearchIcon.click();
 			sideNav.searchChannel(inChatHelp);
 			assistify.closeTopic(inChatHelp);
 			console.log('Cleanup request from last run');
 		} catch (e) {
 			console.log('In-Chat-Help preparation done');
 		}
-		sendEscape(); // press escape to make the empty list disappear
 	});
 
-	it('Create a Expertise', function () {
+	it('Create a Expertise', function() {
 		try {
-			sideNav.spotlightSearchIcon.click();
 			sideNav.searchChannel(topicName);
 			console.log('Expertise already Exists');
 		} catch (e) {
-			sendEscape(); // press escape to make the empty list disappear
 			assistify.createTopic(topicName, adminUsername);
 			console.log('New Expertise created');
 		}
 	});
 
-	it('Create a HelpRequest', function () {
+	it('Create a HelpRequest', function() {
 		try {
-			sideNav.spotlightSearchIcon.click();
 			sideNav.searchChannel(helpRequest);
 			console.log('HelpRequest already Exists');
 			assistify.sendTopicMessage(message);
 		} catch (e) {
-			sendEscape(); // press escape to make the empty list disappear
 			assistify.createHelpRequest(topicName, message, helpRequest);
 			console.log('New Help Request Created');
 		}
@@ -96,7 +83,7 @@ describe('[Threading]', function () {
 
 	describe('Thread:', () => {
 		before(() => {
-			sideNav.spotlightSearchIcon.waitForVisible(10000);
+			sideNav.spotlightSearch.waitForVisible(10000);
 			mainContent.openMessageActionMenu();
 		});
 
@@ -104,23 +91,22 @@ describe('[Threading]', function () {
 			mainContent.selectAction('thread');
 		});
 
-		it.skip('it should fill values in popup', function () {
+		it.skip('it should fill values in popup', function() {
 			globalObject.enterModalText(inChatHelp);
 			browser.pause(1000);
 		});
 
-		it('It should create a new request from chat Room', function () {
+		it('It should create a new request from chat Room', function() {
 			globalObject.confirmPopup();
-			sideNav.spotlightSearchIcon.waitForVisible(5000);
+			sideNav.spotlightSearch.waitForVisible(5000);
 		});
 
-		it.skip('It should show the thread\'s request room', function () {
-			sideNav.spotlightSearchIcon.click();
+		it.skip('It should show the thread\'s request room', function() {
 			sideNav.searchChannel(helpRequest);
 			sideNav.spotlightSearch.waitForVisible(10000);
 		});
 
-		it('The message should be copied', function () {
+		it('The message should be copied', function() {
 			try {
 				mainContent.waitForLastMessageEqualsText(message);
 			} catch (e) {
@@ -128,8 +114,8 @@ describe('[Threading]', function () {
 			}
 		});
 	});
-	after(function () {
-		describe('[Clean Up]', function () {
+	after(function() {
+		describe('[Clean Up]', function() {
 			it('close the topics and request', () => {
 				console.log('Clean for the Topic and Expertise Started...', topicName);
 				// assistify.closeTopic(inChatHelp);

@@ -2,14 +2,13 @@ import {RocketChat} from 'meteor/rocketchat:lib';
 import {FlowRouter} from 'meteor/kadira:flow-router';
 import {ReactiveVar} from 'meteor/reactive-var';
 
-
 Meteor.startup(function() {
 	const instance = this;
 	instance.room = new ReactiveVar('');
 	RocketChat.MessageAction.addButton({
 		id: 'start-thread',
 		icon: 'thread',
-		label: t('Thread_start'),
+		label: 'Thread_start',
 		context: ['message', 'message-mobile'],
 		action() {
 			const question = this._arguments[1];

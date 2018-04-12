@@ -94,6 +94,9 @@ const getFromServer = (cb, type) => {
 const getFromServerDebounced = _.debounce(getFromServer, 500);
 
 Template.toolbar.helpers({
+	canCreate() {
+		return RocketChat.authz.hasAtLeastOnePermission(RocketChat.roomTypes.roomTypesOrder.map((type) => `create-${ type.identifier }`));
+	},
 	results() {
 		return Template.instance().resultsList.get();
 	},
