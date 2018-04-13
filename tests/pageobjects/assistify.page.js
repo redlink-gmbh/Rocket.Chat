@@ -129,7 +129,7 @@ class Assistify extends Page {
 		browser.keys(Keys.TAB);
 		browser.pause(500);
 
-		browser.waitUntil(function () {
+		browser.waitUntil(function() {
 			return browser.isEnabled('.create-channel__content [data-button="create"]');
 		}, 5000);
 
@@ -160,7 +160,7 @@ class Assistify extends Page {
 		browser.keys(Keys.TAB);
 		browser.pause(300);
 
-		browser.waitUntil(function () {
+		browser.waitUntil(function() {
 			return browser.isEnabled('.create-channel__content [data-button="create"]');
 		}, 5000);
 

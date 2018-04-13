@@ -50,11 +50,11 @@ class SideNav extends Page {
 	get createChannelTab() { return browser.element('nav.rc-tabs .rc-tabs__tab-link.createChannel'); }
 	// Opens a channel via rooms list
 	openChannel(channelName) {
-		browser.waitForVisible(`.sidebar-item__name=${channelName}`, 5000);
-		browser.click(`.sidebar-item__name=${channelName}`);
+		browser.waitForVisible(`.sidebar-item__name=${ channelName }`, 5000);
+		browser.click(`.sidebar-item__name=${ channelName }`);
 		browser.waitForVisible('.rc-message-box__container textarea', 5000);
 		browser.waitForVisible('.rc-header', 5000);
-		browser.waitUntil(function () {
+		browser.waitUntil(function() {
 			browser.waitForVisible('.rc-header__name', 8000);
 			return browser.getText('.rc-header__name') === channelName;
 		}, 10000);
@@ -77,10 +77,10 @@ class SideNav extends Page {
 				//probably, the search was already opened
 			}
 			this.spotlightSearch.setValue(channelName);
-			browser.waitForVisible(`[title='${channelName}']`, 5000);
-			browser.click(`[title='${channelName}']`);
+			browser.waitForVisible(`[title='${ channelName }']`, 5000);
+			browser.click(`[title='${ channelName }']`);
 			browser.waitForVisible('.rc-header__name', 8000);
-			browser.waitUntil(function () {
+			browser.waitUntil(function() {
 				return browser.getText('.rc-header__name') === channelName;
 			}, 10000);
 
@@ -100,17 +100,17 @@ class SideNav extends Page {
 			this.spotlightSearch.waitForVisible(5000);
 			this.spotlightSearch.click();
 			this.spotlightSearch.setValue(channelName);
-			browser.waitForVisible(`.sidebar-item__name=${channelName}`, 5000);
-			return browser.element(`.sidebar-item__name=${channelName}`);
+			browser.waitForVisible(`.sidebar-item__name=${ channelName }`, 5000);
+			return browser.element(`.sidebar-item__name=${ channelName }`);
 		}
 	}
 
 	// Gets a channel from the rooms list
 	getChannelFromList(channelName, reverse) {
 		if (reverse == null) {
-			browser.waitForVisible(`.sidebar-item__name=${channelName}`, 5000);
+			browser.waitForVisible(`.sidebar-item__name=${ channelName }`, 5000);
 		}
-		return browser.element(`.sidebar-item__name=${channelName}`);
+		return browser.element(`.sidebar-item__name=${ channelName }`);
 	}
 
 	createChannel(channelName, isPrivate, /*isReadOnly*/) {
@@ -129,7 +129,7 @@ class SideNav extends Page {
 		//workaround for incomplete setvalue bug
 		this.channelName.setValue(channelName);
 
-		browser.waitUntil(function () {
+		browser.waitUntil(function() {
 			return browser.isEnabled('.create-channel__content [data-button="create"]');
 		}, 5000);
 
