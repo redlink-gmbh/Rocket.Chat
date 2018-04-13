@@ -10,12 +10,12 @@ import { checkIfUserIsAdmin } from '../../data/checks';
 import globalObject from '../../pageobjects/global';
 const topicName = 'unit-testing';
 const message = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';
-describe('[Help Reqeust]', function() {
+describe('[Help Request]', function() {
 	const helpRequest = 'write-test-cases';
 	const comment = 'Request tested successfully';
 	before(function() {
 		checkIfUserIsAdmin(adminUsername, adminEmail, adminPassword);
-		sideNav.spotlightSearch.waitForVisible(10000);
+		sideNav.discovery.waitForVisible(3000);
 	});
 
 	it('Create a Expertise', function() {
@@ -62,9 +62,11 @@ describe('[Threading]', function() {
 
 	it('Create a Expertise', function() {
 		try {
+			assistify.escape();
 			sideNav.searchChannel(topicName);
 			console.log('Expertise already Exists');
 		} catch (e) {
+			assistify.escape();
 			assistify.createTopic(topicName, adminUsername);
 			console.log('New Expertise created');
 		}
@@ -72,10 +74,12 @@ describe('[Threading]', function() {
 
 	it('Create a HelpRequest', function() {
 		try {
+			assistify.escape();
 			sideNav.searchChannel(helpRequest);
 			console.log('HelpRequest already Exists');
 			assistify.sendTopicMessage(message);
 		} catch (e) {
+			assistify.escape();
 			assistify.createHelpRequest(topicName, message, helpRequest);
 			console.log('New Help Request Created');
 		}
@@ -83,7 +87,7 @@ describe('[Threading]', function() {
 
 	describe('Thread:', () => {
 		before(() => {
-			sideNav.spotlightSearch.waitForVisible(10000);
+			sideNav.discovery.waitForVisible(3000);
 			mainContent.openMessageActionMenu();
 		});
 
@@ -98,12 +102,12 @@ describe('[Threading]', function() {
 
 		it('It should create a new request from chat Room', function() {
 			globalObject.confirmPopup();
-			sideNav.spotlightSearch.waitForVisible(5000);
+			sideNav.discovery.waitForVisible(3000);
 		});
 
 		it.skip('It should show the thread\'s request room', function() {
 			sideNav.searchChannel(helpRequest);
-			sideNav.spotlightSearch.waitForVisible(10000);
+			sideNav.discovery.waitForVisible(3000);
 		});
 
 		it('The message should be copied', function() {

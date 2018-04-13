@@ -7,12 +7,13 @@ import global from './global';
 
 const Keys = {
 	'TAB': '\uE004',
-	'ENTER': '\uE007'
+	'ENTER': '\uE007',
+	'ESCAPE': 'u\ue00c'
 };
 class Assistify extends Page {
 
-	get knowledgebaseTab() {
-		return browser.element('.tab-button:not(.hidden) .tab-button-icon--lightbulb');
+	get knowledgebaseIcon() {
+		return browser.element('.tab-button-icon--lightbulb');
 	}
 
 	get completeRequest() {
@@ -107,6 +108,9 @@ class Assistify extends Page {
 
 	get numberOfRequests() { return browser.element('#rocket-chat > aside > div.rooms-list > h3:nth-child(9) > span.badge'); }
 
+	escape() {
+		browser.keys(Keys.ESCAPE);
+	}
 	createTopic(topicName, expert) {
 		this.newChannelBtn.waitForVisible(10000);
 		this.newChannelBtn.click();
@@ -125,7 +129,7 @@ class Assistify extends Page {
 		browser.keys(Keys.TAB);
 		browser.pause(500);
 
-		browser.waitUntil(function() {
+		browser.waitUntil(function () {
 			return browser.isEnabled('.create-channel__content [data-button="create"]');
 		}, 5000);
 
@@ -135,7 +139,8 @@ class Assistify extends Page {
 	}
 
 	createHelpRequest(topicName, message, requestTitle) {
-		this.newChannelBtn.waitForVisible(10000);
+		browser.keys(Keys.ESCAPE);
+		this.newChannelBtn.waitForVisible(1000);
 		this.newChannelBtn.click();
 		this.tabs.waitForVisible(5000);
 		if (this.tabs) {
@@ -155,7 +160,7 @@ class Assistify extends Page {
 		browser.keys(Keys.TAB);
 		browser.pause(300);
 
-		browser.waitUntil(function() {
+		browser.waitUntil(function () {
 			return browser.isEnabled('.create-channel__content [data-button="create"]');
 		}, 5000);
 
@@ -176,7 +181,7 @@ class Assistify extends Page {
 	}
 
 	closeRequest() {
-		this.knowledgebaseTab.click();
+		this.knowledgebaseIcon.click();
 		this.completeRequest.waitForVisible(5000);
 		this.completeRequest.click();
 		global.confirmPopup();
@@ -194,8 +199,8 @@ class Assistify extends Page {
 	}
 
 	clickKnowledgebase() {
-		this.knowledgebaseTab.waitForVisible(5000);
-		this.knowledgebaseTab.click();
+		this.knowledgebaseIcon.waitForVisible(5000);
+		this.knowledgebaseIcon.click();
 	}
 
 	addNewKeyword(keyword) {

@@ -50,7 +50,6 @@ describe('[Smarti Integration]', () => {
 				assistify.sendTopicMessage(answer);
 			});
 			it('close request', () => {
-				assistify.clickKnowledgebase();
 				assistify.closeRequest();
 
 			});
@@ -63,7 +62,6 @@ describe('[Smarti Integration]', () => {
 			});
 
 			it('knowledgebase answer visible', () => {
-				assistify.clickKnowledgebase();
 				assistify.knowledgebaseContent.waitForVisible(5000);
 			});
 
