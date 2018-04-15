@@ -1,8 +1,5 @@
-import _ from 'underscore';
 import ChatpalLogger from '../utils/logger';
 import { Random } from 'meteor/random';
-
-const Future = Npm.require('fibers/future');
 
 /**
  * Enables HTTP functions on Chatpal Backend
@@ -21,10 +18,9 @@ class Backend {
 	index(docs) {
 		const options = {
 			data:docs,
-			params:{language:this._options.language}
+			params:{language:this._options.language},
+			...this._options.httpOptions
 		};
-
-		_.extend(options, this._options.httpOptions);
 
 		try {
 
@@ -53,14 +49,15 @@ class Backend {
 	remove(type, id) {
 		ChatpalLogger.debug(`Remove ${ type }(${ id }) from Index`);
 
-		const options = {data:{
-			delete: {
-				query: `id:${ id } AND type:${ type }`
+		const options = {
+			data:{
+				delete: {
+					query: `id:${ id } AND type:${ type }`
+				},
+				commit:{}
 			},
-			commit:{}
-		}};
-
-		_.extend(options, this._options.httpOptions);
+			...this._options.httpOptions
+		};
 
 		try {
 			const response = HTTP.call('POST', this._options.baseurl + this._options.clearpath, options);
@@ -82,9 +79,10 @@ class Backend {
 	 */
 	query(params, callback) {
 
-		const options = {params};
-
-		_.extend(options, this._options.httpOptions);
+		const options = {
+			params,
+			...this._options.httpOptions
+		};
 
 		ChatpalLogger.debug('query: ', JSON.stringify(options, null, 2));
 
@@ -113,9 +111,10 @@ class Backend {
 
 	suggest(params, callback) {
 
-		const options = {params};
-
-		_.extend(options, this._options.httpOptions);console.log(options);
+		const options = {
+			params,
+			...this._options.httpOptions
+		};
 
 		HTTP.call('POST', this._options.baseurl + this._options.suggestionpath, options, (err, result) => {
 			if (err) { return callback(err); }
@@ -131,14 +130,14 @@ class Backend {
 	clear() {
 		ChatpalLogger.debug('Clear Index');
 
-		const options = {data:{
-			delete: {
-				query: '*:*'
-			},
-			commit:{}
-		}};
-
-		_.extend(options, this._options.httpOptions);
+		const options = {
+			data:{
+				delete: {
+					query: '*:*'
+				},
+				commit:{}
+			},...this._options.httpOptions
+		};
 
 		try {
 			const response = HTTP.call('POST', this._options.baseurl + this._options.clearpath, options);
@@ -159,10 +158,9 @@ class Backend {
 		const options = {
 			params: {
 				stats:true
-			}
+			},
+			...config.httpOptions
 		};
-
-		_.extend(options, config.httpOptions);
 
 		try {
 			const response = HTTP.call('GET', config.baseurl + config.pingpath, options);
@@ -266,7 +264,7 @@ export default class Index {
 					type,
 					user_username: doc.username,
 					user_name: doc.name,
-					user_email: _.map(doc.emails, (e) => { return e.address; })
+					user_email: doc.emails && doc.emails.map((e) => { return e.address; })
 				};
 			default: throw new Error(`Cannot index type '${ type }'`);
 		}
@@ -339,7 +337,7 @@ export default class Index {
 		return start.getTime();
 	}
 
-	_run(date, fut) {
+	_run(date, resolve, reject) {
 
 		this._running = true;
 
@@ -348,7 +346,7 @@ export default class Index {
 			Meteor.setTimeout(() => {
 				date = this._indexMessages(date, (this._options.windowSize || 24) * 3600000);
 
-				this._run(date, fut);
+				this._run(date, resolve, reject);
 
 			}, this._options.timeout || 1000);
 		} else if (this._break) {
@@ -358,7 +356,7 @@ export default class Index {
 
 			this._running = false;
 
-			fut.return();
+			resolve();
 		} else {
 
 			ChatpalLogger.info(`No messages older than already indexed date ${ new Date(date).toString() }`);
@@ -381,7 +379,7 @@ export default class Index {
 
 			this._running = false;
 
-			fut.return();
+			resolve();
 		}
 	}
 
@@ -389,16 +387,16 @@ export default class Index {
 
 		ChatpalLogger.info('Start bootstrapping');
 
-		const fut = new Future();
+		return new Promise((resolve, reject) => {
 
-		if (clear) {
-			this._backend.clear();
-			date = new Date().getTime();
-		}
+			if (clear) {
+				this._backend.clear();
+				date = new Date().getTime();
+			}
 
-		this._run(date, fut);
+			this._run(date, resolve, reject);
 
-		return fut;
+		});
 	}
 
 	static ping(options) {
@@ -428,14 +426,15 @@ export default class Index {
 	}
 
 	query(text, language, acl, type, start, rows, callback, params = {}) {
-		this._backend.query(_.extend(params, {
+		this._backend.query({
 			text,
 			language,
 			acl,
 			type,
 			start,
-			rows
-		}), callback);
+			rows,
+			...params
+		}, callback);
 	}
 
 	suggest(text, language, acl, callback) {

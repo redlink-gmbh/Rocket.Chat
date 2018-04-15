@@ -1,5 +1,4 @@
 /* globals RocketChat */
-import Future from 'fibers/future';
 import _ from 'underscore';
 
 import {validationService} from '../service/validationService';
@@ -17,57 +16,51 @@ class SearchProviderService {
 	 * @param id the id of the provider which should be started
 	 * @param cb a possible callback if provider is active or not (currently not in use)
 	 */
-	use(id, cb = function() {}) {
+	use(id) {
 
-		if (!this.providers[id]) { throw new Error(`provider ${ id } cannot be found`); }
+		return new Promise((resolve, reject) => {
+			if (!this.providers[id]) { throw new Error(`provider ${ id } cannot be found`); }
 
-		let reason = 'switch';
+			let reason = 'switch';
 
-		if (!this.activeProvider) {
-			reason = 'startup';
-		} else if (this.activeProvider.key === this.providers[id].key) {
-			reason = 'update';
-		}
-
-		const stopProvider = (callback) => {
-			if (this.activeProvider) {
-
-				SearchLogger.debug(`Stopping provider '${ this.activeProvider.key }'`);
-
-				this.activeProvider.stop(callback);
-			} else {
-				callback();
+			if (!this.activeProvider) {
+				reason = 'startup';
+			} else if (this.activeProvider.key === this.providers[id].key) {
+				reason = 'update';
 			}
-		};
 
-		stopProvider((err)=>{
+			const stopProvider = () => {
+				return new Promise((resolve, reject) => {
+					if (this.activeProvider) {
 
-			if (!err) {
+						SearchLogger.debug(`Stopping provider '${ this.activeProvider.key }'`);
 
+						this.activeProvider.stop(resolve, reject);
+					} else {
+						resolve();
+					}
+				});
+			};
+
+			stopProvider().then(() => {
 				this.activeProvider = undefined;
 
 				SearchLogger.debug(`Start provider '${ id }'`);
 
 				try {
 
-					this.providers[id].run(reason, (err) => {
-						if (err) {
-							cb(err);
-						} else {
-							this.activeProvider = this.providers[id];
-							cb();
-						}
-					});
+					this.providers[id].run(reason).then(() => {
+						this.activeProvider = this.providers[id];
+						resolve();
+					}, reject);
 
 				} catch (e) {
-					cb(e);
+					reject(e);
 				}
-
-			} else {
-				cb(err);
-			}
+			}, reject);
 
 		});
+
 	}
 
 	/**
@@ -93,28 +86,27 @@ class SearchProviderService {
 
 			self.add('Search.Provider', 'defaultProvider', {
 				type: 'select',
-				values: _.map(providers, (p) => { return {key:p.key, i18nLabel: p.i18nLabel}; }),
+				values: Object.keys(providers).map((key) => { return {key, i18nLabel: providers[key].i18nLabel}; }),
 				public: true,
 				i18nLabel: 'Search_Provider'
 			});
 
-			_.chain(providers)
-				.filter((provider) => provider.settings && provider.settings.length > 0)
-				.each(function(provider) {
-					self.section(provider.i18nLabel, function() {
-						provider.settings.forEach((setting) => {
+			Object.keys(providers)
+				.filter((key) => providers[key].settings && providers[key].settings.length > 0)
+				.forEach(function(key) {
+					self.section(providers[key].i18nLabel, function() {
+						providers[key].settings.forEach((setting) => {
 
 							const _options = {
-								type: setting.type
+								type: setting.type,
+								...setting.options
 							};
-
-							_.extend(_options, setting.options);
 
 							_options.enableQuery = _options.enableQuery || [];
 
 							_options.enableQuery.push({
 								_id: 'Search.Provider',
-								value: provider.key
+								value: key
 							});
 
 							this.add(setting.id, setting.defaultValue, _options);
@@ -128,7 +120,7 @@ class SearchProviderService {
 			const providerId = RocketChat.settings.get('Search.Provider');
 
 			if (providerId) {
-				this.use(providerId);
+				this.use(providerId);//TODO do something with success and errors
 			}
 
 		}), 1000);
@@ -154,52 +146,53 @@ Meteor.methods({
 	 * @returns {*}
 	 */
 	'rocketchatSearch.search'(text, context, payload) {
-		const future = new Future();
 
-		payload = payload !== null ? payload : undefined;//TODO is this cleanup necessary?
+		return new Promise((resolve, reject) => {
 
-		try {
+			payload = payload !== null ? payload : undefined;//TODO is this cleanup necessary?
 
-			if (!searchProviderService.activeProvider) { throw new Error('Provider currently not active'); }
+			try {
 
-			SearchLogger.debug('search: ', `\n\tText:${ text }\n\tContext:${ JSON.stringify(context) }\n\tPayload:${ JSON.stringify(payload) }`);
-
-			searchProviderService.activeProvider.search(text, context, payload, (error, data) => {
-				if (error) {
-					future.throw(error);
-				} else {
-					future.return(validationService.validateSearchResult(data));
+				if (!searchProviderService.activeProvider) {
+					throw new Error('Provider currently not active');
 				}
-			});
-		} catch (e) {
-			future.throw(e);
-		}
 
-		return future.wait();
+				SearchLogger.debug('search: ', `\n\tText:${ text }\n\tContext:${ JSON.stringify(context) }\n\tPayload:${ JSON.stringify(payload) }`);
+
+				searchProviderService.activeProvider.search(text, context, payload, (error, data) => {
+					if (error) {
+						reject(error);
+					} else {
+						resolve(validationService.validateSearchResult(data));
+					}
+				});
+			} catch (e) {
+				reject(e);
+			}
+		});
 	},
 	'rocketchatSearch.suggest'(text, context, payload) {
-		const future = new Future();
 
-		payload = payload !== null ? payload : undefined;//TODO is this cleanup necessary?
+		return new Promise((resolve, reject) => {
+			payload = payload !== null ? payload : undefined;//TODO is this cleanup necessary?
 
-		try {
+			try {
 
-			if (!searchProviderService.activeProvider) { throw new Error('Provider currently not active'); }
+				if (!searchProviderService.activeProvider) { throw new Error('Provider currently not active'); }
 
-			SearchLogger.debug('suggest: ', `\n\tText:${ text }\n\tContext:${ JSON.stringify(context) }\n\tPayload:${ JSON.stringify(payload) }`);
+				SearchLogger.debug('suggest: ', `\n\tText:${ text }\n\tContext:${ JSON.stringify(context) }\n\tPayload:${ JSON.stringify(payload) }`);
 
-			searchProviderService.activeProvider.suggest(text, context, payload, (error, data) => {
-				if (error) {
-					future.throw(error);
-				} else {
-					future.return(data);
-				}
-			});
-		} catch (e) {
-			future.throw(e);
-		}
-
-		return future.wait();
+				searchProviderService.activeProvider.suggest(text, context, payload, (error, data) => {
+					if (error) {
+						reject(error);
+					} else {
+						resolve(data);
+					}
+				});
+			} catch (e) {
+				reject(e);
+			}
+		});
 	},
 	/**
 	 * Get the current provider with key, description, resultTemplate, suggestionItemTemplate and settings (as Map)
