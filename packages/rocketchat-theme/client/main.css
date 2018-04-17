@@ -50,8 +50,8 @@
 /* User Info */
 @import 'imports/components/userInfo.css';
 
-/* User Info */
-@import 'imports/components/userInfo.css';
+/* Channel Settings */
+@import 'imports/components/channel-settings.css';
 
 /* RTL */
 @import 'imports/general/rtl.css';
