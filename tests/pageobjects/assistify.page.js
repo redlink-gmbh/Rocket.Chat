@@ -112,7 +112,8 @@ class Assistify extends Page {
 		browser.keys(Keys.ESCAPE);
 	}
 	createTopic(topicName, expert) {
-		this.newChannelBtn.waitForVisible(10000);
+		this.escape();
+		this.newChannelBtn.waitForVisible(3000);
 		this.newChannelBtn.click();
 
 		if (this.tabs) {
@@ -139,7 +140,7 @@ class Assistify extends Page {
 	}
 
 	createHelpRequest(topicName, message, requestTitle) {
-		browser.keys(Keys.ESCAPE);
+		this.escape();
 		this.newChannelBtn.waitForVisible(1000);
 		this.newChannelBtn.click();
 		this.tabs.waitForVisible(5000);
