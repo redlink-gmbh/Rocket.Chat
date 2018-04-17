@@ -18,8 +18,8 @@ module.exports = {
 	// 	offline: false,
 	// 	showXolvioMessages: true,
 
-	// 	// - - - - CUCUMBER - - - -
-	path: 'tests/end-to-end/ui',
+// 	// - - - - CUCUMBER - - - -
+	path: 'tests/end-to-end',
 	// 	format: 'pretty',
 	// 	tags: '~@ignore',
 	// 	singleSnippetPerFile: true,
