@@ -1,5 +1,4 @@
 /*globals OAuth*/
-/*eslint complexity: ["error", 40]*/
 import _ from 'underscore';
 
 const logger = new Logger('CustomOAuth');
