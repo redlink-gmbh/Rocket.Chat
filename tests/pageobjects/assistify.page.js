@@ -15,6 +15,19 @@ class Assistify extends Page {
 	get knowledgebaseIcon() {
 		return browser.element('.tab-button-icon--lightbulb');
 	}
+	// in order to communicate with Smarti we need the roomId.
+	// funny enough, it's available in its DOM. A bit dirty, but very efficient
+	get roomId() {
+		return browser.element('.messages-container.flex-tab-main-content').getAttribute('id').replace('chat-window-', '');
+	}
+
+	get lastMessageId() {
+		return browser.element('.message:last-child').getAttribute('id');
+	}
+
+	get knowledgebaseTab() {
+		return browser.element('.tab-button:not(.hidden) .tab-button-icon--lightbulb');
+	}
 
 	get completeRequest() {
 		return browser.element('.button.close-helprequest.button-block');
@@ -185,6 +198,14 @@ class Assistify extends Page {
 		this.knowledgebaseIcon.click();
 		this.completeRequest.waitForVisible(5000);
 		this.completeRequest.click();
+		global.confirmPopup();
+	}
+
+	deleteRoom() {
+		flexTab.operateFlexTab('info', true);
+		flexTab.editBtn.click();
+		flexTab.deleteBtn.click();
+		global.modal.waitForVisible(5000);
 		global.confirmPopup();
 	}
 
