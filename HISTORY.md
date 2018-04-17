@@ -1,3 +1,11 @@
+# Assistify 0.63.2-0.7.0
+
+This release "only" brings an up-to-date version of Rocket.Chat - But this one has a pack full of new features:
+
+- The "directory" - a list showing all rooms of your team
+- A revamped sidebar-header: You can now easily customize the view of your channel list
+- APIs for the new mobile apps - which are a huge leap forward, particularly for Android-users
+- Much much more in the details - check the below history if you wanted know it in detail
 
 # 0.63.2
 `2018-04-17  ·  1 🐛  ·  1 🔍`
