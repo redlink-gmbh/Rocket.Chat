@@ -2,7 +2,7 @@ import Page from './Page';
 import Global from './global';
 
 class FlexTab extends Page {
-	get moreActions() { return browser.element('.rc-room-actions__button.js-more'); }
+	get moreActions() { return browser.element('.rc-room-actions__button.js-more') ; }
 	// Channel Info Tab
 	get channelTab() { return browser.element('.tab-button:not(.hidden) .tab-button-icon--info-circled'); }
 	get channelSettings() { return browser.element('.channel-settings'); }
@@ -10,6 +10,8 @@ class FlexTab extends Page {
 	get archiveBtn() { return browser.element('.clearfix:last-child .icon-pencil'); }
 	get archiveRadio() { return browser.element('.editing'); }
 	get archiveSave() { return browser.element('.save'); }
+	get deleteBtn() { return browser.element('.js-delete'); }
+	get editBtn() { return browser.element('.js-edit'); }
 	get editNameBtn() { return browser.element('[data-edit="name"]'); }
 	get editTopicBtn() { return browser.element('[data-edit="topic"]'); }
 	get editAnnouncementBtn() { return browser.element('[data-edit="announcement"]'); }

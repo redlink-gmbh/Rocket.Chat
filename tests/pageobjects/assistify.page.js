@@ -7,9 +7,23 @@ import global from './global';
 
 const Keys = {
 	'TAB': '\uE004',
-	'ENTER': '\uE007'
+	'ENTER': '\uE007',
+	'ESCAPE': 'u\ue00c'
 };
 class Assistify extends Page {
+
+	get knowledgebaseIcon() {
+		return browser.element('.tab-button-icon--lightbulb');
+	}
+	// in order to communicate with Smarti we need the roomId.
+	// funny enough, it's available in its DOM. A bit dirty, but very efficient
+	get roomId() {
+		return browser.element('.messages-container.flex-tab-main-content').getAttribute('id').replace('chat-window-', '');
+	}
+
+	get lastMessageId() {
+		return browser.element('.message:last-child').getAttribute('id');
+	}
 
 	get knowledgebaseTab() {
 		return browser.element('.tab-button:not(.hidden) .tab-button-icon--lightbulb');
@@ -67,7 +81,7 @@ class Assistify extends Page {
 	}
 
 	get newChannelBtn() {
-		return browser.element('.toolbar .toolbar__search-create-channel');
+		return browser.element('.sidebar__toolbar-button-icon--edit-rounded');
 	}
 
 
@@ -107,8 +121,12 @@ class Assistify extends Page {
 
 	get numberOfRequests() { return browser.element('#rocket-chat > aside > div.rooms-list > h3:nth-child(9) > span.badge'); }
 
+	escape() {
+		browser.keys(Keys.ESCAPE);
+	}
 	createTopic(topicName, expert) {
-		this.newChannelBtn.waitForVisible(10000);
+		this.escape();
+		this.newChannelBtn.waitForVisible(3000);
 		this.newChannelBtn.click();
 
 		if (this.tabs) {
@@ -135,7 +153,8 @@ class Assistify extends Page {
 	}
 
 	createHelpRequest(topicName, message, requestTitle) {
-		this.newChannelBtn.waitForVisible(10000);
+		this.escape();
+		this.newChannelBtn.waitForVisible(1000);
 		this.newChannelBtn.click();
 		this.tabs.waitForVisible(5000);
 		if (this.tabs) {
@@ -176,9 +195,17 @@ class Assistify extends Page {
 	}
 
 	closeRequest() {
-		this.knowledgebaseTab.click();
+		this.knowledgebaseIcon.click();
 		this.completeRequest.waitForVisible(5000);
 		this.completeRequest.click();
+		global.confirmPopup();
+	}
+
+	deleteRoom() {
+		flexTab.operateFlexTab('info', true);
+		flexTab.editBtn.click();
+		flexTab.deleteBtn.click();
+		global.modal.waitForVisible(5000);
 		global.confirmPopup();
 	}
 
@@ -194,8 +221,8 @@ class Assistify extends Page {
 	}
 
 	clickKnowledgebase() {
-		this.knowledgebaseTab.waitForVisible(5000);
-		this.knowledgebaseTab.click();
+		this.knowledgebaseIcon.waitForVisible(5000);
+		this.knowledgebaseIcon.click();
 	}
 
 	addNewKeyword(keyword) {

@@ -37,7 +37,6 @@ describe('[Smarti Widget]', () => {
 			});
 
 			it('close request', () => {
-				assistify.clickKnowledgebase();
 				assistify.closeRequest();
 
 			});
@@ -50,7 +49,6 @@ describe('[Smarti Widget]', () => {
 			});
 
 			it('knowledgebase answer is not visible', () => {
-				assistify.clickKnowledgebase();
 				assistify.knowledgebaseContent.isVisible().should.equal(false);
 			});
 
