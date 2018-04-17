@@ -2,6 +2,10 @@
 .channel-settings .rc-user-info__row {
 	padding: 0;
 	border-bottom: 0;
+
+	&.edit {
+		margin-bottom: -30px;
+	}
 }
 
 .channel-settings .rc-button {
