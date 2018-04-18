@@ -70,7 +70,7 @@ describe('[Smarti Widget]', () => {
 	describe('Cleanup', () => {
 		it('close new Topic', () => {
 			console.log('TopicName for cleanup', topicName);
-			assistify.closeTopic(topicName);
+			assistify.deleteRoom(topicName);
 		});
 	});
 });

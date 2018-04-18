@@ -41,7 +41,7 @@ describe('[Help Request]', function() {
 	describe('[Clean Up]', function() {
 		it('close new Topic', () => {
 			console.log('Clean for the Topic and Expertise Started...', topicName);
-			assistify.closeTopic(helpRequest);
+			assistify.deleteRoom(helpRequest);
 		});
 	});
 
@@ -53,7 +53,7 @@ describe('[Threading]', function() {
 	before(()=> {
 		try {
 			sideNav.searchChannel(inChatHelp);
-			assistify.closeTopic(inChatHelp);
+			assistify.deleteRoom(inChatHelp);
 			console.log('Cleanup request from last run');
 		} catch (e) {
 			console.log('In-Chat-Help preparation done');
@@ -122,9 +122,8 @@ describe('[Threading]', function() {
 		describe('[Clean Up]', function() {
 			it('close the topics and request', () => {
 				console.log('Clean for the Topic and Expertise Started...', topicName);
-				// assistify.closeTopic(inChatHelp);
-				assistify.closeTopic(helpRequest);
-				assistify.closeTopic(topicName);
+				assistify.deleteRoom(helpRequest);
+				assistify.deleteRoom(topicName);
 			});
 		});
 	});

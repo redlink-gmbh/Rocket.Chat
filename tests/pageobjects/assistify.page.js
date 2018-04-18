@@ -99,10 +99,6 @@ class Assistify extends Page {
 	}
 
 	// Knowledgebase
-	get closeTopicBtn() {
-		return browser.element('.rc-button.rc-button--outline.rc-button--cancel.js-delete');
-	}
-
 	get editInfoBtn() {
 		return browser.element('.rc-button.rc-button--icon.rc-button--outline.js-edit');
 	}
@@ -201,7 +197,10 @@ class Assistify extends Page {
 		global.confirmPopup();
 	}
 
-	deleteRoom() {
+	deleteRoom(roomName) {
+		if (roomName) {
+			sideNav.openChannel(roomName);
+		}
 		flexTab.operateFlexTab('info', true);
 		flexTab.editBtn.click();
 		flexTab.deleteBtn.click();
@@ -209,16 +208,15 @@ class Assistify extends Page {
 		global.confirmPopup();
 	}
 
-	closeTopic(topicName) {
-		sideNav.openChannel(topicName);
-		flexTab.channelTab.waitForVisible(5000);
-		flexTab.channelTab.click();
-		this.editInfoBtn.waitForVisible(5000);
-		this.editInfoBtn.click();
-		this.closeTopicBtn.waitForVisible(5000);
-		this.closeTopicBtn.click();
-		global.confirmPopup();
-	}
+	// closeTopic(topicName) {
+	// 	flexTab.channelTab.waitForVisible(5000);
+	// 	flexTab.channelTab.click();
+	// 	this.editInfoBtn.waitForVisible(5000);
+	// 	this.editInfoBtn.click();
+	// 	this.closeTopicBtn.waitForVisible(5000);
+	// 	this.closeTopicBtn.click();
+	// 	global.confirmPopup();
+	// }
 
 	clickKnowledgebase() {
 		this.knowledgebaseIcon.waitForVisible(5000);
