@@ -41,19 +41,20 @@ describe('[Help Request]', function() {
 	describe('[Clean Up]', function() {
 		it('close new Topic', () => {
 			console.log('Clean for the Topic and Expertise Started...', topicName);
-			assistify.closeTopic(helpRequest);
+			assistify.deleteRoom(helpRequest);
 		});
 	});
 
 });
 describe('[Threading]', function() {
 	const helpRequest = 'execute-test-cases';
+	let helpRequestThreaded = null;
 	const inChatHelp = 'what-is-test-case';
 
 	before(()=> {
 		try {
 			sideNav.searchChannel(inChatHelp);
-			assistify.closeTopic(inChatHelp);
+			assistify.deleteRoom(inChatHelp);
 			console.log('Cleanup request from last run');
 		} catch (e) {
 			console.log('In-Chat-Help preparation done');
@@ -102,6 +103,8 @@ describe('[Threading]', function() {
 
 		it('It should create a new request from chat Room', function() {
 			globalObject.confirmPopup();
+			mainContent.channelTitle.waitForVisible(3000);
+			helpRequestThreaded = mainContent.channelTitle.getText();
 			sideNav.discovery.waitForVisible(3000);
 		});
 
@@ -122,9 +125,10 @@ describe('[Threading]', function() {
 		describe('[Clean Up]', function() {
 			it('close the topics and request', () => {
 				console.log('Clean for the Topic and Expertise Started...', topicName);
-				// assistify.closeTopic(inChatHelp);
-				assistify.closeTopic(helpRequest);
-				assistify.closeTopic(topicName);
+				assistify.deleteRoom(helpRequest);
+				assistify.deleteRoom(helpRequestThreaded);
+				browser.pause(1000);
+				assistify.deleteRoom(topicName);
 			});
 		});
 	});
