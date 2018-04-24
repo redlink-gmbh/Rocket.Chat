@@ -7,6 +7,26 @@ This release "only" brings an up-to-date version of Rocket.Chat - But this one h
 - APIs for the new mobile apps - which are a huge leap forward, particularly for Android-users
 - Much much more in the details - check the below history if you wanted know it in detail
 
+# 0.63.3
+`2018-04-18  ·  2 🐛  ·  2 🔍  ·  1 👩‍💻👨‍💻`
+
+### 🐛 Bug fixes
+
+- The 'channel.messages' REST API Endpoint error ([#10485](https://github.com/RocketChat/Rocket.Chat/pull/10485))
+- Even TypeErrors with SAML ([#10475](https://github.com/RocketChat/Rocket.Chat/pull/10475))
+
+<details>
+<summary>🔍 Minor changes</summary>
+
+- Added one2mail.info to default blocked domains list ([#10218](https://github.com/RocketChat/Rocket.Chat/pull/10218) by [@nsuchy](https://github.com/nsuchy))
+- Release 0.63.2 ([#10476](https://github.com/RocketChat/Rocket.Chat/pull/10476))
+
+</details>
+
+### 👩‍💻👨‍💻 Contributors 😍
+
+- [@nsuchy](https://github.com/nsuchy)
+
 # 0.63.2
 `2018-04-17  ·  1 🐛  ·  1 🔍`
 
