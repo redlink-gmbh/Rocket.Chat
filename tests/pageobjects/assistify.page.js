@@ -103,6 +103,7 @@ class Assistify extends Page {
 
 	get wordCloudLink() {
 		return browser.element('[id="more-topics"]');
+
 	}
 
 	get wordCloudButton() {
