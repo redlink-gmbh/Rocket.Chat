@@ -1,11 +1,9 @@
-# Assistify 0.63.2-0.7.0
+# Assistify 0.63.3-0.7.2
 
-This release "only" brings an up-to-date version of Rocket.Chat - But this one has a pack full of new features:
+This is a bugfix release and brings only minor enhancements
 
-- The "directory" - a list showing all rooms of your team
-- A revamped sidebar-header: You can now easily customize the view of your channel list
-- APIs for the new mobile apps - which are a huge leap forward, particularly for Android-users
-- Much much more in the details - check the below history if you wanted know it in detail
+- A way to update the knowledge base to the latest state of the chat (synchronization)
+- A better mobile livechat experience
 
 # 0.63.3
 `2018-04-18  ·  2 🐛  ·  2 🔍  ·  1 👩‍💻👨‍💻`
@@ -26,6 +24,22 @@ This release "only" brings an up-to-date version of Rocket.Chat - But this one h
 ### 👩‍💻👨‍💻 Contributors 😍
 
 - [@nsuchy](https://github.com/nsuchy)
+
+# Assistify 0.63.2-0.7.1
+
+This is a bugfix release and brings only minor enhancements
+
+- The ability to specify a password policy
+- A more convenient way to select a topic for a request :tada:
+
+# Assistify 0.63.2-0.7.0
+
+This release "only" brings an up-to-date version of Rocket.Chat - But this one has a pack full of new features:
+
+- The "directory" - a list showing all rooms of your team
+- A revamped sidebar-header: You can now easily customize the view of your channel list
+- APIs for the new mobile apps - which are a huge leap forward, particularly for Android-users
+- Much much more in the details - check the below history if you wanted know it in detail
 
 # 0.63.2
 `2018-04-17  ·  1 🐛  ·  1 🔍`
