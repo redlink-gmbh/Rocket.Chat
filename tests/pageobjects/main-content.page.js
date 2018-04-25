@@ -2,26 +2,71 @@ import Page from './Page';
 
 class MainContent extends Page {
 
-	get mainContent() { return browser.element('.main-content'); }
+	get mainContent() {
+		return browser.element('.main-content');
+	}
 
 	// Main Content Header (Channel Title Area)
-	get emptyFavoriteStar() { return browser.element('.rc-header__toggle-favorite.empty'); }
-	get favoriteStar() { return browser.element('.rc-header__toggle-favorite.favorite-room'); }
-	get channelTitle() { return browser.element('.rc-header__name'); }
+	get emptyFavoriteStar() {
+		return browser.element('.rc-header__toggle-favorite.empty');
+	}
+
+	get favoriteStar() {
+		return browser.element('.rc-header__toggle-favorite.favorite-room');
+	}
+
+	get channelTitle() {
+		return browser.element('.rc-header__name');
+	}
 
 	//Main Content Footer (Message Input Area)
-	get messageInput() { return browser.element('.js-input-message'); }
-	get sendBtn() { return browser.element('.rc-message-box__icon.js-send'); }
-	get messageBoxActions() { return browser.element('.rc-message-box__icon'); }
-	get recordBtn() { return browser.element('.message-buttons .icon-mic'); }
-	get videoCamBtn() { return browser.element('.message-buttons .icon-videocam'); }
-	get emojiBtn() { return browser.element('.rc-message-box__icon.emoji-picker-icon'); }
-	get messagePopUp() { return browser.element('.message-popup'); }
-	get messagePopUpTitle() { return browser.element('.message-popup-title'); }
-	get messagePopUpItems() { return browser.element('.message-popup-items'); }
-	get messagePopUpFirstItem() { return browser.element('.popup-item.selected'); }
-	get mentionAllPopUp() { return browser.element('.popup-item[data-id="all"]'); }
-	get joinChannelBtn() { return browser.element('.button.join'); }
+	get messageInput() {
+		return browser.element('.js-input-message');
+	}
+
+	get sendBtn() {
+		return browser.element('.rc-message-box__icon.js-send');
+	}
+
+	get messageBoxActions() {
+		return browser.element('.rc-message-box__icon');
+	}
+
+	get recordBtn() {
+		return browser.element('.message-buttons .icon-mic');
+	}
+
+	get videoCamBtn() {
+		return browser.element('.message-buttons .icon-videocam');
+	}
+
+	get emojiBtn() {
+		return browser.element('.rc-message-box__icon.emoji-picker-icon');
+	}
+
+	get messagePopUp() {
+		return browser.element('.message-popup');
+	}
+
+	get messagePopUpTitle() {
+		return browser.element('.message-popup-title');
+	}
+
+	get messagePopUpItems() {
+		return browser.element('.message-popup-items');
+	}
+
+	get messagePopUpFirstItem() {
+		return browser.element('.popup-item.selected');
+	}
+
+	get mentionAllPopUp() {
+		return browser.element('.popup-item[data-id="all"]');
+	}
+
+	get joinChannelBtn() {
+		return browser.element('.button.join');
+	}
 
 	// Messages
 	get lastMessageUser() { return browser.element('.message:last-child .user-card-message:nth-of-type(2)'); }
@@ -44,30 +89,85 @@ class MainContent extends Page {
 	get messageStar() { return browser.element('[data-id="star-message"][data-type="message-action"]'); }
 	get messageUnread() { return browser.element('[data-id="mark-message-as-unread"][data-type="message-action"]'); }
 	// get messageReaction() { return browser.element('.message-actions__button[data-message-action="reaction-message"]'); }
-	get messagePin() { return browser.element('[data-id="pin-message"][data-type="message-action"]'); }
+	get messagePin() {
+		return browser.element('[data-id="pin-message"][data-type="message-action"]');
+	}
+
 	// get messageClose() { return browser.element('[data-id="rc-popover-close"][data-type="message-action"]'); }
 
 	// Emojis
-	get emojiPickerMainScreen() { return browser.element('.emoji-picker'); }
-	get emojiPickerPeopleIcon() { return browser.element('.emoji-picker .icon-people'); }
-	get emojiPickerNatureIcon() { return browser.element('.emoji-picker .icon-nature'); }
-	get emojiPickerFoodIcon() { return browser.element('.emoji-picker .icon-food'); }
-	get emojiPickerActivityIcon() { return browser.element('.emoji-picker .icon-activity'); }
-	get emojiPickerTravelIcon() { return browser.element('.emoji-picker .icon-travel'); }
-	get emojiPickerObjectsIcon() { return browser.element('.emoji-picker .icon-objects'); }
-	get emojiPickerSymbolsIcon() { return browser.element('.emoji-picker .icon-symbols'); }
-	get emojiPickerFlagsIcon() { return browser.element('.emoji-picker .icon-flags'); }
-	get emojiPickerModifierIcon() { return browser.element('.emoji-picker .icon-symbols'); }
-	get emojiPickerChangeTone() { return browser.element('.emoji-picker .change-tone'); }
-	get emojiPickerCustomIcon() { return browser.element('.emoji-picker .icon-rocket'); }
-	get emojiPickerRecentIcon() { return browser.element('.emoji-picker .icon-recent'); }
-	get emojiPickerFilter() { return browser.element('.emoji-picker .js-emojipicker-search'); }
-	get emojiPickerEmojiContainer() { return browser.element('.emoji-picker .emojis'); }
-	get emojiGrinning() { return browser.element('.emoji-picker .emoji-grinning'); }
-	get emojiSmile() { return browser.element('.emoji-picker .emoji-smile'); }
+	get emojiPickerMainScreen() {
+		return browser.element('.emoji-picker');
+	}
+
+	get emojiPickerPeopleIcon() {
+		return browser.element('.emoji-picker .icon-people');
+	}
+
+	get emojiPickerNatureIcon() {
+		return browser.element('.emoji-picker .icon-nature');
+	}
+
+	get emojiPickerFoodIcon() {
+		return browser.element('.emoji-picker .icon-food');
+	}
+
+	get emojiPickerActivityIcon() {
+		return browser.element('.emoji-picker .icon-activity');
+	}
+
+	get emojiPickerTravelIcon() {
+		return browser.element('.emoji-picker .icon-travel');
+	}
+
+	get emojiPickerObjectsIcon() {
+		return browser.element('.emoji-picker .icon-objects');
+	}
+
+	get emojiPickerSymbolsIcon() {
+		return browser.element('.emoji-picker .icon-symbols');
+	}
+
+	get emojiPickerFlagsIcon() {
+		return browser.element('.emoji-picker .icon-flags');
+	}
+
+	get emojiPickerModifierIcon() {
+		return browser.element('.emoji-picker .icon-symbols');
+	}
+
+	get emojiPickerChangeTone() {
+		return browser.element('.emoji-picker .change-tone');
+	}
+
+	get emojiPickerCustomIcon() {
+		return browser.element('.emoji-picker .icon-rocket');
+	}
+
+	get emojiPickerRecentIcon() {
+		return browser.element('.emoji-picker .icon-recent');
+	}
+
+	get emojiPickerFilter() {
+		return browser.element('.emoji-picker .js-emojipicker-search');
+	}
+
+	get emojiPickerEmojiContainer() {
+		return browser.element('.emoji-picker .emojis');
+	}
+
+	get emojiGrinning() {
+		return browser.element('.emoji-picker .emoji-grinning');
+	}
+
+	get emojiSmile() {
+		return browser.element('.emoji-picker .emoji-smile');
+	}
 
 	// Popover
-	get popoverWrapper() { return browser.element('.rc-popover'); }
+	get popoverWrapper() {
+		return browser.element('.rc-popover');
+	}
 
 	// Landing Page
 	get GlobalAnnouncement() { return browser.element('.global-announcement'); }
@@ -96,6 +196,11 @@ class MainContent extends Page {
 
 	get saveSettings() {
 		return browser.element('.rc-button.rc-button--primary.save');
+	}
+
+	// auto translate
+	get manageAutoTranslate() {
+		return browser.element('[name="perm[user][auto-translate]"]');
 	}
 
 	// Sends a message and wait for the message to equal the text sent
