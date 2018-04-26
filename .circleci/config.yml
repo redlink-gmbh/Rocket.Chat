@@ -101,6 +101,7 @@ jobs:
             tar czf /tmp/build/Rocket.Chat.tar.gz bundle
             cd /tmp/build-test/bundle/programs/server
             npm install
+            npm install pseudomap
 
       # - save_cache:
       #     key: node-modules-cache-{{ checksum ".circleci/config.yml" }}-{{ checksum "package.json" }}
@@ -269,7 +270,7 @@ jobs:
   deploy:
     <<: *defaults
     docker:
-      - image: circleci/node:4.8
+      - image: circleci/node:8
 
     steps:
       - attach_workspace:
@@ -302,19 +303,19 @@ workflows:
       - build:
           filters:
             tags:
-              only: ^v[0-9]+\.[0-9]+\.[0-9]+-[0-9]+\.[0-9]+\.[0-9]+(-rc\.[0-9]+)?$
+              only: /^v[0-9]+\.[0-9]+\.[0-9]+-[0-9]+\.[0-9]+\.[0-9]+(-rc\.[0-9]+)?$/
       - test-with-oplog:
           requires:
             - build
           filters:
             tags:
-              only: ^v[0-9]+\.[0-9]+\.[0-9]+-[0-9]+\.[0-9]+\.[0-9]+(-rc\.[0-9]+)?$
+              only: /^v[0-9]+\.[0-9]+\.[0-9]+-[0-9]+\.[0-9]+\.[0-9]+(-rc\.[0-9]+)?$/
       - test-without-oplog:
           requires:
             - build
           filters:
             tags:
-              only: ^v[0-9]+\.[0-9]+\.[0-9]+-[0-9]+\.[0-9]+\.[0-9]+(-rc\.[0-9]+)?$
+              only: /^v[0-9]+\.[0-9]+\.[0-9]+-[0-9]+\.[0-9]+\.[0-9]+(-rc\.[0-9]+)?$/
             branches:
               only:
                 - circle-without-oplog
@@ -323,7 +324,7 @@ workflows:
             - build
           filters:
             tags:
-              only: ^v[0-9]+\.[0-9]+\.[0-9]+-[0-9]+\.[0-9]+\.[0-9]+(-rc\.[0-9]+)?$
+              only: /^v[0-9]+\.[0-9]+\.[0-9]+-[0-9]+\.[0-9]+\.[0-9]+(-rc\.[0-9]+)?$/
             branches:
               only:
                 - circle-smarti
@@ -337,6 +338,7 @@ workflows:
               only:
                 - develop
                 - master
+                - /^release\/v?[0-9]+\.[0-9]+\.[0-9]+-[0-9]+\.[0-9]+\.[0-9]+(-rc\.[0-9]+)?$/
             tags:
-              only: ^v[0-9]+\.[0-9]+\.[0-9]+-[0-9]+\.[0-9]+\.[0-9]+(-rc\.[0-9]+)?$
+              only: /^v[0-9]+\.[0-9]+\.[0-9]+-[0-9]+\.[0-9]+\.[0-9]+(-rc\.[0-9]+)?$/
 

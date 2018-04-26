@@ -402,9 +402,12 @@ export const getActions = function({ user, directActions, hideAdminControls }) {
 			icon : 'trash',
 			name: 'Delete',
 			action: prevent(getUser, ({_id}) => {
+				const erasureType = RocketChat.settings.get('Message_ErasureType');
+				const warningKey = `Delete_User_Warning_${ erasureType }`;
+
 				modal.open({
 					title: t('Are_you_sure'),
-					text: t('Delete_User_Warning'),
+					text: t(warningKey),
 					type: 'warning',
 					showCancelButton: true,
 					confirmButtonColor: '#DD6B55',
@@ -428,7 +431,7 @@ export const getActions = function({ user, directActions, hideAdminControls }) {
 			group: 'admin',
 			condition: () => !hideAdminControls && hasPermission('delete-user')
 		}, () => {
-			if (hideAdminControls || !hasPermission('assign-admin-role')) {
+			if (hideAdminControls || !RocketChat.authz.hasRole(user._id, 'admin')) {
 				return;
 			}
 			if (hasAdminRole()) {

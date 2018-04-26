@@ -10,6 +10,22 @@ Assistify_AI_Smarti_Domain: Smarti Client-Name
 Assistify_AI_Smarti_Domain_Description: Trage hier den Smarti Client-Name ein, der zu dieser Rocket.Chat Instanz gehört.
 Assistify_AI_Smarti_Auth_Token: Smarti Client-Token
 Assistify_AI_Smarti_Auth_Token_Description: Trage hier den Smarti Client-Token ein, damit sich Rocket.Chat gegenüber Smarti authentifizieren kann.
+Assistify_AI_Smarti_Widget_i18n: Texte des Smarti-Widgets
+Assistify_AI_Smarti_Widget_i18n_Description: |
+  Ein JSON-Objekt, mit dem die Übersetzungen definiert werden.
+
+  Mögliche Werte:
+    - widget.conversation.answer.title
+    - widget.conversation.answer.title_msg
+    - widget.latch.answer.title
+
+  Beispiel:
+    {
+      "widget.conversation.answer.title": {
+        "de":"Ich habe eine passende Konversation gefunden:",
+        "en":"I found a similar conversation:"
+      }
+    }
 Assistify_AI_Widget_Posting_Type: Posting-Verhalten des Widgets
 Assistify_AI_Widget_Posting_Type_Description: Wähle wie die Vorschläge von Smarti in den Chat übernommen werden sollen.
 Assistify_AI_Widget_Posting_Type_SuggestText: Plain Text vorschlagen
@@ -17,6 +33,7 @@ Assistify_AI_Widget_Posting_Type_PostText: Plain Text direkt posten
 Assistify_AI_Widget_Posting_Type_PostRichText: Rich Text direkt posten
 Assistify_AI_RocketChat_Webhook_Token: Rocket.Chat Token
 Assistify_AI_RocketChat_Webhook_Token_Description: Vergib einen Token für eingende Nachrichten von Smarti (z.B. key123).
+Assistify_AI_Resync_Smarti: Resync Smarti
 Widget_could_not_load: Die Wissensbasis kann nicht angezeigt werden. Das tut uns echt leid! Ein möglicher Grund ist eine fehlende Intranetverbindung. Sollte der Rest des Intranets erreichbar sein, nimm bitte Kontakt mit uns auf!
 Widget_loading: Die Wissensbasis lädt gerade - und zwar schon ungewöhnlich lange. Da scheint etwas nicht zu stimmen...
 Reload_Settings: Einstellungen neu laden

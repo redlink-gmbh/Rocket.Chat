@@ -1,5 +1,4 @@
 /* globals Push */
-/*eslint complexity: ["error", 40]*/
 import _ from 'underscore';
 import s from 'underscore.string';
 import moment from 'moment';
@@ -165,9 +164,8 @@ RocketChat.callbacks.add('afterSaveMessage', function(message, room, userId) {
 
 	const pushUsernames = {};
 
-	const user = RocketChat.models.Users.findOneById(message.u._id);
+	const user = (room.t !== 'l') ? RocketChat.models.Users.findOneById(message.u._id) : room.v;
 
-	// might be a livechat visitor
 	if (!user) {
 		return message;
 	}
