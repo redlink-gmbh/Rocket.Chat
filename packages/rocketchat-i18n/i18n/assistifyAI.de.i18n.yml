@@ -17,6 +17,7 @@ Assistify_AI_Smarti_Widget_i18n_Description: |
   Mögliche Werte:
     - widget.conversation.answer.title
     - widget.conversation.answer.title_msg
+    - widget.conversation.answer.title_msgs
     - widget.latch.answer.title
 
   Beispiel:
@@ -24,6 +25,10 @@ Assistify_AI_Smarti_Widget_i18n_Description: |
       "widget.conversation.answer.title": {
         "de":"Ich habe eine passende Konversation gefunden:",
         "en":"I found a similar conversation:"
+      },
+      "widget.conversation.answer.title_msg": {
+        "de":"Ich habe eine passende Nachricht gefunden:",
+        "en":"I found a related message:"
       }
     }
 Assistify_AI_Widget_Posting_Type: Posting-Verhalten des Widgets
