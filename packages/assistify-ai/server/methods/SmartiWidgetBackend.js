@@ -33,11 +33,13 @@ Meteor.methods({
 					}
 				}
 			)(verbs.get, `legacy/rocket.chat?channel_id=${ channelId }`, null, (error) => {
-				// 404 is expected if no mapping exists
-				if (error.response.statusCode === 404) {
-					return null;
+				if (error) {
+					// 404 is expected if no mapping exists
+					if (error.response.statusCode === 404) {
+						return null;
+					}
+					return {errorCode: error.code};
 				}
-				return {errorCode: error.code};
 			});
 
 			if (conversation && conversation.id) {
@@ -86,11 +88,13 @@ Meteor.methods({
 				}
 			}
 		)(verbs.get, `conversation/${ conversationId }/analysis`, null, (error) => {
-			// 404 is expected if no mapping exists
-			if (error.response && error.response.statusCode === 404) {
-				return null;
+			if (error) {
+				// 404 is expected if no mapping exists
+				if (error.response && error.response.statusCode === 404) {
+					return null;
+				}
+				return {errorCode: error.code};
 			}
-			return {errorCode: error.code};
 		});
 	},
 
