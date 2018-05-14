@@ -87,10 +87,16 @@ export class SmartiAdapter {
 			'content': message.msg,
 			'user': {
 				'id': message.u._id
-			}
+			},
+			'metadata': {}
 			//,"private" : false
 		};
 
+		if (message.origin === 'smartiWidget') {
+			requestBodyMessage.metadata.skipAnalysis = true;
+		}
+
+		SystemLogger.debug('RocketChatMessage:', message);
 		SystemLogger.debug('Message:', requestBodyMessage);
 
 		let conversationId = SmartiAdapter._getConversationId(message.rid, message);

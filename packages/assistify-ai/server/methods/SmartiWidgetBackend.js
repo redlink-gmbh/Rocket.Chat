@@ -33,9 +33,12 @@ Meteor.methods({
 					}
 				}
 			)(verbs.get, `legacy/rocket.chat?channel_id=${ channelId }`, null, (error) => {
-				// 404 is expected if no mapping exists
-				if (error.response.statusCode === 404) {
-					return null;
+				if (error) {
+					// 404 is expected if no mapping exists
+					if (error.response && error.response.statusCode === 404) {
+						return null;
+					}
+					return {errorCode: error.code};
 				}
 			});
 
@@ -84,7 +87,15 @@ Meteor.methods({
 					return !RocketChat.authz.hasPermission(userId, 'send-many-messages');
 				}
 			}
-		)(verbs.get, `conversation/${ conversationId }/analysis`);
+		)(verbs.get, `conversation/${ conversationId }/analysis`, null, (error) => {
+			if (error) {
+				// 404 is expected if no mapping exists
+				if (error.response && error.response.statusCode === 404) {
+					return null;
+				}
+				return {errorCode: error.code};
+			}
+		});
 	},
 
 	/**
