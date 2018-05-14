@@ -35,7 +35,7 @@ Meteor.methods({
 			)(verbs.get, `legacy/rocket.chat?channel_id=${ channelId }`, null, (error) => {
 				if (error) {
 					// 404 is expected if no mapping exists
-					if (error.response.statusCode === 404) {
+					if (error.response && error.response.statusCode === 404) {
 						return null;
 					}
 					return {errorCode: error.code};
