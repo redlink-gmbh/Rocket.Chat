@@ -1,3 +1,12 @@
+# Assistify 0.63.3-0.8.0
+
+This release brings new features 🎉 
+
+- Already shipped earlier, but documented now is the new selection of topics: You now don't have to know which topics exist upfront: If there's only a small number of topics, it's automatically retrieved and presented. For bigger installations, you can select the topics from a word cloud ☁️ 
+- Automated translation by DeepL (beta): You can now use the awesome DeepL translation engine (www.deepl.com/translate)  to translate chats for each user into his own language. Simply write and read everything in your language. It's amazing! You can find a screencast on our [YouTube Channel](youtube.com/playlist?list=PLp8cLPN9MpKr13V5fUkuLYZ-K1G0Cl7QD)
+
+Apart from that: A lot of minor and not so minor bugfixes - for an even smoother experience 
+
 # Assistify 0.63.3-0.7.2
 
 This is a bugfix release and brings only minor enhancements
